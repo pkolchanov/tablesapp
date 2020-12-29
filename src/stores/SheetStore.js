@@ -1,8 +1,8 @@
 import {observable, computed, action} from "mobx";
 
 class SheetStore {
-    @observable colums = 10;
-    @observable rows = 100;
+    @observable ncolums = 10;
+    @observable nrows = 5;
 }
 
 

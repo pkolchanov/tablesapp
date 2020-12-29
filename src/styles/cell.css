@@ -1,25 +1,8 @@
-
-
 .cell {
     width: 200px;
 }
 
-.header-cell {
-    width: 200px;
-    position: relative;
-}
-
-.row {
-    display: flex;
-    margin-top: 5px;
-}
-
-.header-row {
-    display: flex;
-    height: 14px;
-}
-
-.resize-icon {
+.cell__resize-icon {
     position: absolute;
     right: 0;
     flex-grow: 0;
@@ -31,6 +14,7 @@
     background: #CCCC;
     cursor: col-resize;
 }
-.resize-icon:hover{
+
+.cell__resize-icon:hover{
     background: black;
 }

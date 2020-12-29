@@ -1,0 +1,9 @@
+.row {
+    display: flex;
+    margin-top: 5px;
+}
+
+.header-row {
+    display: flex;
+    height: 14px;
+}
