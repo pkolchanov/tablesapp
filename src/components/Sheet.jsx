@@ -1,8 +1,8 @@
 import React from "react";
 import {observer} from "mobx-react";
 import {sheetStore} from "../stores/SheetStore";
+import Cell from "./Cell";
 
-import '../styles/cell.css';
 import '../styles/sheet.css';
 import '../styles/row.css';
 import '../styles/app.css';
@@ -18,10 +18,12 @@ class Sheet extends React.Component {
             <div className="sheet">
                 {Array(sheetStore.nrows).fill().map((_, i) =>
                     <div className="row" key={`r${i}`}>
-                        {Array(sheetStore.ncolums).fill().map((_, j) =>
-                            <div className="cell" key={`c${i}${j}`}>hhice</div>)
+                        {
+                            Array(sheetStore.ncolums).fill().map((_, j) =>
+                            <Cell key={`c${i}${j}`} coords={[i,j]}/>)
                         }
-                    </div>)}
+                    </div>)
+                }
             </div>
         );
     }
