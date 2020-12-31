@@ -1,10 +1,8 @@
 import {observable, computed, action, makeObservable} from "mobx";
 
-var randomWords = require('random-words');
-
 class SheetStore {
     @observable data;
-    @observable activeCoords = [1, 9];
+    @observable activeCoords = [0, 0];
 
     @computed
     get nrows() {
@@ -18,8 +16,8 @@ class SheetStore {
 
     constructor() {
         makeObservable(this);
-        this.data = Array(100).fill().map((_) =>
-            Array(10).fill().map((_) => randomWords({min: 2, max: 10, join: ' '}))
+        this.data = Array(10).fill().map((_) =>
+            Array(10).fill().map((_) => "")
         )
     }
 
@@ -53,20 +51,30 @@ class SheetStore {
     }
 
     @action
+    addColumn(){
+        this.data.forEach(r=> r.push(""))
+    }
+
+    @action
+    addRow(){
+        this.data.push(Array(this.ncolums).fill(""))
+    }
+
+    @action
     move(dr, dc) {
         let newActiveRow = this.activeCoords[0] + dr;
         if (newActiveRow >= 0) {
-            // if (newActiveRow >= this.nrows) {
-            //     this.set(newActiveRow, this.activeCoords[1], undefined)
-            // }
+            if (newActiveRow >= this.nrows) {
+                this.addRow();
+            }
             this.activeCoords[0] = newActiveRow;
         }
 
         let newActiveRowCol = this.activeCoords[1] + dc;
         if (newActiveRowCol >= 0) {
-            // if (newActiveRowCol >= this.ncolums) {
-            //     this.set(this.activeCoords[0], newActiveRowCol, undefined)
-            // }
+            if (newActiveRowCol >= this.ncolums) {
+                this.addColumn();
+            }
             this.activeCoords[1] = newActiveRowCol;
         }
     }

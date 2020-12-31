@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from "mobx-react";
 import {sheetStore} from "../stores/SheetStore";
 import '../styles/cell.css';
-import {DOWN_KEY, LEFT_KEY, RIGHT_KEY, UP_KEY} from "../helpers/keys";
+import {DOWN_KEY, ENTER_KEY, LEFT_KEY, RIGHT_KEY, UP_KEY} from "../helpers/keys";
 
 @observer
 class Cell extends React.Component {
@@ -56,7 +56,7 @@ class Cell extends React.Component {
         if (keyCode === UP_KEY) {
             event.preventDefault();
             sheetStore.move(-1, 0);
-        } else if (keyCode === DOWN_KEY) {
+        } else if (keyCode === DOWN_KEY || keyCode === ENTER_KEY) {
             event.preventDefault();
             sheetStore.move(1, 0);
         } else if (keyCode === LEFT_KEY && event.target.selectionStart === 0) {
