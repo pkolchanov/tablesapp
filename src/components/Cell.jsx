@@ -67,9 +67,6 @@ class Cell extends React.Component {
             event.preventDefault();
             sheetStore.move(0, 1);
         }
-
-        console.log(keyCode);
-        console.log(event.target.selectionStart);
     }
 
 }
