@@ -1,9 +1,10 @@
 'use strict';
 
 // Import parts of electron to use
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow,  ipcMain: ipc} = require('electron');
 const path = require('path');
 const url = require('url');
+const fs = require('fs');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -15,7 +16,25 @@ if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) |
     dev = true;
 }
 
+global.handleContent = {
+    filename: `${app.getPath('userData')}/content.json`,
+
+    write(content) {
+        fs.writeFileSync(this.filename, content, 'utf8');
+    },
+    read() {
+        return fs.existsSync(this.filename) ? fs.readFileSync(this.filename, 'utf8') : false;
+    },
+};
+
 function createWindow() {
+    ipc.on('writeContent', (event, arg) => {
+        global.handleContent.write(arg);
+    });
+    ipc.on('readContent', (event, arg) => {
+        event.returnValue = global.handleContent.read(arg);
+    });
+
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 1024, height: 768, show: false,

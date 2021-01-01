@@ -1,5 +1,8 @@
 import {observable, computed, action, makeObservable} from "mobx";
 
+const {ipcRenderer: ipc} = require('electron');
+
+
 class SheetStore {
     @observable data;
     @observable activeCoords = [0, 0];
@@ -16,9 +19,10 @@ class SheetStore {
 
     constructor() {
         makeObservable(this);
-        this.data = Array(10).fill().map((_) =>
+        const persisted = ipc.sendSync('readContent');
+        this.data = persisted ? JSON.parse(persisted) : Array(10).fill().map((_) =>
             Array(10).fill().map((_) => "")
-        )
+        );
     }
 
     @action
@@ -29,6 +33,7 @@ class SheetStore {
     @action
     update(coords, value) {
         this.data[coords[0]][coords[1]] = value;
+        ipc.send('writeContent', JSON.stringify(this.data));
     }
 
     @action
@@ -51,12 +56,12 @@ class SheetStore {
     }
 
     @action
-    addColumn(){
-        this.data.forEach(r=> r.push(""))
+    addColumn() {
+        this.data.forEach(r => r.push(""))
     }
 
     @action
-    addRow(){
+    addRow() {
         this.data.push(Array(this.ncolums).fill(""))
     }
 
