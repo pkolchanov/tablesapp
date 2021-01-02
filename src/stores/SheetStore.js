@@ -1,11 +1,17 @@
-import {observable, computed, action, makeObservable} from "mobx";
+import {action, computed, makeObservable, observable} from "mobx";
 
 const {ipcRenderer: ipc} = require('electron');
 
+const defaultWidth = 200;
 
 class SheetStore {
     @observable data;
     @observable activeCoords = [0, 0];
+
+    @observable columnWidths;
+    startX;
+    startWidth;
+    resizingColumnNum;
 
     @computed
     get nrows() {
@@ -19,10 +25,15 @@ class SheetStore {
 
     constructor() {
         makeObservable(this);
+
         const persisted = ipc.sendSync('readContent');
-        this.data = persisted ? JSON.parse(persisted) : Array(10).fill().map((_) =>
-            Array(10).fill().map((_) => "")
-        );
+        const parsed = persisted ? JSON.parse(persisted): false;
+        this.data = parsed ? parsed.data :
+            Array(10).fill().map((_) =>
+                Array(10).fill().map((_) => ""));
+
+        this.columnWidths = parsed? parsed.columnWidths :
+            Array(this.ncolums).fill().map((_) => defaultWidth);
     }
 
     @action
@@ -33,31 +44,14 @@ class SheetStore {
     @action
     update(coords, value) {
         this.data[coords[0]][coords[1]] = value;
-        ipc.send('writeContent', JSON.stringify(this.data));
-    }
-
-    @action
-    set(row, column, value) {
-        const matrix = this.data;
-        const nextMatrix = [...matrix];
-
-        const firstRow = matrix[0];
-        const nextFirstRow = firstRow ? [...firstRow] : [];
-        if (nextFirstRow.length - 1 < column) {
-            nextFirstRow[column] = "";
-            nextMatrix[0] = nextFirstRow;
-        }
-
-        const nextRow = matrix[row] ? [...matrix[row]] : [];
-        nextRow[column] = value;
-        nextMatrix[row] = nextRow;
-        window.newMatrix = nextMatrix;
-        this.data = nextMatrix;
+        ipc.send('writeContent',
+            JSON.stringify({data: this.data, columnWidths: this.columnWidths}));
     }
 
     @action
     addColumn() {
-        this.data.forEach(r => r.push(""))
+        this.data.forEach(r => r.push(""));
+        this.columnWidths.push(defaultWidth);
     }
 
     @action
@@ -82,6 +76,26 @@ class SheetStore {
             }
             this.activeCoords[1] = newActiveRowCol;
         }
+    }
+
+    @action
+    resize(clientX) {
+        const change = this.startX - clientX;
+        this.columnWidths[this.resizingColumnNum] = this.startWidth - change;
+    }
+
+    @action
+    startResize(startX, c) {
+        this.startX = startX;
+        this.resizingColumnNum = c;
+        this.startWidth = this.columnWidths[c];
+    }
+
+    @action
+    endResize() {
+        this.startX = undefined;
+        this.startWidth = undefined;
+        this.resizingColumnNum = undefined;
     }
 }
 

@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from "mobx-react";
 import {sheetStore} from "../stores/SheetStore";
 import '../styles/cell.css';
-import {DOWN_KEY, ENTER_KEY, LEFT_KEY, RIGHT_KEY, UP_KEY} from "../helpers/keys";
+import {DOWN_KEY, ENTER_KEY, LEFT_KEY, RIGHT_KEY, TAB_KEY, UP_KEY} from "../helpers/keys";
 
 @observer
 class Cell extends React.Component {
@@ -32,11 +32,11 @@ class Cell extends React.Component {
             c === sheetStore.activeCoords[1];
 
         return (
-            <div className={`cell ${isActive && 'cell-isActive'}`}
-                 onClick={this.handleClick}>
+            <div className={`cell ${isActive && 'cell-isActive'}` }
+                 onClick={this.handleClick} style={{width: sheetStore.columnWidths[c] + 'px'}}>
                 {!isActive && sheetStore.data[r][c]}
                 {isActive && <input className="cell__input" value={sheetStore.data[r][c]} onChange={this.handleChange}
-                                    ref={this.inputRef} onKeyDown={this.handleKeyDown}/>}
+                                    ref={this.inputRef} onKeyDown={this.handleKeyDown} style={{width: sheetStore.columnWidths[c] + 'px'}}/>}
             </div>
         );
     }
@@ -66,6 +66,10 @@ class Cell extends React.Component {
             event.target.selectionStart === sheetStore.data[r][c].length) {
             event.preventDefault();
             sheetStore.move(0, 1);
+        } else if (keyCode === TAB_KEY  && !event.shiftKey){
+            sheetStore.move(0, 1);
+        } else if (keyCode === TAB_KEY && event.shiftKey){
+            sheetStore.move(0, -1);
         }
     }
 

@@ -1,5 +1,4 @@
 .cell {
-    width: 200px;
     cursor: pointer;
     flex: 1 0 auto;
     min-height: 17px;
@@ -10,29 +9,11 @@
     box-shadow:0 0 0 1px #009ADE inset;
 }
 
-.cell__resize-icon {
-    position: absolute;
-    right: 0;
-    flex-grow: 0;
-    z-index: 1;
-    width: 1px;
-    margin-left: -3px;
-    margin-top: -1px;
-    height: 14px;
-    background: #CCCC;
-    cursor: col-resize;
-}
-
-.cell__resize-icon:hover {
-    background: black;
-}
-
 .cell__input {
     box-sizing: border-box;
     line-height: 17px;
     padding: 0;
     border: none;
-    width: 200px;
     overflow: auto;
     outline: none;
     box-shadow: none;

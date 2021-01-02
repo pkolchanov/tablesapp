@@ -4,5 +4,6 @@
 
 .header-row {
     display: flex;
-    height: 14px;
+    height: 17px;
+    margin-bottom: 5px;
 }

@@ -1,0 +1,28 @@
+.header-cell {
+    width: 200px;
+    flex: 1 0 auto;
+    position: relative;
+    padding: 2px 2px 2px 2px;
+}
+
+.header-cell__resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    flex-grow: 0;
+    z-index: 1;
+    margin-left: -3px;
+    margin-top: -1px;
+    color: #CCCC;
+    cursor: col-resize;
+    display: inline-block;
+    text-align: center;
+
+    width: 10px;
+    height: 100%;
+    transform: translateX(50%);
+}
+
+.header-cell__resize-icon:hover {
+    background: black;
+}
