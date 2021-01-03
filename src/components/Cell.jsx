@@ -2,14 +2,12 @@ import React from "react";
 import {observer} from "mobx-react";
 import {sheetStore} from "../stores/SheetStore";
 import '../styles/cell.css';
-import {DOWN_KEY, ENTER_KEY, LEFT_KEY, RIGHT_KEY, TAB_KEY, UP_KEY} from "../helpers/keys";
 
 @observer
 class Cell extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.inputRef = React.createRef();
     }
@@ -28,49 +26,39 @@ class Cell extends React.Component {
 
     render() {
         const [r, c] = this.props.coords;
-        const isActive = r === sheetStore.activeCoords[0] &&
-            c === sheetStore.activeCoords[1];
+        const [activeR, activeC] = sheetStore.activeCoords;
+        const [selectionStartR, selectionStartC] = sheetStore.selectionStartCoords || [];
+        const [selectionEndR, selectionEndC] = sheetStore.selectionEndCoords || [];
+
+        const isActive = r === activeR && c === activeC && !sheetStore.selectionStartCoords;
+        const isSelected = sheetStore.selectionEndCoords &&
+            ((selectionEndR <= r && r <= selectionStartR) || (selectionEndR >= r && r >= selectionStartR)) &&
+            ((selectionEndC <= c && c <= selectionStartC) || (selectionEndC >= c && c >= selectionStartC));
 
         return (
-            <div className={`cell ${isActive && 'cell-isActive'}` }
-                 onClick={this.handleClick} style={{width: sheetStore.columnWidths[c] + 'px'}}>
+            <div className={`cell ${isActive && 'cell_isActive'} ${isSelected && 'cell_isSelected'}`}
+                 onClick={this.handleClick}
+                 style={{width: sheetStore.columnWidths[c] + 'px'}}>
                 {!isActive && sheetStore.data[r][c]}
-                {isActive && <input className="cell__input" value={sheetStore.data[r][c]} onChange={this.handleChange}
-                                    ref={this.inputRef} onKeyDown={this.handleKeyDown} style={{width: sheetStore.columnWidths[c] + 'px'}}/>}
+                {isActive && <input className="cell__input"
+                                    value={sheetStore.data[r][c]}
+                                    onChange={this.handleChange}
+                                    ref={this.inputRef}
+                                    style={{width: sheetStore.columnWidths[c] + 'px'}}/>}
             </div>
         );
     }
 
-    handleClick() {
-        sheetStore.activateCell(this.props.coords);
+    handleClick(event) {
+        if (event.shiftKey) {
+            sheetStore.select(this.props.coords)
+        } else {
+            sheetStore.activateCell(this.props.coords);
+        }
     }
 
     handleChange(event) {
         sheetStore.update(this.props.coords, event.target.value);
-    }
-
-    handleKeyDown(event) {
-        const keyCode = event.which || event.keyCode;
-        const [r, c] = this.props.coords;
-
-        if (keyCode === UP_KEY) {
-            event.preventDefault();
-            sheetStore.move(-1, 0);
-        } else if (keyCode === DOWN_KEY || keyCode === ENTER_KEY) {
-            event.preventDefault();
-            sheetStore.move(1, 0);
-        } else if (keyCode === LEFT_KEY && event.target.selectionStart === 0) {
-            event.preventDefault();
-            sheetStore.move(0, -1);
-        } else if (keyCode === RIGHT_KEY &&
-            event.target.selectionStart === sheetStore.data[r][c].length) {
-            event.preventDefault();
-            sheetStore.move(0, 1);
-        } else if (keyCode === TAB_KEY  && !event.shiftKey){
-            sheetStore.move(0, 1);
-        } else if (keyCode === TAB_KEY && event.shiftKey){
-            sheetStore.move(0, -1);
-        }
     }
 
 }

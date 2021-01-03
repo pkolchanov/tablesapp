@@ -5,8 +5,12 @@
     padding: 2px 2px 2px 2px;
 }
 
-.cell-isActive {
-    box-shadow:0 0 0 1px #009ADE inset;
+.cell_isActive {
+    box-shadow: 0 0 0 1px #009ADE inset;
+}
+
+.cell_isSelected {
+    background: #DDF5FF;
 }
 
 .cell__input {
