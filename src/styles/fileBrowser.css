@@ -1,0 +1,28 @@
+.fileBrowser {
+    border-right: 1px solid #E6E6E6;
+    flex: 0 0 230px;
+    height: 100vh;
+    overflow-y: scroll;
+    padding-left: 10px;
+    padding-right: 15px;
+}
+
+.fileBrowser__file {
+    border-bottom: 1px solid #E6E6E6;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+}
+
+.fileBrowser__file_active{
+    background: #DCDCDC;
+    border-radius: 5px;
+}
+
+.fileBrowser__preview {
+    font-weight: bold;
+}
+
+.fileBrowser__lastUpdate {
+    font-size: 12px;
+}

@@ -1,3 +1,5 @@
 .sheet {
     padding-left: 17px;
+    height: 100vh;
+    overflow-y: scroll;
 }

@@ -1,11 +1,11 @@
-.header-cell {
+.headerCell {
     width: 200px;
     flex: 1 0 auto;
     position: relative;
     padding: 2px 2px 2px 2px;
 }
 
-.header-cell__resizer {
+.headerCell__resizer {
     position: absolute;
     top: 0;
     right: 0;

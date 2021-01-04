@@ -1,10 +1,10 @@
 import React from "react";
 import {render} from "react-dom";
-import Sheet from "./components/Sheet";
+import App from "./components/App";
 
 render(
     <div>
-        <Sheet />
+        <App />
     </div>,
     document.getElementById("root")
 );

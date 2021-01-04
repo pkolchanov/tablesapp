@@ -1,5 +1,4 @@
 .cell {
-    cursor: pointer;
     flex: 1 0 auto;
     min-height: 17px;
     padding: 2px 2px 2px 2px;
@@ -10,7 +9,7 @@
 }
 
 .cell_isSelected {
-    background: #DDF5FF;
+    background: #C7E6F8;
 }
 
 .cell__input {

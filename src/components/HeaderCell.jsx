@@ -1,6 +1,6 @@
 import {observer} from "mobx-react";
 import React from "react";
-import '../styles/header-cell.css';
+import '../styles/headerCell.css';
 import {sheetStore} from "../stores/SheetStore";
 
 
@@ -13,8 +13,8 @@ class HeaderCell extends React.Component {
 
     render() {
         return (
-            <div className="header-cell" style={{width:  sheetStore.columnWidths[this.props.c] + 'px'}}>
-                <div className="header-cell__resizer" onMouseDown={this.onMouseDown}>|</div>
+            <div className="headerCell" style={{width:  sheetStore.columnWidths[this.props.c] + 'px'}}>
+                <div className="headerCell__resizer" onMouseDown={this.onMouseDown}>|</div>
             </div>
         )
     }

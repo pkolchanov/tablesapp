@@ -1,8 +1,4 @@
-import {action, autorun, computed, makeObservable, observable} from "mobx";
-
-const {ipcRenderer: ipc} = require('electron');
-
-const defaultWidth = 200;
+import {action, computed, makeObservable, observable} from "mobx";
 
 class SheetStore {
     @observable data;
@@ -11,6 +7,7 @@ class SheetStore {
     @observable selectionStartCoords;
 
     @observable columnWidths;
+    defaultWidth = 200;
     startX;
     startWidth;
     resizingColumnNum;
@@ -27,17 +24,6 @@ class SheetStore {
 
     constructor() {
         makeObservable(this);
-
-        const persisted = ipc.sendSync('readContent');
-        const parsed = persisted ? JSON.parse(persisted) : false;
-        this.data = parsed ? parsed.data :
-            Array(30).fill().map((_) =>
-                Array(10).fill().map((_) => ""));
-
-        this.columnWidths = parsed ? parsed.columnWidths :
-            Array(this.ncolums).fill().map((_) => defaultWidth);
-        autorun(()=>  ipc.send('writeContent',
-            JSON.stringify({data: this.data, columnWidths: this.columnWidths})))
     }
 
 
