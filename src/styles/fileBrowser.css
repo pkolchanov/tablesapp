@@ -4,25 +4,34 @@
     height: 100vh;
     overflow-y: scroll;
     padding-left: 10px;
-    padding-right: 15px;
+    padding-right: 10px;
+}
+
+.fileBrowser_active > .fileBrowser__file_selected {
+    background: #C7E6F8;
 }
 
 .fileBrowser__file {
-    border-bottom: 1px solid #E6E6E6;
+    /*border-bottom: 1px solid #E6E6E6;*/
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 20px;
 }
 
-.fileBrowser__file_active{
+.fileBrowser__file_selected {
     background: #DCDCDC;
     border-radius: 5px;
 }
 
 .fileBrowser__preview {
+    font-size: 12px;
     font-weight: bold;
 }
 
 .fileBrowser__lastUpdate {
     font-size: 12px;
+}
+
+.fileBrowser__spacer {
+    height: 17px;
 }

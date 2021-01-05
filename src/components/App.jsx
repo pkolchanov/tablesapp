@@ -16,6 +16,7 @@ import {sheetStore} from "../stores/SheetStore";
 import {fileBrowserStore} from "../stores/FileBrowserStore";
 import FileBrowser from "./FileBrowser";
 import Sheet from "./Sheet";
+import {appStore, ModeEnum} from "../stores/AppStore";
 
 @observer
 class App extends React.Component {
@@ -34,7 +35,6 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-                <button onClick={() => fileBrowserStore.newSheet()}/>
                 <div style={{display: 'flex'}}>
                     <FileBrowser/>
                     <Sheet/>
@@ -46,47 +46,71 @@ class App extends React.Component {
     handleKeyDown(event) {
         const keyCode = event.which || event.keyCode;
         let shiftKey = event.shiftKey;
-        if (keyCode === ESCAPE_KEY) {
-            sheetStore.resetSelection();
+
+        if(event.metaKey && keyCode === 'N'.charCodeAt(0)){
+            event.preventDefault();
+            fileBrowserStore.newSheet();
         }
-        if (keyCode === UP_KEY) {
-            event.preventDefault();
-            sheetStore.move(-1, 0, shiftKey);
-        } else if (keyCode === DOWN_KEY) {
-            event.preventDefault();
-            sheetStore.move(1, 0, shiftKey);
-        } else if (keyCode === ENTER_KEY) {
-            sheetStore.move(1, 0, false);
-        } else if (keyCode === LEFT_KEY) {
-            if (event.target && event.target.selectionStart === 0) {
-                event.preventDefault();
-                sheetStore.move(0, -1, shiftKey);
-            } else if (!event.target && shiftKey) {
-                sheetStore.move(0, -1, shiftKey);
+
+        if (appStore.mode === ModeEnum.edit) {
+            if (keyCode === ESCAPE_KEY) {
+                sheetStore.resetSelection();
             }
-        } else if (keyCode === RIGHT_KEY) {
-            if (event.target && event.target.value !== undefined && event.target.selectionStart === event.target.value.length) {
+            if (keyCode === UP_KEY) {
                 event.preventDefault();
-                sheetStore.move(0, 1, shiftKey);
-            } else if (!event.target && shiftKey) {
-                sheetStore.move(0, 1, shiftKey);
-            }
-        } else if (keyCode === TAB_KEY && !shiftKey) {
-            sheetStore.move(0, 1, false);
-        } else if (keyCode === TAB_KEY && shiftKey) {
-            sheetStore.move(0, -1, false);
-        } else if (keyCode === BACKSPACE_KEY) {
-            if (event.target && event.target.value !== undefined && event.target.value.length === 0) {
+                sheetStore.move(-1, 0, shiftKey);
+            } else if (keyCode === DOWN_KEY) {
                 event.preventDefault();
+                sheetStore.move(1, 0, shiftKey);
+            } else if (keyCode === ENTER_KEY) {
+                sheetStore.move(1, 0, false);
+            } else if (keyCode === LEFT_KEY) {
+                if (event.target && event.target.selectionStart === 0) {
+                    event.preventDefault();
+                    sheetStore.move(0, -1, shiftKey);
+                } else if (!event.target && shiftKey) {
+                    sheetStore.move(0, -1, shiftKey);
+                }
+            } else if (keyCode === RIGHT_KEY) {
+                if (event.target && event.target.value !== undefined && event.target.selectionStart === event.target.value.length) {
+                    event.preventDefault();
+                    sheetStore.move(0, 1, shiftKey);
+                } else if (!event.target && shiftKey) {
+                    sheetStore.move(0, 1, shiftKey);
+                }
+            } else if (keyCode === TAB_KEY && !shiftKey) {
+                sheetStore.move(0, 1, false);
+            } else if (keyCode === TAB_KEY && shiftKey) {
                 sheetStore.move(0, -1, false);
-            } else if (sheetStore.selectionStartCoords) {
+            } else if (keyCode === BACKSPACE_KEY) {
+                if (event.target && event.target.value !== undefined && event.target.value.length === 0) {
+                    event.preventDefault();
+                    sheetStore.move(0, -1, false);
+                } else if (sheetStore.selectionStartCoords) {
+                    event.preventDefault();
+                    sheetStore.clearSelected();
+                }
+            } else if (keyCode === DELETE_KEY && sheetStore.selectionStartCoords) {
                 event.preventDefault();
                 sheetStore.clearSelected();
             }
-        } else if (keyCode === DELETE_KEY && sheetStore.selectionStartCoords) {
-            event.preventDefault();
-            sheetStore.clearSelected();
         }
+
+        if (appStore.mode === ModeEnum.navigate) {
+            if (keyCode === RIGHT_KEY) {
+                appStore.changeMode(ModeEnum.edit)
+            }
+            if (keyCode === BACKSPACE_KEY) {
+                fileBrowserStore.removeCurrentAndSelectNext();
+            }
+            if (keyCode === DOWN_KEY) {
+                fileBrowserStore.move(1);
+            }
+            if (keyCode === UP_KEY) {
+                fileBrowserStore.move(-1);
+            }
+        }
+
     }
 
 }

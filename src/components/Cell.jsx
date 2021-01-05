@@ -2,6 +2,7 @@ import React from "react";
 import {observer} from "mobx-react";
 import {sheetStore} from "../stores/SheetStore";
 import '../styles/cell.css';
+import {appStore, ModeEnum} from "../stores/AppStore";
 
 @observer
 class Cell extends React.Component {
@@ -30,7 +31,7 @@ class Cell extends React.Component {
         const [selectionStartR, selectionStartC] = sheetStore.selectionStartCoords || [];
         const [selectionEndR, selectionEndC] = sheetStore.selectionEndCoords || [];
 
-        const isActive = r === activeR && c === activeC && !sheetStore.selectionStartCoords;
+        const isActive = appStore.mode === ModeEnum.edit && r === activeR && c === activeC && !sheetStore.selectionStartCoords;
         const isSelected = sheetStore.selectionEndCoords &&
             ((selectionEndR <= r && r <= selectionStartR) || (selectionEndR >= r && r >= selectionStartR)) &&
             ((selectionEndC <= c && c <= selectionStartC) || (selectionEndC >= c && c >= selectionStartC));

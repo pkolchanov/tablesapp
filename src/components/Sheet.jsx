@@ -6,6 +6,7 @@ import HeaderCell from "./HeaderCell";
 
 import '../styles/sheet.css';
 import '../styles/row.css';
+import {appStore, ModeEnum} from "../stores/AppStore";
 
 @observer
 class Sheet extends React.Component {
@@ -15,7 +16,7 @@ class Sheet extends React.Component {
 
     render() {
         return (
-            <div className="sheet">
+            <div className="sheet" onClick={()=> appStore.changeMode(ModeEnum.edit)}>
                 <div className="headerRow">
                     {Array(sheetStore.ncolums).fill().map((_, i) =>
                         <HeaderCell key={`hc${i}`} c={i}/>)}
