@@ -24,7 +24,7 @@ global.handleContent = {
     },
     read() {
         return fs.existsSync(this.filename) ? fs.readFileSync(this.filename, 'utf8') : false;
-    },
+    }
 };
 
 function createWindow() {
@@ -39,7 +39,8 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1024, height: 768, show: false,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            // scrollBounce: true
         }
     });
 

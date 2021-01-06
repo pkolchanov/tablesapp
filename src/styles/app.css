@@ -4,3 +4,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     margin: 0;
 }
+
+.app__wrapper {
+    display: flex;
+}

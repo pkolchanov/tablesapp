@@ -10,6 +10,9 @@ class Cell extends React.Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.handleMouseDown = this.handleMouseDown.bind(this);
+        this.handleMouseUp = this.handleMouseUp.bind(this);
+        this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.inputRef = React.createRef();
     }
 
@@ -39,7 +42,12 @@ class Cell extends React.Component {
         return (
             <div className={`cell ${isActive && 'cell_isActive'} ${isSelected && 'cell_isSelected'}`}
                  onClick={this.handleClick}
-                 style={{width: sheetStore.columnWidths[c] + 'px'}}>
+                 style={{width: sheetStore.columnWidths[c] + 'px'}}
+                 onMouseDown={this.handleMouseDown}
+                 onMouseUp={this.handleMouseUp}
+                 onMouseEnter={this.handleMouseEnter}
+
+            >
                 {!isActive && sheetStore.data[r][c]}
                 {isActive && <input className="cell__input"
                                     value={sheetStore.data[r][c]}
@@ -52,7 +60,7 @@ class Cell extends React.Component {
 
     handleClick(event) {
         if (event.shiftKey) {
-            sheetStore.select(this.props.coords)
+            sheetStore.updateSelection(this.props.coords)
         } else {
             sheetStore.activateCell(this.props.coords);
         }
@@ -60,6 +68,20 @@ class Cell extends React.Component {
 
     handleChange(event) {
         sheetStore.update(this.props.coords, event.target.value);
+    }
+
+    handleMouseDown(){
+        sheetStore.startSelection(this.props.coords);
+    }
+
+    handleMouseUp(){
+        sheetStore.endSelection();
+    }
+
+    handleMouseEnter(event){
+        if (sheetStore.inSelectionMode){
+            sheetStore.updateSelection(this.props.coords);
+        }
     }
 
 }

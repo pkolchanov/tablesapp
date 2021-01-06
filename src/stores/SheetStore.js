@@ -1,10 +1,11 @@
-import {action,computed, makeObservable, observable} from "mobx";
+import {action, computed, makeObservable, observable} from "mobx";
 
 class SheetStore {
     @observable data;
     @observable activeCoords = [0, 0];
     @observable selectionEndCoords;
     @observable selectionStartCoords;
+    inSelectionMode;
 
     @observable columnWidths;
     defaultWidth = 200;
@@ -110,13 +111,24 @@ class SheetStore {
     }
 
     @action
-    select(coords) {
+    updateSelection(endCoords) {
         if (!this.selectionStartCoords) {
             this.selectionStartCoords = [...this.activeCoords];
         }
-        this.selectionEndCoords = [...coords];
+        this.selectionEndCoords = [...endCoords];
     }
 
+    @action
+    startSelection(coords) {
+        this.inSelectionMode = true;
+        this.selectionStartCoords = [...coords];
+        this.selectionEndCoords = undefined;
+    }
+
+    @action
+    endSelection() {
+        this.inSelectionMode = false;
+    }
 
     @action
     resetSelection() {

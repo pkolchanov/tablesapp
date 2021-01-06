@@ -35,7 +35,7 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-                <div style={{display: 'flex'}}>
+                <div className="app__wrapper">
                     <FileBrowser/>
                     <Sheet/>
                 </div>
@@ -68,14 +68,14 @@ class App extends React.Component {
                 if (event.target && event.target.selectionStart === 0) {
                     event.preventDefault();
                     sheetStore.move(0, -1, shiftKey);
-                } else if (!event.target && shiftKey) {
+                } else if ((!event.target || event.target.tagName !== "INPUT") && shiftKey) {
                     sheetStore.move(0, -1, shiftKey);
                 }
             } else if (keyCode === RIGHT_KEY) {
                 if (event.target && event.target.value !== undefined && event.target.selectionStart === event.target.value.length) {
                     event.preventDefault();
                     sheetStore.move(0, 1, shiftKey);
-                } else if (!event.target && shiftKey) {
+                } else if ((!event.target || event.target.tagName !== "INPUT") && shiftKey) {
                     sheetStore.move(0, 1, shiftKey);
                 }
             } else if (keyCode === TAB_KEY && !shiftKey) {
