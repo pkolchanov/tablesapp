@@ -89,8 +89,9 @@ class Cell extends React.Component {
     }
 
     reCalcInputHeight() {
-        this.inputRef.current.style.height = "1px";
-        this.inputRef.current.style.height = this.inputRef.current.scrollHeight + "px";
+        const inputRef = this.inputRef.current;
+        inputRef.style.height = "1px";
+        inputRef.style.height = inputRef.scrollHeight + "px";
     }
 
 

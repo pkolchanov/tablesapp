@@ -15,7 +15,7 @@ class FileBrowser extends React.Component {
         const sheets = Object.entries(fileBrowserStore.sheets)
             .sort(([, a], [, b]) => a.lastUpdate > b.lastUpdate ? -1 : 1);
         return (
-            <div className={`fileBrowser ${appStore.mode === ModeEnum.navigate && 'fileBrowser_active'} `}
+            <div className={`fileBrowser${appStore.mode === ModeEnum.navigate ? ' fileBrowser_active' : ''} `}
                  onClick={() => appStore.changeMode(ModeEnum.navigate)}>
                 <div className='fileBrowser__spacer'/>
                 {sheets.map(([key, value]) =>

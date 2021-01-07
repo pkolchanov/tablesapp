@@ -17,6 +17,8 @@ import {fileBrowserStore} from "../stores/FileBrowserStore";
 import FileBrowser from "./FileBrowser";
 import Sheet from "./Sheet";
 import {appStore, ModeEnum} from "../stores/AppStore";
+import {firstRow, lastRow} from "../helpers/htmlExtentions"
+
 const {clipboard} = require('electron');
 
 @observer
@@ -35,7 +37,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className="App">
+            <div className="app">
                 <div className="app__wrapper">
                     <FileBrowser/>
                     <Sheet/>
@@ -78,11 +80,19 @@ class App extends React.Component {
                 sheetStore.resetSelection();
             }
             if (keyCode === UP_KEY) {
-                event.preventDefault();
-                sheetStore.move(-1, 0, shiftKey);
+                if (event.target && event.target.tagName === "TEXTAREA" && firstRow(event.target)) {
+                    event.preventDefault();
+                    sheetStore.move(-1, 0, shiftKey);
+                } else if ((!event.target || event.target.tagName !== "TEXTAREA") && shiftKey) {
+                    sheetStore.move(-1, 0, shiftKey);
+                }
             } else if (keyCode === DOWN_KEY) {
-                event.preventDefault();
-                sheetStore.move(1, 0, shiftKey);
+                if (event.target && event.target.tagName === "TEXTAREA" && lastRow(event.target)) {
+                    event.preventDefault();
+                    sheetStore.move(1, 0, shiftKey);
+                } else if ((!event.target || event.target.tagName !== "TEXTAREA") && shiftKey) {
+                    sheetStore.move(1, 0, shiftKey);
+                }
             } else if (keyCode === ENTER_KEY) {
                 event.preventDefault();
                 sheetStore.move(1, 0, false);
