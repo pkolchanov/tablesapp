@@ -17,6 +17,7 @@ import {fileBrowserStore} from "../stores/FileBrowserStore";
 import FileBrowser from "./FileBrowser";
 import Sheet from "./Sheet";
 import {appStore, ModeEnum} from "../stores/AppStore";
+const {clipboard} = require('electron');
 
 @observer
 class App extends React.Component {
@@ -47,9 +48,29 @@ class App extends React.Component {
         const keyCode = event.which || event.keyCode;
         let shiftKey = event.shiftKey;
 
-        if(event.metaKey && keyCode === 'N'.charCodeAt(0)){
+        if (event.metaKey && keyCode === 'N'.charCodeAt(0)) {
             event.preventDefault();
             fileBrowserStore.newSheet();
+        }
+
+        if (event.metaKey && keyCode === 'C'.charCodeAt(0)) {
+            if (event.target && event.target.tagName === "INPUT") {
+                return;
+            }
+            event.preventDefault();
+            sheetStore.copy();
+        }
+
+        if (event.metaKey && keyCode === 'V'.charCodeAt(0)) {
+            const text = clipboard.readText();
+            if (text.indexOf('\t') === -1) {
+                return;
+            }
+            event.preventDefault();
+            if (event.target && event.target.tagName === "INPUT") {
+                document.activeElement.blur();
+            }
+            sheetStore.paste(text);
         }
 
         if (appStore.mode === ModeEnum.edit) {
