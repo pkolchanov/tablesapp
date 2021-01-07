@@ -13,17 +13,20 @@ class Cell extends React.Component {
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
+        this.reCalcInputHeight = this.reCalcInputHeight.bind(this);
         this.inputRef = React.createRef();
     }
 
     componentDidMount() {
         if (this.inputRef.current) {
+            this.reCalcInputHeight();
             this.inputRef.current.focus();
         }
     }
 
     componentDidUpdate() {
         if (this.inputRef.current) {
+            this.reCalcInputHeight();
             this.inputRef.current.focus();
         }
     }
@@ -40,7 +43,7 @@ class Cell extends React.Component {
             ((selectionEndC <= c && c <= selectionStartC) || (selectionEndC >= c && c >= selectionStartC));
 
         return (
-            <div className={`cell ${isActive && 'cell_isActive'} ${isSelected && 'cell_isSelected'}`}
+            <div className={`cell${isActive ? ' cell_isActive' : ''}${isSelected ? ' cell_isSelected' : ''}`}
                  onClick={this.handleClick}
                  style={{width: sheetStore.columnWidths[c] + 'px'}}
                  onMouseDown={this.handleMouseDown}
@@ -49,11 +52,12 @@ class Cell extends React.Component {
 
             >
                 {!isActive && sheetStore.data[r][c]}
-                {isActive && <input className="cell__input"
-                                    value={sheetStore.data[r][c]}
-                                    onChange={this.handleChange}
-                                    ref={this.inputRef}
-                                    style={{width: sheetStore.columnWidths[c] + 'px'}}/>}
+                {isActive && <textarea className="cell__input"
+                                       value={sheetStore.data[r][c]}
+                                       onChange={this.handleChange}
+                                       onKeyDown={this.reCalcInputHeight}
+                                       ref={this.inputRef}
+                                       style={{width: sheetStore.columnWidths[c] + 'px'}}/>}
             </div>
         );
     }
@@ -70,19 +74,25 @@ class Cell extends React.Component {
         sheetStore.update(this.props.coords, event.target.value);
     }
 
-    handleMouseDown(){
+    handleMouseDown() {
         sheetStore.startSelection(this.props.coords);
     }
 
-    handleMouseUp(){
+    handleMouseUp() {
         sheetStore.endSelection();
     }
 
-    handleMouseEnter(event){
-        if (sheetStore.inSelectionMode){
+    handleMouseEnter(event) {
+        if (sheetStore.inSelectionMode) {
             sheetStore.updateSelection(this.props.coords);
         }
     }
+
+    reCalcInputHeight() {
+        this.inputRef.current.style.height = "1px";
+        this.inputRef.current.style.height = this.inputRef.current.scrollHeight + "px";
+    }
+
 
 }
 

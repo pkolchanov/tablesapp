@@ -6,8 +6,8 @@
 }
 
 .cell_isActive {
-    /*box-shadow: 0 0 0 1px #009ADE inset;*/
-    background: #C7E6F8;
+    box-shadow: 0 0 0 1px #009ADE inset;
+    /*background: #C7E6F8;*/
 }
 
 .cell_isSelected {
@@ -15,7 +15,7 @@
 }
 
 .cell__input {
-    background: #C7E6F8;
+    background: white;
     box-sizing: border-box;
     line-height: 17px;
     padding: 0;
@@ -25,6 +25,7 @@
     box-shadow: none;
     resize: none;
     height: 17px;
+    word-break: break-word;
     color: #2d2d2d;
     font-size: 14px;
     font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";

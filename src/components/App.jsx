@@ -54,7 +54,7 @@ class App extends React.Component {
         }
 
         if (event.metaKey && keyCode === 'C'.charCodeAt(0)) {
-            if (event.target && event.target.tagName === "INPUT") {
+            if (event.target && event.target.tagName === "TEXTAREA") {
                 return;
             }
             event.preventDefault();
@@ -67,7 +67,7 @@ class App extends React.Component {
                 return;
             }
             event.preventDefault();
-            if (event.target && event.target.tagName === "INPUT") {
+            if (event.target && event.target.tagName === "TEXTAREA") {
                 document.activeElement.blur();
             }
             sheetStore.paste(text);
@@ -84,19 +84,20 @@ class App extends React.Component {
                 event.preventDefault();
                 sheetStore.move(1, 0, shiftKey);
             } else if (keyCode === ENTER_KEY) {
+                event.preventDefault();
                 sheetStore.move(1, 0, false);
             } else if (keyCode === LEFT_KEY) {
                 if (event.target && event.target.selectionStart === 0) {
                     event.preventDefault();
                     sheetStore.move(0, -1, shiftKey);
-                } else if ((!event.target || event.target.tagName !== "INPUT") && shiftKey) {
+                } else if ((!event.target || event.target.tagName !== "TEXTAREA") && shiftKey) {
                     sheetStore.move(0, -1, shiftKey);
                 }
             } else if (keyCode === RIGHT_KEY) {
                 if (event.target && event.target.value !== undefined && event.target.selectionStart === event.target.value.length) {
                     event.preventDefault();
                     sheetStore.move(0, 1, shiftKey);
-                } else if ((!event.target || event.target.tagName !== "INPUT") && shiftKey) {
+                } else if ((!event.target || event.target.tagName !== "TEXTAREA") && shiftKey) {
                     sheetStore.move(0, 1, shiftKey);
                 }
             } else if (keyCode === TAB_KEY && !shiftKey) {
