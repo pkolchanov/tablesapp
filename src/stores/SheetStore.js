@@ -112,9 +112,6 @@ class SheetStore {
 
     @action
     updateSelection(endCoords) {
-        if (!this.selectionStartCoords) {
-            this.selectionStartCoords = [...this.activeCoords];
-        }
         this.selectionEndCoords = [...endCoords];
     }
 
@@ -128,6 +125,12 @@ class SheetStore {
     @action
     endSelection() {
         this.inSelectionMode = false;
+    }
+
+    @action
+    select(startCoords, endCoords){
+        this.selectionStartCoords = [...startCoords];
+        this.selectionEndCoords = [...endCoords];
     }
 
     @action

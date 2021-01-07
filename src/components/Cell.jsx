@@ -60,7 +60,7 @@ class Cell extends React.Component {
 
     handleClick(event) {
         if (event.shiftKey) {
-            sheetStore.updateSelection(this.props.coords)
+            sheetStore.select(sheetStore.activeCoords, this.props.coords)
         } else {
             sheetStore.activateCell(this.props.coords);
         }
