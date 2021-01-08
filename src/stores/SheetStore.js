@@ -1,4 +1,5 @@
 import {action, computed, makeObservable, observable} from "mobx";
+import {fileBrowserStore} from "./FileBrowserStore"
 
 const {clipboard} = require('electron');
 
@@ -124,6 +125,7 @@ class SheetStore {
         this.startX = undefined;
         this.startWidth = undefined;
         this.resizingColumnNum = undefined;
+        fileBrowserStore.preserve();
     }
 
     @action
@@ -162,7 +164,7 @@ class SheetStore {
     @action
     selectAll() {
         this.selectionStartCoords = [0, 0];
-        this.selectionEndCoords = [this.nrows, this.ncolums];
+        this.selectionEndCoords = [this.nrows - 1, this.ncolums - 1];
     }
 
     @action

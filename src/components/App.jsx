@@ -92,6 +92,10 @@ class App extends React.Component {
             }
         }
 
+        if (event.metaKey && keyCode === 'Z'.charCodeAt(0)) {
+            fileBrowserStore.undo();
+        }
+
         if (appStore.mode === ModeEnum.edit) {
             if (keyCode === ESCAPE_KEY) {
                 sheetStore.resetSelection();

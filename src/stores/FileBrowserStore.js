@@ -1,4 +1,4 @@
-import {action, autorun, computed, makeObservable, observable, reaction} from "mobx";
+import {action, computed, makeObservable, observable, reaction, set} from "mobx";
 import {sheetStore} from "./SheetStore";
 import {v4 as uuidv4} from 'uuid';
 
@@ -10,13 +10,16 @@ class FileBrowserStore {
     @observable
     sheets;
 
+    history = [];
+    future = [];
+
     @computed
     get currentSheet() {
         return this.sheets[this.currentSheetId];
     }
 
     @computed
-    get sheetsNumber(){
+    get sheetsNumber() {
         return Object.keys(this.sheets).length;
     }
 
@@ -28,45 +31,37 @@ class FileBrowserStore {
 
     allowLastUpdate = true;
 
-
     constructor() {
         makeObservable(this);
+    }
 
+    init() {
         const persisted = ipc.sendSync('readContent');
         if (persisted) {
-            this.sheets = JSON.parse(persisted);
+            this.sheets = observable.object(JSON.parse(persisted));
             this.currentSheetId = this.flatSheets[0][0];
             this.refActiveSheet();
         } else {
             this.sheets = {};
             this.newSheet();
         }
-
-        autorun(() => ipc.send('writeContent',
-            JSON.stringify(this.sheets)));
-
-        reaction(() => JSON.stringify(this.currentSheet), () => {
-            // todo find out way how to separate switch updates and actual data updates
-            if (!this.allowLastUpdate) {
-                this.allowLastUpdate = true;
-                return;
-            }
-            this.currentSheet.lastUpdate = Date.now();
-        });
+        this.history.push(JSON.stringify(this.sheets));
+        reaction(() => JSON.stringify([this.currentSheetId, this.currentSheet.sheetData]),
+            () => {
+                // todo find out way how to separate switch updates and actual data updates
+                if (!this.allowLastUpdate) {
+                    this.allowLastUpdate = true;
+                    return;
+                }
+                this.preserve();
+                this.currentSheet.lastUpdate = Date.now();
+            });
     }
 
-
-    @action
-    newSheet() {
-        const newId = uuidv4();
-        this.sheets[newId] = {
-            'sheetData': Array(30).fill().map((_) =>
-                Array(10).fill().map((_) => "")),
-            'columnWidths': Array(30).fill().map((_) => sheetStore.defaultWidth),
-            'lastUpdate': Date.now()
-        };
-        this.currentSheetId = newId;
-        this.refActiveSheet();
+    preserve() {
+        const serialized = JSON.stringify(this.sheets);
+        this.history.push(serialized);
+        ipc.send('writeContent', serialized)
     }
 
     @action
@@ -83,15 +78,42 @@ class FileBrowserStore {
     }
 
     @action
+    undo() {
+        if (this.history.length < 2) {
+            return
+        }
+        const previous = this.history[this.history.length - 1];
+        this.future.push(previous);
+        this.history = this.history.slice(0, this.history.length - 1);
+
+        const last = this.history[this.history.length - 1];
+        const values = JSON.parse(last);
+        set(this.sheets, values);
+        this.refActiveSheet();
+    }
+
+    @action
+    newSheet() {
+        const newId = uuidv4();
+        this.sheets[newId] = {
+            'sheetData': Array(30).fill().map((_) =>
+                Array(10).fill().map((_) => "")),
+            'columnWidths': Array(30).fill().map((_) => sheetStore.defaultWidth),
+            'lastUpdate': Date.now()
+        };
+        this.currentSheetId = newId;
+        this.refActiveSheet();
+    }
+
+    @action
     removeCurrentAndSelectNext() {
-        if (this.sheetsNumber === 1){
+        if (this.sheetsNumber === 1) {
             return
         }
         delete this.sheets[this.currentSheetId];
         this.currentSheetId = this.flatSheets[0][0];
         this.refActiveSheet();
     }
-
 
     @action
     move(delta) {
