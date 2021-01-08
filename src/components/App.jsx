@@ -55,8 +55,10 @@ class App extends React.Component {
             fileBrowserStore.newSheet();
         }
 
+        const target = event.target;
+        const isTextArea = target && target.tagName === "TEXTAREA";
         if (event.metaKey && keyCode === 'C'.charCodeAt(0)) {
-            if (event.target && event.target.tagName === "TEXTAREA") {
+            if (target && isTextArea) {
                 return;
             }
             event.preventDefault();
@@ -69,18 +71,25 @@ class App extends React.Component {
                 return;
             }
             event.preventDefault();
-            if (event.target && event.target.tagName === "TEXTAREA") {
+            if (target && isTextArea) {
                 document.activeElement.blur();
             }
             sheetStore.paste(text);
         }
 
         if (event.metaKey && keyCode === 'X'.charCodeAt(0)) {
-            if (event.target && event.target.tagName === "TEXTAREA") {
+            if (target && isTextArea) {
                 return;
             }
             event.preventDefault();
             sheetStore.cut();
+        }
+
+        if (event.metaKey && keyCode === 'A'.charCodeAt(0)) {
+            if (isTextArea && target.selectionEnd === target.value.length) {
+                event.preventDefault();
+                sheetStore.selectAll();
+            }
         }
 
         if (appStore.mode === ModeEnum.edit) {
@@ -88,34 +97,34 @@ class App extends React.Component {
                 sheetStore.resetSelection();
             }
             if (keyCode === UP_KEY) {
-                if (event.target && event.target.tagName === "TEXTAREA" && firstRow(event.target)) {
+                if (isTextArea && firstRow(target)) {
                     event.preventDefault();
                     sheetStore.move(-1, 0, shiftKey);
-                } else if ((!event.target || event.target.tagName !== "TEXTAREA") && shiftKey) {
+                } else if ((!target || !!isTextArea) && shiftKey) {
                     sheetStore.move(-1, 0, shiftKey);
                 }
             } else if (keyCode === DOWN_KEY) {
-                if (event.target && event.target.tagName === "TEXTAREA" && lastRow(event.target)) {
+                if (isTextArea && lastRow(target)) {
                     event.preventDefault();
                     sheetStore.move(1, 0, shiftKey);
-                } else if ((!event.target || event.target.tagName !== "TEXTAREA") && shiftKey) {
+                } else if ((!target || target.tagName !== "TEXTAREA") && shiftKey) {
                     sheetStore.move(1, 0, shiftKey);
                 }
             } else if (keyCode === ENTER_KEY) {
                 event.preventDefault();
                 sheetStore.move(1, 0, false);
             } else if (keyCode === LEFT_KEY) {
-                if (event.target && event.target.selectionStart === 0) {
+                if (target && target.selectionStart === 0) {
                     event.preventDefault();
                     sheetStore.move(0, -1, shiftKey);
-                } else if ((!event.target || event.target.tagName !== "TEXTAREA") && shiftKey) {
+                } else if ((!target || !isTextArea) && shiftKey) {
                     sheetStore.move(0, -1, shiftKey);
                 }
             } else if (keyCode === RIGHT_KEY) {
-                if (event.target && event.target.value !== undefined && event.target.selectionStart === event.target.value.length) {
+                if (target && target.value !== undefined && target.selectionStart === target.value.length) {
                     event.preventDefault();
                     sheetStore.move(0, 1, shiftKey);
-                } else if ((!event.target || event.target.tagName !== "TEXTAREA") && shiftKey) {
+                } else if ((!target || !isTextArea) && shiftKey) {
                     sheetStore.move(0, 1, shiftKey);
                 }
             } else if (keyCode === TAB_KEY && !shiftKey) {
@@ -123,7 +132,7 @@ class App extends React.Component {
             } else if (keyCode === TAB_KEY && shiftKey) {
                 sheetStore.move(0, -1, false);
             } else if (keyCode === BACKSPACE_KEY) {
-                if (event.target && event.target.value !== undefined && event.target.value.length === 0) {
+                if (target && target.value !== undefined && target.value.length === 0) {
                     event.preventDefault();
                     sheetStore.move(0, -1, false);
                 } else if (sheetStore.selectionStartCoords) {

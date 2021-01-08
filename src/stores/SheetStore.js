@@ -126,7 +126,6 @@ class SheetStore {
         this.resizingColumnNum = undefined;
     }
 
-
     @action
     startSelection(coords) {
         this.inSelectionMode = true;
@@ -161,6 +160,12 @@ class SheetStore {
     }
 
     @action
+    selectAll() {
+        this.selectionStartCoords = [0, 0];
+        this.selectionEndCoords = [this.nrows, this.ncolums];
+    }
+
+    @action
     clearSelected() {
         this.fillSelection("");
         this.resetSelection();
@@ -179,7 +184,7 @@ class SheetStore {
     }
 
     @action
-    cut(){
+    cut() {
         this.copy();
         this.clearSelected();
     }
