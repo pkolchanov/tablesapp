@@ -1,7 +1,7 @@
 'use strict';
 
 // Import parts of electron to use
-const {app, BrowserWindow,  ipcMain: ipc} = require('electron');
+const {app, BrowserWindow, ipcMain: ipc} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
@@ -17,7 +17,7 @@ if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) |
 }
 
 global.handleContent = {
-    filename: `${app.getPath('userData')}/content.json`,
+    filename: `${app.getPath('userData')}/content.${dev ? 'dev' : ''}.json`,
 
     write(content) {
         fs.writeFileSync(this.filename, content, 'utf8');

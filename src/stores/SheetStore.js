@@ -178,6 +178,12 @@ class SheetStore {
         }
     }
 
+    @action
+    cut(){
+        this.copy();
+        this.clearSelected();
+    }
+
     copy() {
         const [fromR, toR] = this.selectionRows;
         const [fromC, toC] = this.selectionColums;

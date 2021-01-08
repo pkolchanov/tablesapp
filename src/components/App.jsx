@@ -75,6 +75,14 @@ class App extends React.Component {
             sheetStore.paste(text);
         }
 
+        if (event.metaKey && keyCode === 'X'.charCodeAt(0)) {
+            if (event.target && event.target.tagName === "TEXTAREA") {
+                return;
+            }
+            event.preventDefault();
+            sheetStore.cut();
+        }
+
         if (appStore.mode === ModeEnum.edit) {
             if (keyCode === ESCAPE_KEY) {
                 sheetStore.resetSelection();
