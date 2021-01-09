@@ -94,7 +94,11 @@ class App extends React.Component {
         }
 
         if (event.metaKey && keyCode === 'Z'.charCodeAt(0)) {
-            fileBrowserStore.undo();
+            if (shiftKey) {
+                fileBrowserStore.redo();
+            } else {
+                fileBrowserStore.undo();
+            }
         }
 
         if (appStore.mode === ModeEnum.edit) {
@@ -105,7 +109,7 @@ class App extends React.Component {
                 if (isTextArea && firstRow(target)) {
                     event.preventDefault();
                     sheetStore.move(-1, 0, shiftKey);
-                } else if ((!target || !!isTextArea) && shiftKey) {
+                } else if ((!target || !isTextArea) && shiftKey) {
                     sheetStore.move(-1, 0, shiftKey);
                 }
             } else if (keyCode === DOWN_KEY) {

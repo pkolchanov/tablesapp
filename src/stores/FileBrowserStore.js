@@ -76,6 +76,15 @@ class FileBrowserStore {
         this.currentSheetId = sheetId;
         this.refActiveSheet();
     }
+    @action
+    redo() {
+        if (this.future.length < 1) {
+            return;
+        }
+        const last = this.future.pop();
+        this.history.push(last);
+        this.swapState(last);
+    }
 
     @action
     undo() {
@@ -86,19 +95,23 @@ class FileBrowserStore {
         this.future.push(current);
         this.history = this.history.slice(0, this.history.length - 1);
 
-        const previousSerializes = this.history[this.history.length - 1];
-        const previous = JSON.parse(previousSerializes);
+        const previousSerialized = this.history[this.history.length - 1];
+        this.swapState(previousSerialized);
+    }
+
+    swapState(historyItem) {
+        const parsed = JSON.parse(historyItem);
 
         Object.keys(this.sheets).forEach((key) => {
-            if (!(key in previous)) {
+            if (!(key in parsed)) {
                 remove(this.sheets, key);
             }
         });
-        set(this.sheets, previous);
+        set(this.sheets, parsed);
         if (!(this.currentSheetId in this.sheets)) {
             this.selectLastSheetId();
         }
-        ipc.send('writeContent', previousSerializes);
+        ipc.send('writeContent', historyItem);
         this.refActiveSheet();
     }
 
