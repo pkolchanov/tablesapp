@@ -1,4 +1,4 @@
-import {action, computed, makeObservable, observable, reaction, set} from "mobx";
+import {action, computed, makeObservable, observable, reaction, remove, set} from "mobx";
 import {sheetStore} from "./SheetStore";
 import {v4 as uuidv4} from 'uuid';
 
@@ -80,15 +80,25 @@ class FileBrowserStore {
     @action
     undo() {
         if (this.history.length < 2) {
-            return
+            return;
         }
-        const previous = this.history[this.history.length - 1];
-        this.future.push(previous);
+        const current = this.history[this.history.length - 1];
+        this.future.push(current);
         this.history = this.history.slice(0, this.history.length - 1);
 
-        const last = this.history[this.history.length - 1];
-        const values = JSON.parse(last);
-        set(this.sheets, values);
+        const previousSerializes = this.history[this.history.length - 1];
+        const previous = JSON.parse(previousSerializes);
+
+        Object.keys(this.sheets).forEach((key) => {
+            if (!(key in previous)) {
+                remove(this.sheets, key);
+            }
+        });
+        set(this.sheets, previous);
+        if (!(this.currentSheetId in this.sheets)) {
+            this.selectLastSheetId();
+        }
+        ipc.send('writeContent', previousSerializes);
         this.refActiveSheet();
     }
 
@@ -102,6 +112,7 @@ class FileBrowserStore {
             'lastUpdate': Date.now()
         };
         this.currentSheetId = newId;
+        this.preserve();
         this.refActiveSheet();
     }
 
@@ -111,8 +122,14 @@ class FileBrowserStore {
             return
         }
         delete this.sheets[this.currentSheetId];
-        this.currentSheetId = this.flatSheets[0][0];
+        this.selectLastSheetId();
+        this.preserve();
         this.refActiveSheet();
+    }
+
+    @action
+    selectLastSheetId() {
+        this.currentSheetId = this.flatSheets[0][0];
     }
 
     @action

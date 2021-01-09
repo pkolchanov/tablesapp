@@ -86,7 +86,8 @@ class App extends React.Component {
         }
 
         if (event.metaKey && keyCode === 'A'.charCodeAt(0)) {
-            if (isTextArea && target.selectionEnd === target.value.length) {
+            if (isTextArea &&
+                target.selectionEnd === target.value.length && target.selectionStart === 0) {
                 event.preventDefault();
                 sheetStore.selectAll();
             }
