@@ -9,14 +9,19 @@ class HeaderCell extends React.Component {
     constructor(props) {
         super(props);
         this.onMouseDown = this.onMouseDown.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
     render() {
         return (
-            <div className="headerCell" style={{width:  sheetStore.columnWidths[this.props.c] + 'px'}}>
+            <div className="headerCell" style={{width: sheetStore.columnWidths[this.props.c] + 'px'}}>
                 <div className="headerCell__resizer" onMouseDown={this.onMouseDown}>|</div>
             </div>
         )
+    }
+
+    onClick() {
+        sheetStore.selectColumn(this.props.c);
     }
 
     onMouseDown(e) {

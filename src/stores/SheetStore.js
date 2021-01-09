@@ -28,15 +28,18 @@ class SheetStore {
     }
 
     @computed
-    get selectionRows() {
-        return [Math.min(this.selectionStartCoords[0], this.selectionEndCoords[0]), Math.max(this.selectionStartCoords[0], this.selectionEndCoords[0])]
+    get selectionRectRows() {
+        return this.selectionStartCoords &&
+            this.selectionEndCoords &&
+            [Math.min(this.selectionStartCoords[0], this.selectionEndCoords[0]), Math.max(this.selectionStartCoords[0], this.selectionEndCoords[0])]
     }
 
     @computed
-    get selectionColums() {
-        return [Math.min(this.selectionEndCoords[1], this.selectionStartCoords[1]), Math.max(this.selectionEndCoords[1], this.selectionStartCoords[1])]
+    get selectionRectColums() {
+        return this.selectionStartCoords &&
+            this.selectionEndCoords &&
+            [Math.min(this.selectionEndCoords[1], this.selectionStartCoords[1]), Math.max(this.selectionEndCoords[1], this.selectionStartCoords[1])]
     }
-
 
     constructor() {
         makeObservable(this);
@@ -168,6 +171,12 @@ class SheetStore {
     }
 
     @action
+    selectColumn(cn) {
+        this.selectionStartCoords = [0, cn];
+        this.selectionEndCoords = [this.nrows - 1, cn];
+    }
+
+    @action
     clearSelected() {
         this.fillSelection("");
         this.resetSelection();
@@ -175,8 +184,8 @@ class SheetStore {
 
     @action
     fillSelection(st) {
-        const [fromR, toR] = this.selectionRows;
-        const [fromC, toC] = this.selectionColums;
+        const [fromR, toR] = this.selectionRectRows;
+        const [fromC, toC] = this.selectionRectColums;
 
         for (let i = fromR; i <= toR; i++) {
             for (let j = fromC; j <= toC; j++) {
@@ -192,8 +201,8 @@ class SheetStore {
     }
 
     copy() {
-        const [fromR, toR] = this.selectionRows;
-        const [fromC, toC] = this.selectionColums;
+        const [fromR, toR] = this.selectionRectRows;
+        const [fromC, toC] = this.selectionRectColums;
 
         const toCSV = this.data.slice(fromR, toR + 1)
             .map(r => r.slice(fromC, toC + 1))

@@ -13,20 +13,21 @@ class Cell extends React.Component {
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
-        this.reCalcInputHeight = this.reCalcInputHeight.bind(this);
+        this.recalcInputHeight = this.recalcInputHeight.bind(this);
         this.inputRef = React.createRef();
     }
 
     componentDidMount() {
-        if (this.inputRef.current) {
-            this.reCalcInputHeight();
-            this.inputRef.current.focus();
+        const current = this.inputRef.current;
+        if (current) {
+            this.recalcInputHeight();
+            current.focus();
         }
     }
 
     componentDidUpdate() {
         if (this.inputRef.current) {
-            this.reCalcInputHeight();
+            this.recalcInputHeight();
             this.inputRef.current.focus();
         }
     }
@@ -34,28 +35,33 @@ class Cell extends React.Component {
     render() {
         const [r, c] = this.props.coords;
         const [activeR, activeC] = sheetStore.activeCoords;
-        const [selectionStartR, selectionStartC] = sheetStore.selectionStartCoords || [];
-        const [selectionEndR, selectionEndC] = sheetStore.selectionEndCoords || [];
+        const [selectionStartC, selectionEndC] = sheetStore.selectionRectColums || [];
+        const [selectionStartR, selectionEndR] = sheetStore.selectionRectRows || [];
 
         const isActive = appStore.mode === ModeEnum.edit && r === activeR && c === activeC && !sheetStore.selectionStartCoords;
         const isSelected = sheetStore.selectionEndCoords &&
-            ((selectionEndR <= r && r <= selectionStartR) || (selectionEndR >= r && r >= selectionStartR)) &&
-            ((selectionEndC <= c && c <= selectionStartC) || (selectionEndC >= c && c >= selectionStartC));
+            ((selectionStartR <= r && r <= selectionEndR)) &&
+            ((selectionStartC <= c && c <= selectionEndC));
 
+        let boxShadow = 'none';
+        if (isActive) {
+            boxShadow = '0 0 0 1px #009ADE inset'
+        } else if (isSelected) {
+            boxShadow = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 #009ADE inset, ${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 #009ADE inset`
+        }
         return (
-            <div className={`cell${isActive ? ' cell_isActive' : ''}${isSelected ? ' cell_isSelected' : ''}`}
+            <div className={`cell`}
                  onClick={this.handleClick}
-                 style={{width: sheetStore.columnWidths[c] + 'px'}}
+                 style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow}}
                  onMouseDown={this.handleMouseDown}
                  onMouseUp={this.handleMouseUp}
                  onMouseEnter={this.handleMouseEnter}
-
             >
                 {!isActive && sheetStore.data[r][c]}
                 {isActive && <textarea className="cell__input"
                                        value={sheetStore.data[r][c]}
                                        onChange={this.handleChange}
-                                       onKeyDown={this.reCalcInputHeight}
+                                       onKeyDown={this.recalcInputHeight}
                                        ref={this.inputRef}
                                        style={{width: sheetStore.columnWidths[c] + 'px'}}/>}
             </div>
@@ -82,13 +88,13 @@ class Cell extends React.Component {
         sheetStore.endSelection();
     }
 
-    handleMouseEnter(event) {
+    handleMouseEnter() {
         if (sheetStore.inSelectionMode) {
             sheetStore.updateSelection(this.props.coords);
         }
     }
 
-    reCalcInputHeight() {
+    recalcInputHeight() {
         const inputRef = this.inputRef.current;
         inputRef.style.height = "1px";
         inputRef.style.height = inputRef.scrollHeight + "px";
