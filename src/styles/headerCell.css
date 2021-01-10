@@ -24,6 +24,8 @@
     transform: translateX(50%);
 }
 
-.header-cell__resize-icon:hover {
-    background: black;
+
+.headerCell__filler{
+    width: 100%;
+    height: 100%;
 }

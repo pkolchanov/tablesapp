@@ -15,6 +15,7 @@ class HeaderCell extends React.Component {
     render() {
         return (
             <div className="headerCell" style={{width: sheetStore.columnWidths[this.props.c] + 'px'}}>
+                <div className="headerCell__filler" onClick={this.onClick}/>
                 <div className="headerCell__resizer" onMouseDown={this.onMouseDown}>|</div>
             </div>
         )
