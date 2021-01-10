@@ -16,6 +16,7 @@ class Cell extends React.Component {
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.recalcInputHeight = this.recalcInputHeight.bind(this);
         this.handleDrop = this.handleDrop.bind(this);
+        this.handleDragEnter = this.handleDragEnter.bind(this);
         this.handleDragOver = this.handleDragOver.bind(this);
         this.inputRef = React.createRef();
     }
@@ -44,7 +45,9 @@ class Cell extends React.Component {
         const isSelected = sheetStore.selectionEndCoords &&
             ((selectionStartR <= r && r <= selectionEndR)) &&
             ((selectionStartC <= c && c <= selectionEndC));
-        const isActive = appStore.mode === ModeEnum.edit && r === activeR && c === activeC && !sheetStore.selectionEndCoords;
+        const isActive = appStore.mode === ModeEnum.edit && r === activeR && c === activeC &&
+            !sheetStore.selectionEndCoords &&
+            !dndStore.draggedColumn;
 
         const isTarget = dndStore.targetColumn === c;
         const isDragged = dndStore.draggedColumn === c;
@@ -57,14 +60,17 @@ class Cell extends React.Component {
         } else if (isSelected) {
             boxShadow = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 #009ADE inset, ${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 #009ADE inset`
         }
+        const transform = isDragged ? `translate(${dndStore.diffX}px, ${0}px)` : '';
+
         return (
-            <div className={`cell${isDragged ? ' cell_isDragged' :''}`}
+            <div className={`cell${isDragged ? ' cell_isDragged' : ''}`}
                  onClick={this.handleClick}
-                 style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow}}
+                 style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow, transform: transform}}
                  onMouseDown={this.handleMouseDown}
                  onMouseUp={this.handleMouseUp}
                  onMouseEnter={this.handleMouseEnter}
                  onDrop={this.handleDrop}
+                 onDragEnter={this.handleDragEnter}
                  onDragOver={this.handleDragOver}
             >
                 {!isActive && sheetStore.data[r][c]}
@@ -110,9 +116,14 @@ class Cell extends React.Component {
         inputRef.style.height = inputRef.scrollHeight + "px";
     }
 
-    handleDragOver(e) {
-        e.preventDefault();
+    handleDragEnter(e) {
         dndStore.selectTargetColumn(this.props.coords[1]);
+    }
+
+    handleDragOver(e) {
+        // ¯\_(ツ)_/¯
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     handleDrop() {

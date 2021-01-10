@@ -32,16 +32,27 @@ class HeaderCell extends React.Component {
         )
     }
 
-    onClick() {
+    onClick(e) {
         sheetStore.selectColumn(this.props.c);
     }
 
-    onDragStart() {
+    onDragStart(ev) {
+        // const moveHandler = ev => {
+        //     ev.preventDefault();
+        //     dndStore.setCurrentCoords(ev.clientX, ev.clientY);
+        // };
+        // document.addEventListener(
+        //     'drag',
+        //     moveHandler
+        // );
+        sheetStore.resetSelection();
+        dndStore.setStartCoords(ev.clientX, ev.clientY);
         dndStore.selectDraggedColumn(this.props.c);
     }
 
     onDragOver(e) {
         e.preventDefault();
+        e.stopPropagation();
         dndStore.selectTargetColumn(this.props.c);
     }
 
@@ -49,7 +60,7 @@ class HeaderCell extends React.Component {
         dndStore.dropColumn();
     }
 
-    onDragEnd(){
+    onDragEnd() {
         dndStore.dragEnd();
     }
 
