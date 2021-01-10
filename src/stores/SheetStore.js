@@ -195,6 +195,19 @@ class SheetStore {
     }
 
     @action
+    moveColumn(from, to) {
+        this.data.forEach(r => {
+            const e = r[from];
+            r.splice(from, 1);
+            r.splice(to, 0, e);
+        });
+        const w = this.columnWidths[from];
+        this.columnWidths.splice(from, 1);
+        this.columnWidths.splice(to, 0, w);
+        fileBrowserStore.preserve();
+    }
+
+    @action
     cut() {
         this.copy();
         this.clearSelected();

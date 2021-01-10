@@ -3,6 +3,7 @@ import {observer} from "mobx-react";
 import {sheetStore} from "../stores/SheetStore";
 import '../styles/cell.css';
 import {appStore, ModeEnum} from "../stores/AppStore";
+import {dndStore} from "../stores/DnDStore";
 
 @observer
 class Cell extends React.Component {
@@ -14,6 +15,8 @@ class Cell extends React.Component {
         this.handleMouseUp = this.handleMouseUp.bind(this);
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.recalcInputHeight = this.recalcInputHeight.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
+        this.handleDragOver = this.handleDragOver.bind(this);
         this.inputRef = React.createRef();
     }
 
@@ -38,24 +41,31 @@ class Cell extends React.Component {
         const [selectionStartC, selectionEndC] = sheetStore.selectionRectColums || [];
         const [selectionStartR, selectionEndR] = sheetStore.selectionRectRows || [];
 
-        const isActive = appStore.mode === ModeEnum.edit && r === activeR && c === activeC && !sheetStore.selectionStartCoords;
         const isSelected = sheetStore.selectionEndCoords &&
             ((selectionStartR <= r && r <= selectionEndR)) &&
             ((selectionStartC <= c && c <= selectionEndC));
+        const isActive = appStore.mode === ModeEnum.edit && r === activeR && c === activeC && !sheetStore.selectionEndCoords;
+
+        const isTarget = dndStore.targetColumn === c;
+        const isDragged = dndStore.draggedColumn === c;
 
         let boxShadow = 'none';
         if (isActive) {
             boxShadow = '0 0 0 1px #009ADE inset'
+        } else if (isTarget) {
+            boxShadow = '2px 0 0  #EC5D2A inset'
         } else if (isSelected) {
             boxShadow = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 #009ADE inset, ${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 #009ADE inset`
         }
         return (
-            <div className={`cell`}
+            <div className={`cell${isDragged ? ' cell_isDragged' :''}`}
                  onClick={this.handleClick}
                  style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow}}
                  onMouseDown={this.handleMouseDown}
                  onMouseUp={this.handleMouseUp}
                  onMouseEnter={this.handleMouseEnter}
+                 onDrop={this.handleDrop}
+                 onDragOver={this.handleDragOver}
             >
                 {!isActive && sheetStore.data[r][c]}
                 {isActive && <textarea className="cell__input"
@@ -100,6 +110,14 @@ class Cell extends React.Component {
         inputRef.style.height = inputRef.scrollHeight + "px";
     }
 
+    handleDragOver(e) {
+        e.preventDefault();
+        dndStore.selectTargetColumn(this.props.coords[1]);
+    }
+
+    handleDrop() {
+        dndStore.dropColumn();
+    }
 
 }
 
