@@ -67,6 +67,7 @@ class DnDStore {
     @action
     dropColumn() {
         sheetStore.moveColumn(this.draggedColumn, this.targetColumn);
+        sheetStore.selectColumn(this.targetColumn);
         this.draggedColumn = undefined;
         this.targetColumn = undefined;
     }

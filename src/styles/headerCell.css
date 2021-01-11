@@ -25,7 +25,16 @@
 }
 
 
-.headerCell__filler{
+.headerCell__filler {
     width: 100%;
     height: 100%;
+}
+
+.headerCell_isSelected {
+    background: #009ADE;
+    height: 14px;
+    position: relative;
+    top: 5px;
+    /* top-left | top-right | bottom-right | bottom-left */
+    border-radius: 3px 3px 0 0;
 }

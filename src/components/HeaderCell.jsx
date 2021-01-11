@@ -17,17 +17,24 @@ class HeaderCell extends React.Component {
     }
 
     render() {
+        const selectedColumn = sheetStore.selectedColumn;
+        const isSelected = this.props.c === selectedColumn;
+        const nextSelected = (this.props.c + 1) === selectedColumn;
         return (
-            <div className="headerCell"
-                 style={{width: sheetStore.columnWidths[this.props.c] + 'px'}}>
+            <div className={`headerCell ${isSelected ? ' headerCell_isSelected' : ''}`}
+                 style={{width: sheetStore.columnWidths[this.props.c] + 'px'}}
+                 onDragEnd={this.onDragEnd}>
                 <div draggable className="headerCell__filler"
                      onClick={this.onClick}
                      onDragStart={this.onDragStart}
                      onDragOver={this.onDragOver}
-                     onDrop={this.onDrop}
-                     onDragEnd={this.onDragEnd}
-                />
+                     onDrop={this.onDrop}>
+                </div>
+                {!isSelected &&
+                !nextSelected &&
                 <div className="headerCell__resizer" onMouseDown={this.onMouseDown}>|</div>
+                }
+
             </div>
         )
     }
@@ -37,15 +44,7 @@ class HeaderCell extends React.Component {
     }
 
     onDragStart(ev) {
-        // const moveHandler = ev => {
-        //     ev.preventDefault();
-        //     dndStore.setCurrentCoords(ev.clientX, ev.clientY);
-        // };
-        // document.addEventListener(
-        //     'drag',
-        //     moveHandler
-        // );
-        sheetStore.resetSelection();
+        sheetStore.selectColumn(this.props.c);
         dndStore.setStartCoords(ev.clientX, ev.clientY);
         dndStore.selectDraggedColumn(this.props.c);
     }

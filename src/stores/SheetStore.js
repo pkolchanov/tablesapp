@@ -41,6 +41,17 @@ class SheetStore {
             [Math.min(this.selectionEndCoords[1], this.selectionStartCoords[1]), Math.max(this.selectionEndCoords[1], this.selectionStartCoords[1])]
     }
 
+    @computed
+    get selectedColumn() {
+        if ((this.selectionStartCoords &&
+            this.selectionEndCoords &&
+            this.selectionStartCoords[1] === this.selectionEndCoords[1] &&
+            this.selectionEndCoords[0] === this.nrows - 1)) {
+            return this.selectionStartCoords[1];
+        }
+        return false;
+    }
+
     constructor() {
         makeObservable(this);
     }

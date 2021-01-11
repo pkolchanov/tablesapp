@@ -5,6 +5,7 @@
     overflow-y: scroll;
     padding-left: 10px;
     padding-right: 10px;
+    user-select: none;
 }
 
 .fileBrowser_active > .fileBrowser__file_selected {
@@ -12,7 +13,6 @@
 }
 
 .fileBrowser__file {
-    /*border-bottom: 1px solid #E6E6E6;*/
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 20px;

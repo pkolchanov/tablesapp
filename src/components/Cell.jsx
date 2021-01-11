@@ -42,12 +42,13 @@ class Cell extends React.Component {
         const [selectionStartC, selectionEndC] = sheetStore.selectionRectColums || [];
         const [selectionStartR, selectionEndR] = sheetStore.selectionRectRows || [];
 
-        const isSelected = sheetStore.selectionEndCoords &&
-            ((selectionStartR <= r && r <= selectionEndR)) &&
-            ((selectionStartC <= c && c <= selectionEndC));
         const isActive = appStore.mode === ModeEnum.edit && r === activeR && c === activeC &&
             !sheetStore.selectionEndCoords &&
             !dndStore.draggedColumn;
+
+        const isSelected = sheetStore.selectionEndCoords &&
+            ((selectionStartR <= r && r <= selectionEndR)) &&
+            ((selectionStartC <= c && c <= selectionEndC));
 
         const isTarget = dndStore.targetColumn === c;
         const isDragged = dndStore.draggedColumn === c;
@@ -55,17 +56,15 @@ class Cell extends React.Component {
         let boxShadow = 'none';
         if (isActive) {
             boxShadow = '0 0 0 1px #009ADE inset'
-        } else if (isTarget) {
-            boxShadow = '2px 0 0  #EC5D2A inset'
+        }  if (isTarget) {
+            boxShadow = `${c < dndStore.draggedColumn ? '' : '-'}2px 0 0 #009ADE inset`;
         } else if (isSelected) {
             boxShadow = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 #009ADE inset, ${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 #009ADE inset`
         }
-        const transform = isDragged ? `translate(${dndStore.diffX}px, ${0}px)` : '';
-
         return (
             <div className={`cell${isDragged ? ' cell_isDragged' : ''}`}
                  onClick={this.handleClick}
-                 style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow, transform: transform}}
+                 style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow}}
                  onMouseDown={this.handleMouseDown}
                  onMouseUp={this.handleMouseUp}
                  onMouseEnter={this.handleMouseEnter}
