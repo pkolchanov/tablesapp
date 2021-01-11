@@ -115,7 +115,7 @@ class Cell extends React.Component {
         inputRef.style.height = inputRef.scrollHeight + "px";
     }
 
-    handleDragEnter(e) {
+    handleDragEnter() {
         dndStore.selectTargetColumn(this.props.coords[1]);
     }
 
@@ -126,6 +126,9 @@ class Cell extends React.Component {
     }
 
     handleDrop() {
+        if (this.props.coords[1] === dndStore.draggedColumn) {
+            return;
+        }
         dndStore.dropColumn();
     }
 

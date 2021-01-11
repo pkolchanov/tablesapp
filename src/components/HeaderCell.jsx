@@ -29,6 +29,7 @@ class HeaderCell extends React.Component {
                      onDragStart={this.onDragStart}
                      onDragOver={this.onDragOver}
                      onDrop={this.onDrop}>
+                    {isSelected ? '∙∙∙' : ''}
                 </div>
                 {!isSelected &&
                 !nextSelected &&
@@ -39,7 +40,7 @@ class HeaderCell extends React.Component {
         )
     }
 
-    onClick(e) {
+    onClick() {
         sheetStore.selectColumn(this.props.c);
     }
 
@@ -56,6 +57,9 @@ class HeaderCell extends React.Component {
     }
 
     onDrop() {
+        if (this.props.c === dndStore.draggedColumn) {
+            return;
+        }
         dndStore.dropColumn();
     }
 

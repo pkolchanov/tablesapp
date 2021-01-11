@@ -20,11 +20,11 @@ class FileBrowser extends React.Component {
                 <div className='fileBrowser__spacer'/>
                 {sheets.map(([key, value]) =>
                     <div
-                        className={`fileBrowser__file ${key === fileBrowserStore.currentSheetId && 'fileBrowser__file_selected'} `}
+                        className={`fileBrowser__file${key === fileBrowserStore.currentSheetId ? ' fileBrowser__file_selected' : ''} `}
                         key={key}
                         onClick={() => fileBrowserStore.select(key)}>
                         <div className="fileBrowser__preview">
-                            {value.sheetData.flat(2)[0].toString()}
+                            {value.sheetData.flat(2).filter(x => !!x)[0]}
                         </div>
                         <div className="fileBrowser__lastUpdate">
                             {relativeDateTime(value.lastUpdate)}
