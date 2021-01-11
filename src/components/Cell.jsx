@@ -43,7 +43,7 @@ class Cell extends React.Component {
         const [selectionStartR, selectionEndR] = sheetStore.selectionRectRows || [];
 
         const isActive = appStore.mode === ModeEnum.edit && r === activeR && c === activeC &&
-            !sheetStore.selectionEndCoords &&
+            !sheetStore.selectionStartCoords &&
             !dndStore.draggedColumn;
 
         const isSelected = sheetStore.selectionEndCoords &&
