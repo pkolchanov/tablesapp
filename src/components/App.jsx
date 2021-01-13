@@ -109,19 +109,19 @@ class App extends React.Component {
                 if (isTextArea && firstRow(target)) {
                     event.preventDefault();
                     sheetStore.move(-1, 0, shiftKey);
-                } else if ((!target || !isTextArea) && shiftKey) {
+                } else if ((!target || !isTextArea)) {
                     sheetStore.move(-1, 0, shiftKey);
                 }
             } else if (keyCode === DOWN_KEY) {
                 if (isTextArea && lastRow(target)) {
                     event.preventDefault();
                     sheetStore.move(1, 0, shiftKey);
-                } else if ((!target || target.tagName !== "TEXTAREA") && shiftKey) {
+                } else if ((!target || target.tagName !== "TEXTAREA")) {
                     sheetStore.move(1, 0, shiftKey);
                 }
             } else if (keyCode === ENTER_KEY) {
                 event.preventDefault();
-                sheetStore.move(1, 0, false);
+                sheetStore.move(shiftKey ? -1 : 1, 0, false);
             } else if (keyCode === LEFT_KEY) {
                 if (target && target.selectionStart === 0) {
                     event.preventDefault();
