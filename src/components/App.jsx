@@ -126,14 +126,14 @@ class App extends React.Component {
                 if (target && target.selectionStart === 0) {
                     event.preventDefault();
                     sheetStore.move(0, -1, shiftKey);
-                } else if ((!target || !isTextArea) && shiftKey) {
+                } else if ((!target || !isTextArea)) {
                     sheetStore.move(0, -1, shiftKey);
                 }
             } else if (keyCode === RIGHT_KEY) {
-                if (target && target.value !== undefined && target.selectionStart === target.value.length) {
+                if (target && target.value !== undefined && target.selectionEnd === target.value.length) {
                     event.preventDefault();
                     sheetStore.move(0, 1, shiftKey);
-                } else if ((!target || !isTextArea) && shiftKey) {
+                } else if ((!target || !isTextArea)) {
                     sheetStore.move(0, 1, shiftKey);
                 }
             } else if (keyCode === TAB_KEY && !shiftKey) {
