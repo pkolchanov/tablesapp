@@ -4,36 +4,20 @@ import {sheetStore} from "../stores/SheetStore";
 import '../styles/cell.css';
 import {appStore, ModeEnum} from "../stores/AppStore";
 import {dndStore} from "../stores/DnDStore";
+import TextareaWrapper from "./TexareaWrapper";
+
 
 @observer
 class Cell extends React.Component {
     constructor(props) {
         super(props);
-        this.handleChange = this.handleChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
-        this.recalcInputHeight = this.recalcInputHeight.bind(this);
         this.handleDrop = this.handleDrop.bind(this);
         this.handleDragEnter = this.handleDragEnter.bind(this);
         this.handleDragOver = this.handleDragOver.bind(this);
-        this.inputRef = React.createRef();
-    }
-
-    componentDidMount() {
-        const current = this.inputRef.current;
-        if (current) {
-            this.recalcInputHeight();
-            current.focus();
-        }
-    }
-
-    componentDidUpdate() {
-        if (this.inputRef.current) {
-            this.recalcInputHeight();
-            this.inputRef.current.focus();
-        }
     }
 
     render() {
@@ -56,7 +40,8 @@ class Cell extends React.Component {
         let boxShadow = 'none';
         if (isActive) {
             boxShadow = '0 0 0 1px #009ADE inset'
-        }  if (isTarget) {
+        }
+        if (isTarget) {
             boxShadow = `${c < dndStore.draggedColumn ? '' : '-'}2px 0 0 #009ADE inset`;
         } else if (isSelected) {
             boxShadow = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 #009ADE inset, ${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 #009ADE inset`
@@ -73,12 +58,7 @@ class Cell extends React.Component {
                  onDragOver={this.handleDragOver}
             >
                 {!isActive && sheetStore.data[r][c]}
-                {isActive && <textarea className="cell__input"
-                                       value={sheetStore.data[r][c]}
-                                       onChange={this.handleChange}
-                                       onKeyDown={this.recalcInputHeight}
-                                       ref={this.inputRef}
-                                       style={{width: sheetStore.columnWidths[c] + 'px'}}/>}
+                {isActive && <TextareaWrapper width={sheetStore.columnWidths[c]} coords={this.props.coords}/>}
             </div>
         );
     }
@@ -89,10 +69,6 @@ class Cell extends React.Component {
         } else {
             sheetStore.activateCell(this.props.coords);
         }
-    }
-
-    handleChange(event) {
-        sheetStore.update(this.props.coords, event.target.value);
     }
 
     handleMouseDown() {
@@ -107,12 +83,6 @@ class Cell extends React.Component {
         if (sheetStore.inSelectionMode) {
             sheetStore.updateSelection(this.props.coords);
         }
-    }
-
-    recalcInputHeight() {
-        const inputRef = this.inputRef.current;
-        inputRef.style.height = "1px";
-        inputRef.style.height = inputRef.scrollHeight + "px";
     }
 
     handleDragEnter() {
