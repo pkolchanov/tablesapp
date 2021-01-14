@@ -55,7 +55,7 @@ class FileBrowserStore {
                 }
                 this.preserve();
                 this.currentSheet.lastUpdate = Date.now();
-            });
+            }, { fireImmediately: true });
     }
 
     preserve() {
