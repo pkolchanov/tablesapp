@@ -1,8 +1,10 @@
 import {action, computed, makeObservable, observable, reaction, remove, set} from "mobx";
-import {sheetStore} from "./SheetStore";
+import {CellModel, sheetStore} from "./SheetStore";
 import {v4 as uuidv4} from 'uuid';
+import {appStore, ModeEnum} from "./AppStore";
 
 const {ipcRenderer: ipc} = require('electron');
+
 
 class FileBrowserStore {
     @observable
@@ -122,14 +124,15 @@ class FileBrowserStore {
         const newId = uuidv4();
         this.sheets[newId] = {
             'sheetData': Array(30).fill().map((_) =>
-                Array(10).fill().map((_) => "")),
-            'columnWidths': Array(30).fill().map((_) => sheetStore.defaultWidth),
+                Array(10).fill().map((_) => Object.assign({}, CellModel))),
+            'columnWidths': Array(15).fill().map((_) => sheetStore.defaultWidth),
             'lastUpdate': Date.now(),
             'activeCoords': [0, 0]
         };
         this.currentSheetId = newId;
         this.preserve();
         this.refActiveSheet();
+        appStore.changeMode(ModeEnum.edit);
     }
 
     @action

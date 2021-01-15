@@ -24,7 +24,7 @@ class FileBrowser extends React.Component {
                         key={key}
                         onClick={() => fileBrowserStore.select(key)}>
                         <div className="fileBrowser__preview">
-                            {value.sheetData.flat(2).filter(x => !!x)[0]}
+                            {value.sheetData.flat(2).map(x => x.value).filter(x => !!x)[0]}
                         </div>
                         <div className="fileBrowser__lastUpdate">
                             {relativeDateTime(value.lastUpdate)}

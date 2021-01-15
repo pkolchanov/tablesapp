@@ -25,3 +25,19 @@
 .cell_isDragged {
     opacity: 0.5;
 }
+
+.cell_isBold {
+    font-weight: 700;
+}
+
+.cell_isBold > .cell__input {
+    font-weight: 700;
+}
+
+.cell_isSubtile {
+    color: #CCCCCC;
+}
+
+.cell_isSubtile > .cell__input {
+    color: #CCCCCC;
+}

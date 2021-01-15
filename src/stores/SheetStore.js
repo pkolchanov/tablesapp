@@ -3,6 +3,10 @@ import {fileBrowserStore} from "./FileBrowserStore"
 
 const {clipboard} = require('electron');
 
+export const CellStyles = Object.freeze({"bold": "bold", "normal": "normal"});
+
+export const CellModel = {'value': '', 'style': CellStyles.normal};
+
 class SheetStore {
     @observable data;
     @observable activeCoords;
@@ -66,12 +70,12 @@ class SheetStore {
 
     @action
     update(coords, value) {
-        this.data[coords[0]][coords[1]] = value;
+        this.data[coords[0]][coords[1]].value = value;
     }
 
     @action
     addColumns(n = 1) {
-        const emptyArr = Array(n).fill("");
+        const emptyArr = Array(n).fill(Object.assign({}, CellModel));
         const widthArr = Array(n).fill(this.columnWidths);
         this.data.forEach(r => r.push(...emptyArr));
         this.columnWidths = this.columnWidths.concat(widthArr);
@@ -79,7 +83,7 @@ class SheetStore {
 
     @action
     addRows(n = 1) {
-        this.data.push(...Array(n).fill(Array(this.ncolums).fill("")))
+        this.data.push(...Array(n).fill(Array(this.ncolums).fill(Object.assign({}, CellModel))))
     }
 
     @action
@@ -201,7 +205,7 @@ class SheetStore {
 
         for (let i = fromR; i <= toR; i++) {
             for (let j = fromC; j <= toC; j++) {
-                this.data[i][j] = st;
+                this.data[i][j].value = st;
             }
         }
     }
@@ -231,7 +235,7 @@ class SheetStore {
 
         const toCSV = this.data.slice(fromR, toR + 1)
             .map(r => r.slice(fromC, toC + 1))
-            .map(r => r.join('\t'))
+            .map(r => r.map(x => x.value).join('\t'))
             .join('\n');
         clipboard.writeText(toCSV, 'selection');
     }
@@ -253,8 +257,21 @@ class SheetStore {
 
         for (let i = 0; i < matrix.length; i++) {
             for (let j = 0; j < matrix[0].length; j++) {
-                this.data[i + activeR]
-                    [j + activeC] = matrix[i][j];
+                this.data[i + activeR][j + activeC].value = matrix[i][j];
+            }
+        }
+    }
+
+    @action
+    toggleBold() {
+        let [fromR, toR] = this.selectionRectRows || [this.activeCoords[0], this.activeCoords[0]];
+        let [fromC, toC] = this.selectionRectColums || [this.activeCoords[1], this.activeCoords[1]];
+
+        const to = this.data[fromR][fromC].style === CellStyles.normal ? CellStyles.bold : CellStyles.normal;
+
+        for (let i = fromR; i <= toR; i++) {
+            for (let j = fromC; j <= toC; j++) {
+                this.data[i][j].style = to;
             }
         }
     }

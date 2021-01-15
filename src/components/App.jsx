@@ -57,41 +57,6 @@ class App extends React.Component {
 
         const target = event.target;
         const isTextArea = target && target.tagName === "TEXTAREA";
-        if (event.metaKey && keyCode === 'C'.charCodeAt(0)) {
-            if (target && isTextArea) {
-                return;
-            }
-            event.preventDefault();
-            sheetStore.copy();
-        }
-
-        if (event.metaKey && keyCode === 'V'.charCodeAt(0)) {
-            const text = clipboard.readText();
-            if (text.indexOf('\t') === -1) {
-                return;
-            }
-            event.preventDefault();
-            if (target && isTextArea) {
-                document.activeElement.blur();
-            }
-            sheetStore.paste(text);
-        }
-
-        if (event.metaKey && keyCode === 'X'.charCodeAt(0)) {
-            if (target && isTextArea) {
-                return;
-            }
-            event.preventDefault();
-            sheetStore.cut();
-        }
-
-        if (event.metaKey && keyCode === 'A'.charCodeAt(0)) {
-            if (isTextArea &&
-                target.selectionEnd === target.value.length && target.selectionStart === 0) {
-                event.preventDefault();
-                sheetStore.selectAll();
-            }
-        }
 
         if (event.metaKey && keyCode === 'Z'.charCodeAt(0)) {
             if (shiftKey) {
@@ -102,6 +67,45 @@ class App extends React.Component {
         }
 
         if (appStore.mode === ModeEnum.edit) {
+            if (event.metaKey && keyCode === 'C'.charCodeAt(0)) {
+                if (target && isTextArea) {
+                    return;
+                }
+                event.preventDefault();
+                sheetStore.copy();
+            }
+
+            if (event.metaKey && keyCode === 'V'.charCodeAt(0)) {
+                const text = clipboard.readText();
+                if (text.indexOf('\t') === -1) {
+                    return;
+                }
+                event.preventDefault();
+                if (target && isTextArea) {
+                    document.activeElement.blur();
+                }
+                sheetStore.paste(text);
+            }
+
+            if (event.metaKey && keyCode === 'X'.charCodeAt(0)) {
+                if (target && isTextArea) {
+                    return;
+                }
+                event.preventDefault();
+                sheetStore.cut();
+            }
+
+            if (event.metaKey && keyCode === 'A'.charCodeAt(0)) {
+                if (isTextArea &&
+                    target.selectionEnd === target.value.length && target.selectionStart === 0) {
+                    event.preventDefault();
+                    sheetStore.selectAll();
+                }
+            }
+
+            if (event.metaKey && keyCode === 'B'.charCodeAt(0)) {
+                sheetStore.toggleBold();
+            }
             if (keyCode === ESCAPE_KEY) {
                 sheetStore.resetSelection();
             }

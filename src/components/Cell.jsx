@@ -22,6 +22,7 @@ class Cell extends React.Component {
 
     render() {
         const [r, c] = this.props.coords;
+        const dataCell = sheetStore.data[r][c];
         const [activeR, activeC] = sheetStore.activeCoords;
         const [selectionStartC, selectionEndC] = sheetStore.selectionRectColums || [];
         const [selectionStartR, selectionEndR] = sheetStore.selectionRectRows || [];
@@ -47,7 +48,7 @@ class Cell extends React.Component {
             boxShadow = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 #009ADE inset, ${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 #009ADE inset`
         }
         return (
-            <div className={`cell${isDragged ? ' cell_isDragged' : ''}`}
+            <div className={`cell${isDragged ? ' cell_isDragged' : ''} cell_is${dataCell.style}`}
                  onClick={this.handleClick}
                  style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow}}
                  onMouseDown={this.handleMouseDown}
@@ -57,7 +58,7 @@ class Cell extends React.Component {
                  onDragEnter={this.handleDragEnter}
                  onDragOver={this.handleDragOver}
             >
-                {!isActive && sheetStore.data[r][c]}
+                {!isActive && dataCell.value}
                 {isActive && <TextareaWrapper width={sheetStore.columnWidths[c]} coords={this.props.coords}/>}
             </div>
         );

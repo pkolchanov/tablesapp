@@ -6,6 +6,10 @@ const path = require('path');
 const url = require('url');
 const fs = require('fs');
 
+const installExtension = require('electron-devtools-installer').default;
+const REACT_DEVELOPER_TOOLS = require('electron-devtools-installer')
+    .REACT_DEVELOPER_TOOLS;
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -41,7 +45,8 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             // scrollBounce: true
-        }
+        },
+        titleBarStyle: 'hidden'
     });
 
     // and load the index.html of the app.
@@ -85,6 +90,7 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
+
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
     // On macOS it is common for applications and their menu bar
@@ -101,3 +107,12 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+if (dev) {
+    app.whenReady().then(() => {
+        installExtension(REACT_DEVELOPER_TOOLS)
+            .then((name) => console.log(`Added Extension:  ${name}`))
+            .catch((err) => console.log('An error occurred: ', err));
+    });
+}
+

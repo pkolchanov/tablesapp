@@ -30,7 +30,7 @@ class TextareaWrapper extends React.Component {
     render() {
         const [r, c] = this.props.coords;
         return (<textarea className="cell__input"
-                          value={sheetStore.data[r][c]}
+                          value={sheetStore.data[r][c].value}
                           onChange={this.handleChange}
                           onKeyDown={this.recalcInputHeight}
                           ref={this.inputRef}
