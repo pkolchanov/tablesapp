@@ -4,7 +4,7 @@ export const ModeEnum = Object.freeze({"navigate":1, "edit":2});
 
 class AppStore {
     @observable
-    mode = ModeEnum.navigate;
+    mode = ModeEnum.edit;
 
     constructor() {
         makeObservable(this);

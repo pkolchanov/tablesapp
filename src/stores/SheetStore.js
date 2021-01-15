@@ -5,7 +5,7 @@ const {clipboard} = require('electron');
 
 class SheetStore {
     @observable data;
-    @observable activeCoords = [0, 0];
+    @observable activeCoords;
 
     @observable selectionEndCoords;
     @observable selectionStartCoords;
@@ -59,7 +59,8 @@ class SheetStore {
 
     @action
     activateCell(coords) {
-        this.activeCoords = coords;
+        this.activeCoords[0] = coords[0];
+        this.activeCoords[1] = coords[1];
         this.resetSelection();
     }
 

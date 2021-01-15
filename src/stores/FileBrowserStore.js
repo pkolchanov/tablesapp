@@ -55,7 +55,7 @@ class FileBrowserStore {
                 }
                 this.preserve();
                 this.currentSheet.lastUpdate = Date.now();
-            }, { fireImmediately: true });
+            }, {fireImmediately: true});
     }
 
     preserve() {
@@ -68,6 +68,7 @@ class FileBrowserStore {
     refActiveSheet() {
         sheetStore.data = this.sheets[this.currentSheetId].sheetData;
         sheetStore.columnWidths = this.sheets[this.currentSheetId].columnWidths;
+        sheetStore.activeCoords = this.sheets[this.currentSheetId].activeCoords;
         this.allowLastUpdate = false;
     }
 
@@ -76,6 +77,7 @@ class FileBrowserStore {
         this.currentSheetId = sheetId;
         this.refActiveSheet();
     }
+
     @action
     redo() {
         if (this.future.length < 1) {
@@ -122,7 +124,8 @@ class FileBrowserStore {
             'sheetData': Array(30).fill().map((_) =>
                 Array(10).fill().map((_) => "")),
             'columnWidths': Array(30).fill().map((_) => sheetStore.defaultWidth),
-            'lastUpdate': Date.now()
+            'lastUpdate': Date.now(),
+            'activeCoords': [0, 0]
         };
         this.currentSheetId = newId;
         this.preserve();
