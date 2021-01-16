@@ -1,21 +1,22 @@
 .cell {
     flex: 1 0 auto;
-    min-height: 17px;
-    padding: 2px 2px 2px 2px;
+    min-height: 19px;
+    line-height: 19px;
+    padding: 3px 2px 3px 2px;
     user-select: none;
 }
 
 .cell__input {
     background: white;
     box-sizing: border-box;
-    line-height: 17px;
+    line-height: 19px;
     padding: 0;
     border: none;
     overflow: auto;
     outline: none;
     box-shadow: none;
     resize: none;
-    height: 17px;
+    height: 19px;
     word-break: break-word;
     color: #2d2d2d;
     font-size: 14px;

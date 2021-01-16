@@ -1,4 +1,4 @@
-const lineHeight = 17;
+const lineHeight = 19;
 
 export function lastRow(elem) {
     return getSelectionHeight(elem) === elem.offsetHeight;

@@ -71,6 +71,7 @@ class FileBrowserStore {
         sheetStore.data = this.sheets[this.currentSheetId].sheetData;
         sheetStore.columnWidths = this.sheets[this.currentSheetId].columnWidths;
         sheetStore.activeCoords = this.sheets[this.currentSheetId].activeCoords;
+        sheetStore.resetSelection();
         this.allowLastUpdate = false;
     }
 
