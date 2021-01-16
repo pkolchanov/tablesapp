@@ -2,6 +2,8 @@ node_modules
 npm-debug.log
 .DS_Store
 dist
+dist_web
 .idea
 .vscode
 builds
+.firebase

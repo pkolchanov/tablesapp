@@ -5,9 +5,11 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve",
-    "build": "webpack",
-    "package": "electron-packager ./ --out=./builds --overwrite"
+    "startDestop": "webpack serve --config webpack-desktop.config.js",
+    "buildDestop": "webpack webpack-desktop.config.js",
+    "package": "electron-packager ./ --out=./builds --overwrite",
+    "startWeb": "webpack serve --config webpack-webapp.config.js",
+    "buildWeb": "webpack --config webpack-webapp.config.js"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +32,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "firebase": "^8.2.3",
     "mobx": "latest",
     "mobx-react": "^7.0.5",
     "moment": "^2.29.1",
