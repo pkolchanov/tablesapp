@@ -2,10 +2,10 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    entry: './src_web/index.js',
+    entry: './src_webapp/index.js',
     mode: 'development',
     devServer: {
-        contentBase: './dist_web',
+        contentBase: './dist_webapp',
     },
     resolve: {
         extensions: ['.js', '.jsx']
@@ -26,6 +26,6 @@ module.exports = {
     },
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist_web'),
+        path: path.resolve(__dirname, 'dist_webapp'),
     },
 };

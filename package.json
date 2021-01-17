@@ -8,8 +8,8 @@
     "startDesktop": "webpack serve --config webpack-desktop.config.js",
     "buildDesktop": "webpack webpack-desktop.config.js",
     "package": "electron-packager ./ --out=./builds --overwrite",
-    "startWeb": "webpack serve --config webpack-webapp.config.js",
-    "buildWeb": "webpack --config webpack-webapp.config.js"
+    "startWebapp": "webpack serve --config webpack-webapp.config.js",
+    "buildWebapp": "webpack --config webpack-webapp.config.js"
   },
   "keywords": [],
   "author": "",

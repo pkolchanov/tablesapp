@@ -17,15 +17,16 @@ class Sheet extends React.Component {
     render() {
         return (
             <div className="sheet" onClick={()=> appStore.changeMode(ModeEnum.edit)}>
+                {!this.props.isReadOnly &&
                 <div className="headerRow">
                     {Array(sheetStore.ncolums).fill().map((_, i) =>
                         <HeaderCell key={`hc${i}`} c={i}/>)}
-                </div>
+                </div>}
                 {Array(sheetStore.nrows).fill().map((_, i) =>
                     <div className="row" key={`r${i}`}>
                         {
                             Array(sheetStore.ncolums).fill().map((_, j) =>
-                                <Cell key={`c${i}${j}`} coords={[i, j]}/>)
+                                <Cell key={`c${i}${j}`} coords={[i, j]} isReadOnly={this.props.isReadOnly}/>)
                         }
                     </div>)
                 }

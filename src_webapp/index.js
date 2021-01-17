@@ -4,6 +4,7 @@ import firebase from "firebase/app";
 import "firebase/database";
 import {sheetStore} from "../src/stores/SheetStore";
 import Sheet from "../src/components/Sheet";
+import {action} from "mobx";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBF0S3sKdlv05aNSPxsW7d3G_dFZsx3euM",
@@ -16,26 +17,28 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const tableId = window.location.pathname;
-firebase.database().useEmulator("localhost", 9000);
+if (location.hostname === "localhost") {
+    firebase.database().useEmulator("localhost", 9000);
+}
 
+const refSheet = action((snapshot) => {
+    const data = snapshot.val();
+    sheetStore.data = data.sheetData;
+    sheetStore.columnWidths = data.columnWidths;
+    sheetStore.activeCoords = data.activeCoords;
+})
+
+const tableId = window.location.pathname;
 const table_ref = firebase.database().ref('tables' + tableId);
 
 table_ref.once('value').then((snapshot) => {
     refSheet(snapshot);
     render(
         <div>
-            <Sheet/>
+            <Sheet isReadOnly={true}/>
         </div>,
         document.getElementById("root")
     );
 });
 
 table_ref.on('value', refSheet);
-
-function refSheet(snapshot){
-    const data = snapshot.val();
-    sheetStore.data = data.sheetData;
-    sheetStore.columnWidths = data.columnWidths;
-    sheetStore.activeCoords = data.activeCoords;
-}

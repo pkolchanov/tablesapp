@@ -2,7 +2,7 @@ node_modules
 npm-debug.log
 .DS_Store
 dist
-dist_web
+dist_webapp
 .idea
 .vscode
 builds

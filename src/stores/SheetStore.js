@@ -1,5 +1,4 @@
 import {action, computed, makeObservable, observable} from "mobx";
-// import {fileBrowserStore} from "./FileBrowserStore"
 export const CellStyles = Object.freeze({"bold": "bold", "normal": "normal"});
 
 export const CellModel = {'value': '', 'style': CellStyles.normal};
@@ -16,6 +15,7 @@ class SheetStore {
     defaultWidth = 200;
     startX;
     startWidth;
+    @observable
     resizingColumnNum;
 
     @computed
@@ -141,7 +141,6 @@ class SheetStore {
         this.startX = undefined;
         this.startWidth = undefined;
         this.resizingColumnNum = undefined;
-        fileBrowserStore.preserve();
     }
 
     @action
@@ -217,7 +216,6 @@ class SheetStore {
         const w = this.columnWidths[from];
         this.columnWidths.splice(from, 1);
         this.columnWidths.splice(to, 0, w);
-        fileBrowserStore.preserve();
     }
 
     @action
@@ -234,7 +232,7 @@ class SheetStore {
             .map(r => r.slice(fromC, toC + 1))
             .map(r => r.map(x => x.value).join('\t'))
             .join('\n');
-        clipboard.writeText(toCSV, 'selection');
+        navigator.clipboard.writeText(toCSV);
     }
 
     @action

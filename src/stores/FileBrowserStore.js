@@ -3,6 +3,7 @@ import {CellModel, sheetStore} from "./SheetStore";
 import {appStore, ModeEnum} from "./AppStore";
 
 import {v4 as uuidv4} from 'uuid';
+
 const {ipcRenderer: ipc} = require('electron');
 
 import firebase from "firebase/app";
@@ -52,9 +53,6 @@ class FileBrowserStore {
 
     constructor() {
         makeObservable(this);
-    }
-
-    init() {
         const persisted = ipc.sendSync('readContent');
         if (persisted) {
             this.sheets = observable.object(JSON.parse(persisted));
@@ -65,11 +63,14 @@ class FileBrowserStore {
             this.newSheet();
         }
         this.history.push(JSON.stringify(this.sheets));
-        reaction(() => JSON.stringify([this.currentSheetId, this.currentSheet.sheetData]),
+        reaction(() => JSON.stringify([this.currentSheetId, this.currentSheet.sheetData, this.currentSheet.columnWidths, sheetStore.resizingColumnNum]),
             () => {
                 // todo find out way how to separate switch updates and actual data updates
                 if (!this.allowLastUpdate) {
                     this.allowLastUpdate = true;
+                    return;
+                }
+                if (sheetStore.resizingColumnNum !==  undefined) {
                     return;
                 }
                 this.preserve();
@@ -135,6 +136,7 @@ class FileBrowserStore {
             this.selectLastSheetId();
         }
         ipc.send('writeContent', historyItem);
+        firebase.database().ref('tables/' + this.currentSheetId).set(this.currentSheet);
         this.refActiveSheet();
     }
 

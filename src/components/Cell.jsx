@@ -58,13 +58,17 @@ class Cell extends React.Component {
                  onDragEnter={this.handleDragEnter}
                  onDragOver={this.handleDragOver}
             >
-                {!isActive && dataCell.value}
-                {isActive && <TextareaWrapper width={sheetStore.columnWidths[c]} coords={this.props.coords}/>}
+                {(!isActive || this.props.isReadOnly) && dataCell.value}
+                {isActive && !this.props.isReadOnly &&
+                <TextareaWrapper width={sheetStore.columnWidths[c]} coords={this.props.coords}/>}
             </div>
         );
     }
 
     handleClick(event) {
+        if (this.props.isReadOnly) {
+            return;
+        }
         if (event.shiftKey) {
             sheetStore.select(sheetStore.activeCoords, this.props.coords)
         } else {
@@ -73,20 +77,32 @@ class Cell extends React.Component {
     }
 
     handleMouseDown() {
+        if (this.props.isReadOnly) {
+            return;
+        }
         sheetStore.startSelection(this.props.coords);
     }
 
     handleMouseUp() {
+        if (this.props.isReadOnly) {
+            return;
+        }
         sheetStore.endSelection();
     }
 
     handleMouseEnter() {
+        if (this.props.isReadOnly) {
+            return;
+        }
         if (sheetStore.inSelectionMode) {
             sheetStore.updateSelection(this.props.coords);
         }
     }
 
     handleDragEnter() {
+        if (this.props.isReadOnly) {
+            return;
+        }
         dndStore.selectTargetColumn(this.props.coords[1]);
     }
 
@@ -97,6 +113,9 @@ class Cell extends React.Component {
     }
 
     handleDrop() {
+        if (this.props.isReadOnly) {
+            return;
+        }
         if (this.props.coords[1] === dndStore.draggedColumn) {
             return;
         }
