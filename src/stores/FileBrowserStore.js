@@ -1,13 +1,13 @@
 import {action, computed, makeObservable, observable, reaction, remove, set} from "mobx";
 import {CellModel, sheetStore} from "./SheetStore";
-import {v4 as uuidv4} from 'uuid';
 import {appStore, ModeEnum} from "./AppStore";
 
+import {v4 as uuidv4} from 'uuid';
 const {ipcRenderer: ipc} = require('electron');
 
 import firebase from "firebase/app";
 import "firebase/database";
-
+import "firebase/functions";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBF0S3sKdlv05aNSPxsW7d3G_dFZsx3euM",
@@ -21,8 +21,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-const database = firebase.database();
-console.log(database)
+firebase.database().useEmulator("localhost", 9000);
 
 class FileBrowserStore {
     @observable

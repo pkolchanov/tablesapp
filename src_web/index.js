@@ -2,7 +2,8 @@ import React from "react";
 import {render} from "react-dom";
 import firebase from "firebase/app";
 import "firebase/database";
-
+import {sheetStore} from "../src/stores/SheetStore";
+import Sheet from "../src/components/Sheet";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBF0S3sKdlv05aNSPxsW7d3G_dFZsx3euM",
@@ -15,14 +16,26 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+const tableId = window.location.pathname;
+firebase.database().useEmulator("localhost", 9000);
 
-var database = firebase.database();
-console.log(database)
-render(
-    <div>
-        {123}
-    </div>,
-    document.getElementById("root")
-);
+const table_ref = firebase.database().ref('tables' + tableId);
 
-// window.store = store;
+table_ref.once('value').then((snapshot) => {
+    refSheet(snapshot);
+    render(
+        <div>
+            <Sheet/>
+        </div>,
+        document.getElementById("root")
+    );
+});
+
+table_ref.on('value', refSheet);
+
+function refSheet(snapshot){
+    const data = snapshot.val();
+    sheetStore.data = data.sheetData;
+    sheetStore.columnWidths = data.columnWidths;
+    sheetStore.activeCoords = data.activeCoords;
+}

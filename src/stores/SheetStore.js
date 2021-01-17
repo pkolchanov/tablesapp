@@ -1,8 +1,5 @@
 import {action, computed, makeObservable, observable} from "mobx";
-import {fileBrowserStore} from "./FileBrowserStore"
-
-const {clipboard} = require('electron');
-
+// import {fileBrowserStore} from "./FileBrowserStore"
 export const CellStyles = Object.freeze({"bold": "bold", "normal": "normal"});
 
 export const CellModel = {'value': '', 'style': CellStyles.normal};
