@@ -46,7 +46,7 @@ function createWindow() {
             nodeIntegration: true,
             // scrollBounce: true
         },
-        // titleBarStyle: 'hidden'
+        titleBarStyle: 'hidden'
     });
 
     // and load the index.html of the app.

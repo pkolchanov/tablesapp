@@ -18,6 +18,7 @@ import FileBrowser from "./FileBrowser";
 import Sheet from "./Sheet";
 import {appStore, ModeEnum} from "../stores/AppStore";
 import {firstRow, lastRow} from "../helpers/htmlExtentions"
+import Toolbar from "./Toolbar";
 
 const {clipboard} = require('electron');
 
@@ -40,7 +41,10 @@ class App extends React.Component {
             <div className="app">
                 <div className="app__wrapper">
                     <FileBrowser/>
-                    <Sheet/>
+                    <div className="app__left">
+                        <Toolbar/>
+                        <Sheet/>
+                    </div>
                 </div>
             </div>
         )

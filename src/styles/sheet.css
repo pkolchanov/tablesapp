@@ -1,5 +1,5 @@
 .sheet {
     padding-left: 17px;
-    height: 100vh;
-    overflow-y: scroll;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
 }

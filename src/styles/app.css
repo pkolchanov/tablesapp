@@ -8,3 +8,8 @@ body {
 .app__wrapper {
     display: flex;
 }
+
+.app__left {
+    height: 100vh;
+    overflow-y: scroll;
+}

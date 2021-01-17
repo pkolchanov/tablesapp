@@ -37,5 +37,6 @@
 }
 
 .fileBrowser__spacer {
-    height: 17px;
+    height: 30px;
+    -webkit-app-region: drag;
 }

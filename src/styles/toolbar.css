@@ -1,0 +1,12 @@
+.toolbar {
+    height: 50px;
+    background: #F6F6F6;
+    top: 0;
+    left: 252px;
+    float: right;
+    width: calc(100vw - 250px);
+    /*border-bottom: 1px solid #E6E6E6;*/
+    user-select: none;
+    -webkit-app-region: drag;
+    line-height: 50px;
+}

@@ -7,7 +7,7 @@
     height: 23px;
     line-height: 23px;
     width: inherit;
-    position: sticky;
     top: 0;
+    position: sticky;
     background: white;
 }
