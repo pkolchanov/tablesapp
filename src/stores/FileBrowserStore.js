@@ -8,7 +8,6 @@ const {ipcRenderer: ipc} = require('electron');
 
 import firebase from "firebase/app";
 import "firebase/database";
-import "firebase/functions";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBF0S3sKdlv05aNSPxsW7d3G_dFZsx3euM",

@@ -1,10 +1,13 @@
 import React from "react";
 import {render} from "react-dom";
-import firebase from "firebase/app";
-import "firebase/database";
 import {sheetStore} from "../src/stores/SheetStore";
 import Sheet from "../src/components/Sheet";
 import {action} from "mobx";
+import firebase from "firebase/app";
+import "firebase/database";
+
+import './styles/app.css';
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyBF0S3sKdlv05aNSPxsW7d3G_dFZsx3euM",
@@ -34,7 +37,7 @@ const table_ref = firebase.database().ref('tables' + tableId);
 table_ref.once('value').then((snapshot) => {
     refSheet(snapshot);
     render(
-        <div>
+        <div className={"app"}>
             <Sheet isReadOnly={true}/>
         </div>,
         document.getElementById("root")

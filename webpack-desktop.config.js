@@ -20,6 +20,13 @@ module.exports = {
             )
                 .on('close', code => process.exit(0))
                 .on('error', spawnError => console.error(spawnError));
+            spawn(
+                'firebase emulators:start',
+                ['--only database'],
+                { shell: true, env: process.env, stdio: 'inherit' }
+            )
+                .on('close', code => process.exit(0))
+                .on('error', spawnError => console.error(spawnError));
         }
     },
     resolve: {
