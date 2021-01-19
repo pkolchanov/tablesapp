@@ -1,24 +1,18 @@
 'use strict';
 
-// Import parts of electron to use
 const {app, BrowserWindow, ipcMain: ipc} = require('electron');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
 
-const installExtension = require('electron-devtools-installer').default;
-const REACT_DEVELOPER_TOOLS = require('electron-devtools-installer')
-    .REACT_DEVELOPER_TOOLS;
-
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-// Keep a reference for dev mode
 let dev = false;
 if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
     dev = true;
 }
+
+app.setAsDefaultProtocolClient("tablesapp");
 
 global.handleContent = {
     filename: `${app.getPath('userData')}/content.${dev ? 'dev' : ''}.json`,
@@ -108,7 +102,14 @@ app.on('activate', () => {
     }
 });
 
+app.on('open-url', function (event, data) {
+    mainWindow.webContents.send('finishLogin', data)
+});
+
 if (dev) {
+    const installExtension = require('electron-devtools-installer').default;
+    const REACT_DEVELOPER_TOOLS = require('electron-devtools-installer')
+        .REACT_DEVELOPER_TOOLS;
     app.whenReady().then(() => {
         installExtension(REACT_DEVELOPER_TOOLS)
             .then((name) => console.log(`Added Extension:  ${name}`))

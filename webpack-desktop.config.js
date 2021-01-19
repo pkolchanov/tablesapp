@@ -20,13 +20,6 @@ module.exports = {
             )
                 .on('close', code => process.exit(0))
                 .on('error', spawnError => console.error(spawnError));
-            spawn(
-                'firebase emulators:start',
-                ['--only database'],
-                { shell: true, env: process.env, stdio: 'inherit' }
-            )
-                .on('close', code => process.exit(0))
-                .on('error', spawnError => console.error(spawnError));
         }
     },
     resolve: {
@@ -35,7 +28,8 @@ module.exports = {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development')
+            'process.env.NODE_ENV': JSON.stringify('development'),
+            PRODUCTION: JSON.stringify(false),
         })
     ],
     target: 'electron-renderer',

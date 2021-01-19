@@ -2,7 +2,14 @@
   "rules": {
     "tables": {
       ".read": true,
-      ".write": true
+      "$tableId": {
+        ".write": "!data.exists() || data.exists() && auth.uid === data.child('author').child('uid').val()",
+        "author": {
+          "uid": {
+            ".validate": "auth.uid === newData.val()"
+          }
+        }
+      }
     }
   }
 }

@@ -1,27 +1,12 @@
 import {action, computed, makeObservable, observable, reaction, remove, set} from "mobx";
 import {CellModel, sheetStore} from "./SheetStore";
 import {appStore, ModeEnum} from "./AppStore";
-
-import {v4 as uuidv4} from 'uuid';
-
-const {ipcRenderer: ipc} = require('electron');
-
 import firebase from "firebase/app";
 import "firebase/database";
+import {v4 as uuidv4} from 'uuid';
+import {authStore} from "./AuthStore";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBF0S3sKdlv05aNSPxsW7d3G_dFZsx3euM",
-    authDomain: "tables-c30c4.firebaseapp.com",
-    databaseURL: "https://tables-c30c4-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "tables-c30c4",
-    storageBucket: "tables-c30c4.appspot.com",
-    messagingSenderId: "853616983925",
-    appId: "1:853616983925:web:1183fa77dbc2a947d51d3c"
-};
-
-firebase.initializeApp(firebaseConfig);
-
-firebase.database().useEmulator("localhost", 9000);
+const {ipcRenderer: ipc} = require('electron');
 
 class FileBrowserStore {
     @observable
@@ -69,7 +54,7 @@ class FileBrowserStore {
                     this.allowLastUpdate = true;
                     return;
                 }
-                if (sheetStore.resizingColumnNum !==  undefined) {
+                if (sheetStore.resizingColumnNum !== undefined) {
                     return;
                 }
                 this.preserve();
@@ -80,8 +65,14 @@ class FileBrowserStore {
     preserve() {
         const serialized = JSON.stringify(this.sheets);
         this.history.push(serialized);
-        ipc.send('writeContent', serialized)
-        firebase.database().ref('tables/' + this.currentSheetId).set(this.currentSheet);
+        ipc.send('writeContent', serialized);
+        if (authStore.loggedUser && authStore.loggedUser.uid) {
+            firebase.database().ref('tables/' + this.currentSheetId)
+                .set({
+                    ...this.currentSheet,
+                    "author": {"uid": authStore.loggedUser.uid}
+                });
+        }
     }
 
     @action
@@ -135,7 +126,6 @@ class FileBrowserStore {
             this.selectLastSheetId();
         }
         ipc.send('writeContent', historyItem);
-        firebase.database().ref('tables/' + this.currentSheetId).set(this.currentSheet);
         this.refActiveSheet();
     }
 

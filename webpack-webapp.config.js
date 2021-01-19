@@ -7,7 +7,7 @@ module.exports = {
     devServer: {
         contentBase: './dist_webapp',
         historyApiFallback: true,
-        port:3000
+        port: 3000
     },
     resolve: {
         extensions: ['.js', '.jsx']

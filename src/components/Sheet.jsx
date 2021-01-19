@@ -16,7 +16,8 @@ class Sheet extends React.Component {
 
     render() {
         return (
-            <div className="sheet" onClick={()=> appStore.changeMode(ModeEnum.edit)}>
+            <div className={`sheet ${this.props.isReadOnly ? 'sheet_isReadonly' : ''}`}
+                 onClick={()=> appStore.changeMode(ModeEnum.edit)}>
                 {!this.props.isReadOnly &&
                 <div className="headerRow">
                     {Array(sheetStore.ncolums).fill().map((_, i) =>

@@ -3,3 +3,7 @@
     height: calc(100vh - 60px);
     overflow-y: auto;
 }
+
+.sheet_isReadonly {
+    height: 100vh;
+}
