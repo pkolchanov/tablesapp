@@ -1,8 +1,11 @@
 import {observer} from "mobx-react";
 import React from "react";
-import '../styles/toolbar.css';
 import {authStore} from "../stores/AuthStore";
 import {makeObservable, observable} from "mobx";
+import {fileBrowserStore} from "../stores/FileBrowserStore";
+import {firebaseConfig} from "../helpers/firebaseConfig";
+import LoginForm from "./LoginForm";
+import '../styles/toolbar.css';
 
 @observer
 class Toolbar extends React.Component {
@@ -18,32 +21,30 @@ class Toolbar extends React.Component {
     render() {
         return (
             <div className='toolbar'>
-                <a className='toolbar__share' onClick={this.onClick}>Share</a>
-                {
-                    this.showLoginPopup &&
-                    <div className='toolbar__loginPopup'>
-                        <input type="text"
-                               onChange={this.onChange}
-                               value={authStore.enteredEmail}/>
-                        <button onClick={() => authStore.login()}>Do it</button>
-                    </div>
-                }
                 {
                     authStore.loggedUser &&
-                    <div>{authStore.loggedUser.uid}</div>
+                    <div className='toolbar__shared' onClick={this.copySheetUrlToClipboard}>Table shared ✓</div>
                 }
+                {
+                    !authStore.loggedUser &&
+                    <a className='toolbar__share' onClick={this.onClick}>Share</a>
+                }
+                {
+                    this.showLoginPopup &&
+                    !authStore.loggedUser &&
+                    <LoginForm/>
+                }
+
             </div>
         )
     }
 
     onClick() {
-        if (!authStore.enteredEmail) {
-            this.showLoginPopup = true;
-        }
+        this.showLoginPopup = !this.showLoginPopup;
     }
 
-    onChange(e) {
-        authStore.setEmail(e.target.value)
+    copySheetUrlToClipboard() {
+        navigator.clipboard.writeText(`https://${firebaseConfig.authDomain}/${fileBrowserStore.currentSheetId}`)
     }
 }
 

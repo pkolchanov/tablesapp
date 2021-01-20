@@ -37,9 +37,9 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 1024, height: 768, show: false,
         webPreferences: {
-            nodeIntegration: true,
-            // scrollBounce: true
+            nodeIntegration: true
         },
+        icon: path.join(__dirname, 'Icon', 'tablesapp.icons'),
         titleBarStyle: 'hidden'
     });
 

@@ -8,17 +8,16 @@
     border-bottom: 1px solid #E6E6E6;
     user-select: none;
     -webkit-app-region: drag;
+}
+
+.toolbar__share, .toolbar__shared {
+    float: right;
+    text-align: center;
+    padding-right: 25px;
+    padding-left: 10px;
     line-height: 50px;
 }
 
-.toolbar__share {
-    float: right;
-    text-align: center;
-    padding-right: 10px;
-    padding-left: 10px;
-}
-
-.toolbar__share:hover {
+.toolbar__share:hover, .toolbar__shared:hover {
     background: #E9E9E9;
 }
-

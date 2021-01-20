@@ -1,0 +1,27 @@
+.loginForm {
+    position: absolute;
+    background: white;
+    top: 40px;
+    right: 25px;
+    box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    width: 260px;
+    height: 170px;
+    z-index: 4;
+}
+
+.loginForm__emailInput {
+    background: white;
+    line-height: 19px;
+    padding: 0;
+    border: none;
+    overflow: auto;
+    outline: none;
+    box-shadow: none;
+    resize: none;
+    height: 19px;
+    color: #2d2d2d;
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
