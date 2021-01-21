@@ -2,6 +2,7 @@ import {action, makeObservable, observable} from "mobx";
 import firebase from "firebase/app";
 import "firebase/auth";
 import {firebaseConfig} from "../helpers/firebaseConfig";
+import {appStore, ModeEnum} from "./AppStore";
 
 const {ipcRenderer: ipc} = require('electron');
 
@@ -9,11 +10,15 @@ class AuthStore {
     @observable
     loggedUser;
     @observable
-    emailForSignIn = "";
+    enteredEmail;
     @observable
-    enteredEmail = "";
+    emailForSignIn;
     @observable
-    authError = "";
+    magicLink;
+    @observable
+    authError;
+    @observable
+    isPending = false;
 
     constructor() {
         makeObservable(this);
@@ -25,6 +30,7 @@ class AuthStore {
     @action
     setEmail(un) {
         this.enteredEmail = un;
+        this.authError = undefined;
     }
 
     @action
@@ -34,31 +40,41 @@ class AuthStore {
 
     @action
     login() {
+        this.isPending = true;
+        this.authError = undefined;
         firebase.auth().sendSignInLinkToEmail(this.enteredEmail, {
             url: PRODUCTION ? `https://${firebaseConfig.authDomain}/finishSignUp` : 'http://localhost:5000/finishSignUp',
             handleCodeInApp: true,
         })
             .then(() => {
                 this.emailForSignIn = this.enteredEmail;
-                this.enteredEmail = "";
-                console.log('emailSent');
+                this.isPending = false;
             })
             .catch((error) => {
-                console.log('error');
                 this.authError = error;
+                this.isPending = false;
             });
     }
 
     @action
     finishReg(link) {
+        this.isPending = true;
+        this.magicLink = link;
         firebase.auth().signInWithEmailLink(this.emailForSignIn, link)
             .then((result) => {
-                window.localStorage.removeItem('emailForSignIn');
+                this.magicLink = "";
                 this.emailForSignIn = "";
-                console.log(result);
+                this.enteredEmail = "";
+                this.loggedUser = result;
+                this.isPending = false;
+                appStore.mode = ModeEnum.edit;
             })
             .catch((error) => {
-                console.log(error);
+                this.magicLink = "";
+                this.emailForSignIn = "";
+                this.enteredEmail = "";
+                this.authError = error;
+                this.isPending = false;
             });
     }
 
@@ -69,6 +85,14 @@ class AuthStore {
         });
     }
 
+    @action
+    resetEmailForSignIn() {
+        this.emailForSignIn = "";
+        this.magicLink = "";
+        this.authError = "";
+    }
+
 }
 
 export const authStore = new AuthStore();
+window.authStore = authStore;

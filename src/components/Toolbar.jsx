@@ -1,21 +1,18 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {authStore} from "../stores/AuthStore";
-import {makeObservable, observable} from "mobx";
 import {fileBrowserStore} from "../stores/FileBrowserStore";
 import {firebaseConfig} from "../helpers/firebaseConfig";
 import LoginForm from "./LoginForm";
 import '../styles/toolbar.css';
+import {appStore, ModeEnum} from "../stores/AppStore";
 
 @observer
 class Toolbar extends React.Component {
-    @observable
-    showLoginPopup = false;
 
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);
-        makeObservable(this);
     }
 
     render() {
@@ -30,8 +27,7 @@ class Toolbar extends React.Component {
                     <a className='toolbar__share' onClick={this.onClick}>Share</a>
                 }
                 {
-                    this.showLoginPopup &&
-                    !authStore.loggedUser &&
+                    appStore.mode === ModeEnum.login &&
                     <LoginForm/>
                 }
 
@@ -40,7 +36,7 @@ class Toolbar extends React.Component {
     }
 
     onClick() {
-        this.showLoginPopup = !this.showLoginPopup;
+        appStore.changeMode(ModeEnum.login);
     }
 
     copySheetUrlToClipboard() {

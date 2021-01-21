@@ -1,35 +1,16 @@
 var path = require('path');
 var webpack = require('webpack');
-const {spawn} = require('child_process');
 
 module.exports = {
     entry: './src/index.js',
-    mode: 'development',
-    devServer: {
-        contentBase: './dist',
-        stats: {
-            colors: true,
-            chunks: false,
-            children: false
-        },
-        before() {
-            spawn(
-                'npx electron',
-                ['.'],
-                {shell: true, env: process.env, stdio: 'inherit'}
-            )
-                .on('close', code => process.exit(0))
-                .on('error', spawnError => console.error(spawnError));
-        }
-    },
+    mode: 'production',
     resolve: {
         extensions: ['.js', '.jsx']
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development'),
-            PRODUCTION: JSON.stringify(false),
+            'process.env.NODE_ENV': JSON.stringify('production'),
+            PRODUCTION: JSON.stringify(true),
         })
     ],
     target: 'electron-renderer',
@@ -48,7 +29,6 @@ module.exports = {
                 test: /\.svg$/,
                 use: [
                     'svg-sprite-loader',
-                    // 'svgo-loader'
                 ]
             }
         ]

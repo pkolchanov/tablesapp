@@ -19,6 +19,7 @@ import Sheet from "./Sheet";
 import {appStore, ModeEnum} from "../stores/AppStore";
 import {firstRow, lastRow} from "../helpers/htmlExtentions"
 import Toolbar from "./Toolbar";
+import {authStore} from "../stores/AuthStore";
 
 const {clipboard} = require('electron');
 
@@ -67,6 +68,13 @@ class App extends React.Component {
                 fileBrowserStore.redo();
             } else {
                 fileBrowserStore.undo();
+            }
+        }
+
+        if (appStore.mode === ModeEnum.login) {
+            if (keyCode === ENTER_KEY && target) {
+                event.preventDefault();
+                authStore.login();
             }
         }
 

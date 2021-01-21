@@ -1,6 +1,6 @@
 import {action, makeObservable, observable} from "mobx";
 
-export const ModeEnum = Object.freeze({"navigate":1, "edit":2});
+export const ModeEnum = Object.freeze({"navigate": 1, "edit": 2, "login": 3});
 
 class AppStore {
     @observable
@@ -11,7 +11,7 @@ class AppStore {
     }
 
     @action
-    changeMode(mode){
+    changeMode(mode) {
         this.mode = mode;
     }
 

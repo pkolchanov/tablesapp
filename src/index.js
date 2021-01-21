@@ -11,9 +11,9 @@ const auth = firebase.auth();
 if (!PRODUCTION) {
     firebase.database().useEmulator("localhost", 9000);
     auth.useEmulator('http://localhost:9099/');
-    // auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(
-    //     '{"sub": "abc123", "email": "foo@example.com", "email_verified": true}'
-    // ));
+    auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(
+        '{"sub": "abc123", "email": "foo@example.com", "email_verified": true}'
+    ));
 }
 
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
