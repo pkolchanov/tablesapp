@@ -1,6 +1,6 @@
 import {action, computed, makeObservable, observable} from "mobx";
-export const CellStyles = Object.freeze({"bold": "bold", "normal": "normal"});
 
+export const CellStyles = Object.freeze({"bold": "bold", "normal": "normal"});
 export const CellModel = {'value': '', 'style': CellStyles.normal};
 
 class SheetStore {
@@ -10,6 +10,8 @@ class SheetStore {
     @observable selectionEndCoords;
     @observable selectionStartCoords;
     inSelectionMode;
+    prevStyles;
+    prevCSV;
 
     @observable columnWidths;
     defaultWidth = 200;
@@ -228,15 +230,20 @@ class SheetStore {
         const [fromR, toR] = this.selectionRectRows;
         const [fromC, toC] = this.selectionRectColums;
 
-        const toCSV = this.data.slice(fromR, toR + 1)
-            .map(r => r.slice(fromC, toC + 1))
+        const selectionSlice = this.data.slice(fromR, toR + 1)
+            .map(r => r.slice(fromC, toC + 1));
+
+        const toCSV = selectionSlice
             .map(r => r.map(x => x.value).join('\t'))
             .join('\n');
         navigator.clipboard.writeText(toCSV);
+        this.prevStyles = selectionSlice.map(r => r.map(x => x.style))
+        this.prevCSV = toCSV;
     }
 
     @action
     paste(text) {
+        const usePrevStyles = this.prevCSV === text;
         const [activeR, activeC] = this.activeCoords;
         const matrix = text.split('\n')
             .map(s => s.split('\t'));
@@ -253,6 +260,9 @@ class SheetStore {
         for (let i = 0; i < matrix.length; i++) {
             for (let j = 0; j < matrix[0].length; j++) {
                 this.data[i + activeR][j + activeC].value = matrix[i][j];
+                if (usePrevStyles) {
+                    this.data[i + activeR][j + activeC].style = this.prevStyles[i][j];
+                }
             }
         }
     }

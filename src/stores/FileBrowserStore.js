@@ -135,7 +135,7 @@ class FileBrowserStore {
         this.sheets[newId] = {
             'sheetData': Array(30).fill().map((_) =>
                 Array(10).fill().map((_) => Object.assign({}, CellModel))),
-            'columnWidths': Array(15).fill().map((_) => sheetStore.defaultWidth),
+            'columnWidths': Array(10).fill().map((_) => sheetStore.defaultWidth),
             'lastUpdate': Date.now(),
             'activeCoords': [0, 0]
         };
