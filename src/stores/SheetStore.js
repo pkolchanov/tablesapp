@@ -209,7 +209,7 @@ class SheetStore {
     }
 
     @action
-    moveColumn(from, to) {
+    swapColumn(from, to) {
         this.data.forEach(r => {
             const e = r[from];
             r.splice(from, 1);
@@ -218,6 +218,29 @@ class SheetStore {
         const w = this.columnWidths[from];
         this.columnWidths.splice(from, 1);
         this.columnWidths.splice(to, 0, w);
+    }
+
+    @action
+    moveRow(dr) {
+        const from = this.activeCoords[0];
+        const to = this.activeCoords[0] + dr;
+        if (to < 0) {
+            return
+        }
+        this.move(dr, 0);
+        this.swapRow(from, to)
+    }
+
+    @action
+    swapRow(from, to) {
+        const e = this.data[from];
+        this.data.splice(from, 1);
+        this.data.splice(to, 0, e);
+    }
+
+    @action
+    addWidth(step) {
+        this.columnWidths[this.activeCoords[1]] += step* 10;
     }
 
     @action

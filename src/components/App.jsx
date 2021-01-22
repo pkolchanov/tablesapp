@@ -122,14 +122,21 @@ class App extends React.Component {
                 sheetStore.resetSelection();
             }
             if (keyCode === UP_KEY) {
-                if (isTextArea && firstRow(target)) {
+                if (event.shiftKey && event.altKey) {
+                    event.preventDefault();
+                    sheetStore.moveRow(-1);
+                }
+                else if (isTextArea && firstRow(target)) {
                     event.preventDefault();
                     sheetStore.move(-1, 0, shiftKey);
                 } else if ((!target || !isTextArea)) {
                     sheetStore.move(-1, 0, shiftKey);
                 }
             } else if (keyCode === DOWN_KEY) {
-                if (isTextArea && lastRow(target)) {
+                if (event.shiftKey && event.altKey) {
+                    event.preventDefault();
+                    sheetStore.moveRow(1);
+                } else if (isTextArea && lastRow(target)) {
                     event.preventDefault();
                     sheetStore.move(1, 0, shiftKey);
                 } else if ((!target || target.tagName !== "TEXTAREA")) {
@@ -139,14 +146,22 @@ class App extends React.Component {
                 event.preventDefault();
                 sheetStore.move(shiftKey ? -1 : 1, 0, false);
             } else if (keyCode === LEFT_KEY) {
-                if (target && target.selectionStart === 0) {
+                if (event.shiftKey && event.ctrlKey) {
+                    event.preventDefault();
+                    sheetStore.addWidth(-1)
+                }
+                else if (target && target.selectionStart === 0) {
                     event.preventDefault();
                     sheetStore.move(0, -1, shiftKey);
                 } else if ((!target || !isTextArea)) {
                     sheetStore.move(0, -1, shiftKey);
                 }
             } else if (keyCode === RIGHT_KEY) {
-                if (target && target.value !== undefined && target.selectionEnd === target.value.length) {
+                if (event.shiftKey && event.ctrlKey) {
+                    event.preventDefault();
+                    sheetStore.addWidth(1)
+                }
+                else if (target && target.value !== undefined && target.selectionEnd === target.value.length) {
                     event.preventDefault();
                     sheetStore.move(0, 1, shiftKey);
                 } else if ((!target || !isTextArea)) {
