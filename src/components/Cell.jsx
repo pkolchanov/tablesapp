@@ -22,7 +22,7 @@ class Cell extends React.Component {
 
     render() {
         const [r, c] = this.props.coords;
-        const dataCell = sheetStore.data[r][c];
+        const dataDict = sheetStore.data[r][c];
         const [activeR, activeC] = sheetStore.activeCoords;
         const [selectionStartC, selectionEndC] = sheetStore.selectionRectColums || [];
         const [selectionStartR, selectionEndR] = sheetStore.selectionRectRows || [];
@@ -35,20 +35,23 @@ class Cell extends React.Component {
             ((selectionStartR <= r && r <= selectionEndR)) &&
             ((selectionStartC <= c && c <= selectionEndC));
 
-        const isTarget = dndStore.targetColumn === c;
-        const isDragged = dndStore.draggedColumn === c;
+        const isTargetColumn = dndStore.targetColumn === c;
+        const isTargetRow = dndStore.targetRow === r;
+        const isDragged = dndStore.draggedColumn === c || dndStore.draggedRow === r;
 
         let boxShadow = 'none';
         if (isActive) {
             boxShadow = '0 0 0 1px #009ADE inset'
         }
-        if (isTarget) {
+        if (isTargetColumn) {
             boxShadow = `${c < dndStore.draggedColumn ? '' : '-'}2px 0 0 #009ADE inset`;
+        } else if (isTargetRow) {
+            boxShadow = `0px ${r < dndStore.draggedRow ? '' : '-'}2px 0 #009ADE inset`;
         } else if (isSelected) {
             boxShadow = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 #009ADE inset, ${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 #009ADE inset`
         }
         return (
-            <div className={`cell${isDragged ? ' cell_isDragged' : ''} cell_is${dataCell.style}`}
+            <div className={`cell${isDragged ? ' cell_isDragged' : ''} cell_is${dataDict.style}`}
                  onClick={this.handleClick}
                  style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow}}
                  onMouseDown={this.handleMouseDown}
@@ -58,7 +61,7 @@ class Cell extends React.Component {
                  onDragEnter={this.handleDragEnter}
                  onDragOver={this.handleDragOver}
             >
-                {(!isActive || this.props.isReadOnly) && dataCell.value}
+                {(!isActive || this.props.isReadOnly) && dataDict.value}
                 {isActive && !this.props.isReadOnly &&
                 <TextareaWrapper width={sheetStore.columnWidths[c]} coords={this.props.coords}/>}
             </div>
@@ -103,7 +106,12 @@ class Cell extends React.Component {
         if (this.props.isReadOnly) {
             return;
         }
-        dndStore.selectTargetColumn(this.props.coords[1]);
+        if (dndStore.draggedRow !== undefined) {
+            dndStore.selectTargetRow(this.props.coords[0]);
+        }
+        if (dndStore.draggedColumn !== undefined)  {
+            dndStore.selectTargetColumn(this.props.coords[1]);
+        }
     }
 
     handleDragOver(e) {
@@ -116,10 +124,13 @@ class Cell extends React.Component {
         if (this.props.isReadOnly) {
             return;
         }
+        if (this.props.coords[0] === dndStore.draggedRow) {
+            return;
+        }
         if (this.props.coords[1] === dndStore.draggedColumn) {
             return;
         }
-        dndStore.dropColumn();
+        dndStore.drop();
     }
 
 }

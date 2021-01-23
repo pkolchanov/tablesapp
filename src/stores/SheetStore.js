@@ -55,6 +55,17 @@ class SheetStore {
         return false;
     }
 
+    @computed
+    get selectedRow() {
+        if ((this.selectionStartCoords &&
+            this.selectionEndCoords &&
+            this.selectionStartCoords[0] === this.selectionEndCoords[0] &&
+            this.selectionEndCoords[1] === this.ncolums - 1)) {
+            return this.selectionStartCoords[0];
+        }
+        return false;
+    }
+
     constructor() {
         makeObservable(this);
     }
@@ -188,6 +199,12 @@ class SheetStore {
     selectColumn(cn) {
         this.selectionStartCoords = [0, cn];
         this.selectionEndCoords = [this.nrows - 1, cn];
+    }
+
+    @action
+    selectRow(rn){
+        this.selectionStartCoords = [rn, 0];
+        this.selectionEndCoords = [rn, this.ncolums -1];
     }
 
     @action

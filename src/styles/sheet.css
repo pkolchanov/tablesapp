@@ -1,9 +1,23 @@
 .sheet {
-    padding-left: 17px;
+    padding-left: 1px;
     height: calc(100vh - 60px);
     overflow-y: auto;
 }
 
 .sheet_isReadonly {
     height: 100vh;
+}
+
+.sheet__row {
+    display: flex;
+}
+
+.sheet__headerRow {
+    display: flex;
+    height: 23px;
+    line-height: 23px;
+    width: inherit;
+    top: 0;
+    position: sticky;
+    background: white;
 }

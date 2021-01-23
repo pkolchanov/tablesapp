@@ -58,6 +58,11 @@ class DnDStore {
     }
 
     @action
+    selectDraggedRow(r) {
+        this.draggedRow = r;
+    }
+
+    @action
     selectTargetColumn(c) {
         if (c !== this.draggedColumn) {
             this.targetColumn = c;
@@ -65,22 +70,36 @@ class DnDStore {
     }
 
     @action
-    dropColumn() {
-        sheetStore.swapColumn(this.draggedColumn, this.targetColumn);
-        sheetStore.selectColumn(this.targetColumn);
-        this.draggedColumn = undefined;
-        this.targetColumn = undefined;
+    selectTargetRow(r) {
+        if (r !== this.draggedRow) {
+            this.targetRow = r;
+        }
+    }
+
+    @action
+    drop() {
+        if (this.targetColumn !== undefined && this.draggedColumn !== undefined ) {
+            sheetStore.swapColumn(this.draggedColumn, this.targetColumn);
+            sheetStore.selectColumn(this.targetColumn);
+        } else if (this.targetRow !== undefined  && this.draggedRow !== undefined ) {
+            sheetStore.swapRow(this.draggedRow, this.targetRow);
+            sheetStore.selectRow(this.targetRow);
+        }
+        this.dragEnd();
     }
 
     @action
     dragEnd() {
         this.draggedColumn = undefined;
         this.targetColumn = undefined;
+        this.draggedRow = undefined;
+        this.targetRow = undefined;
         this.startX = undefined;
         this.currentX = undefined;
         this.startY = undefined;
         this.currentY = undefined;
     }
+
 }
 
 export const dndStore = new DnDStore();

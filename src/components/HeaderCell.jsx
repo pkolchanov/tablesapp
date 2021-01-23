@@ -31,9 +31,10 @@ class HeaderCell extends React.Component {
                      onDrop={this.onDrop}>
                     {isSelected ? '∙∙∙' : ''}
                 </div>
-                {!isSelected &&
-                !nextSelected &&
-                <div className="headerCell__resizer" onMouseDown={this.onMouseDown}>|</div>
+                {
+                    !isSelected &&
+                    !nextSelected &&
+                    <div className="headerCell__resizer" onMouseDown={this.onMouseDown}>|</div>
                 }
 
             </div>
@@ -60,7 +61,7 @@ class HeaderCell extends React.Component {
         if (this.props.c === dndStore.draggedColumn) {
             return;
         }
-        dndStore.dropColumn();
+        dndStore.drop();
     }
 
     onDragEnd() {

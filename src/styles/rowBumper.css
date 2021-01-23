@@ -1,0 +1,18 @@
+.rowBumper {
+    flex: 1 0 auto;
+    min-height: 19px;
+    line-height: 19px;
+    padding: 3px 2px 3px 2px;
+    user-select: none;
+    width: 17px;
+}
+
+.rowBumper_isSelected {
+    background: #009ADE;
+    /*position: relative;*/
+    /* top-left | top-right | bottom-right | bottom-left */
+    border-radius: 3px 0 0 3px;
+    /*left: 5px;*/
+    /*width: 12px;*/
+    /*left: 5px;*/
+}

@@ -15,7 +15,7 @@ if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) |
 app.setAsDefaultProtocolClient("tablesapp");
 
 global.handleContent = {
-    filename: `${app.getPath('userData')}/content.${dev ? 'dev' : ''}.json`,
+    filename: `${app.getPath('userData')}/content${dev ? '.dev' : ''}.json`,
 
     write(content) {
         fs.writeFileSync(this.filename, content, 'utf8');
