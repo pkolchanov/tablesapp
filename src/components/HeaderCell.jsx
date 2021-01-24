@@ -1,9 +1,9 @@
 import {observer} from "mobx-react";
 import React from "react";
-import '../styles/headerCell.css';
 import {sheetStore} from "../stores/SheetStore";
 import {dndStore} from "../stores/DnDStore";
-
+import '../styles/headerCell.css';
+import {appStore, ModeEnum} from "../stores/AppStore";
 
 @observer
 class HeaderCell extends React.Component {
@@ -18,9 +18,9 @@ class HeaderCell extends React.Component {
     }
 
     render() {
-        const selectedColumn = sheetStore.selectedColumn;
-        const isSelected = this.props.c === selectedColumn;
-        const nextSelected = (this.props.c + 1) === selectedColumn;
+        const selectedColumn = sheetStore.selectedColumn
+        const isSelected = this.props.c === selectedColumn && appStore.mode === ModeEnum.edit;
+        const nextSelected = (this.props.c + 1) === selectedColumn && appStore.mode === ModeEnum.edit;
         return (
             <div className={`headerCell ${isSelected ? ' headerCell_isSelected' : ''}`}
                  style={{width: sheetStore.columnWidths[this.props.c] + 'px'}}
@@ -31,12 +31,12 @@ class HeaderCell extends React.Component {
                      onDragOver={this.onDragOver}
                      onDragEnter={this.onDragEnter}
                      onDrop={this.onDrop}>
-                    {isSelected ? '∙∙∙' : ''}
                 </div>
                 {
                     !isSelected &&
                     !nextSelected &&
-                    <div className="headerCell__resizer" onMouseDown={this.onMouseDown}>|</div>
+                    <div className={`headerCell__resizer ${isSelected ? 'headerCell__resizer_isSelected' : ''}`}
+                         onMouseDown={this.onMouseDown}>|</div>
                 }
 
             </div>
@@ -56,7 +56,7 @@ class HeaderCell extends React.Component {
         e.stopPropagation();
     }
 
-    onDragEnter(){
+    onDragEnter() {
         dndStore.dragEnter([-1, this.props.c]);
     }
 

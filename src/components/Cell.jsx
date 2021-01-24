@@ -27,11 +27,14 @@ class Cell extends React.Component {
         const [selectionStartC, selectionEndC] = sheetStore.selectionRectColums || [];
         const [selectionStartR, selectionEndR] = sheetStore.selectionRectRows || [];
 
-        const isActive = appStore.mode === ModeEnum.edit && r === activeR && c === activeC &&
+        const isActive = appStore.mode === ModeEnum.edit &&
+            r === activeR &&
+            c === activeC &&
             !sheetStore.selectionStartCoords &&
             !dndStore.draggedColumn;
 
-        const isSelected = sheetStore.selectionEndCoords &&
+        const isSelected = appStore.mode === ModeEnum.edit &&
+            sheetStore.selectionEndCoords &&
             ((selectionStartR <= r && r <= selectionEndR)) &&
             ((selectionStartC <= c && c <= selectionEndC));
 
@@ -62,8 +65,10 @@ class Cell extends React.Component {
                  onDragOver={this.handleDragOver}
             >
                 {(!isActive || this.props.isReadOnly) && dataDict.value}
-                {isActive && !this.props.isReadOnly &&
-                <TextareaWrapper width={sheetStore.columnWidths[c]} coords={this.props.coords}/>}
+                {
+                    isActive && !this.props.isReadOnly &&
+                    <TextareaWrapper width={sheetStore.columnWidths[c]} coords={this.props.coords}/>
+                }
             </div>
         );
     }

@@ -51,19 +51,19 @@ class App extends React.Component {
         )
     }
 
-    handleKeyDown(event) {
-        const keyCode = event.which || event.keyCode;
-        let shiftKey = event.shiftKey;
+    handleKeyDown(e) {
+        const keyCode = e.which || e.keyCode;
+        let shiftKey = e.shiftKey;
 
-        if (event.metaKey && keyCode === 'N'.charCodeAt(0)) {
-            event.preventDefault();
+        if (e.metaKey && keyCode === 'N'.charCodeAt(0)) {
+            e.preventDefault();
             fileBrowserStore.newSheet();
         }
 
-        const target = event.target;
+        const target = e.target;
         const isTextArea = target && target.tagName === "TEXTAREA";
 
-        if (event.metaKey && keyCode === 'Z'.charCodeAt(0)) {
+        if (e.metaKey && keyCode === 'Z'.charCodeAt(0)) {
             if (shiftKey) {
                 fileBrowserStore.redo();
             } else {
@@ -73,96 +73,104 @@ class App extends React.Component {
 
         if (appStore.mode === ModeEnum.login) {
             if (keyCode === ENTER_KEY && target) {
-                event.preventDefault();
+                e.preventDefault();
                 authStore.login();
             }
         }
 
         if (appStore.mode === ModeEnum.edit) {
-            if (event.metaKey && keyCode === 'C'.charCodeAt(0)) {
+            if (e.metaKey && keyCode === 'C'.charCodeAt(0)) {
                 if (target && isTextArea) {
                     return;
                 }
-                event.preventDefault();
+                e.preventDefault();
                 sheetStore.copy();
             }
 
-            if (event.metaKey && keyCode === 'V'.charCodeAt(0)) {
+            if (e.metaKey && keyCode === 'V'.charCodeAt(0)) {
                 const text = clipboard.readText();
                 if (text.indexOf('\t') === -1) {
                     return;
                 }
-                event.preventDefault();
+                e.preventDefault();
                 if (target && isTextArea) {
                     document.activeElement.blur();
                 }
                 sheetStore.paste(text);
             }
 
-            if (event.metaKey && keyCode === 'X'.charCodeAt(0)) {
+            if (e.metaKey && keyCode === 'X'.charCodeAt(0)) {
                 if (target && isTextArea) {
                     return;
                 }
-                event.preventDefault();
+                e.preventDefault();
                 sheetStore.cut();
             }
 
-            if (event.metaKey && keyCode === 'A'.charCodeAt(0)) {
-                if (isTextArea &&
-                    target.selectionEnd === target.value.length && target.selectionStart === 0) {
-                    event.preventDefault();
+            if (e.metaKey && keyCode === 'A'.charCodeAt(0)) {
+                if (isTextArea && target.selectionEnd === target.value.length &&
+                    target.selectionStart === 0) {
+                    e.preventDefault();
                     sheetStore.selectAll();
                 }
             }
 
-            if (event.metaKey && keyCode === 'B'.charCodeAt(0)) {
+            if (e.metaKey && keyCode === 'B'.charCodeAt(0)) {
                 sheetStore.toggleBold();
             }
+
+            if (e.metaKey && keyCode === 'Y'.charCodeAt(0)) {
+                sheetStore.removeRow();
+            }
+
             if (keyCode === ESCAPE_KEY) {
                 sheetStore.resetSelection();
             }
-            if (keyCode === UP_KEY) {
-                if (event.shiftKey && event.altKey) {
-                    event.preventDefault();
+
+            if (keyCode === ENTER_KEY && e.metaKey && e.altKey){
+                sheetStore.selectRow();
+            }else if (keyCode === ENTER_KEY && e.metaKey && e.ctrlKey){
+                sheetStore.selectColumn();
+            }
+            else if (keyCode === UP_KEY) {
+                if (e.shiftKey && e.altKey) {
+                    e.preventDefault();
                     sheetStore.moveRow(-1);
-                }
-                else if (isTextArea && firstRow(target)) {
-                    event.preventDefault();
+                } else if (isTextArea && firstRow(target)) {
+                    e.preventDefault();
                     sheetStore.move(-1, 0, shiftKey);
                 } else if ((!target || !isTextArea)) {
                     sheetStore.move(-1, 0, shiftKey);
                 }
             } else if (keyCode === DOWN_KEY) {
-                if (event.shiftKey && event.altKey) {
-                    event.preventDefault();
+                if (e.shiftKey && e.altKey) {
+                    e.preventDefault();
                     sheetStore.moveRow(1);
                 } else if (isTextArea && lastRow(target)) {
-                    event.preventDefault();
+                    e.preventDefault();
                     sheetStore.move(1, 0, shiftKey);
                 } else if ((!target || target.tagName !== "TEXTAREA")) {
                     sheetStore.move(1, 0, shiftKey);
                 }
             } else if (keyCode === ENTER_KEY) {
-                event.preventDefault();
+                e.preventDefault();
                 sheetStore.move(shiftKey ? -1 : 1, 0, false);
             } else if (keyCode === LEFT_KEY) {
-                if (event.shiftKey && event.ctrlKey) {
-                    event.preventDefault();
+                if (e.shiftKey && e.ctrlKey) {
+                    e.preventDefault();
                     sheetStore.addWidth(-1)
-                }
-                else if (target && target.selectionStart === 0) {
-                    event.preventDefault();
+                } else if (target && target.selectionStart === 0) {
+                    e.preventDefault();
                     sheetStore.move(0, -1, shiftKey);
                 } else if ((!target || !isTextArea)) {
                     sheetStore.move(0, -1, shiftKey);
                 }
             } else if (keyCode === RIGHT_KEY) {
-                if (event.shiftKey && event.ctrlKey) {
-                    event.preventDefault();
+                if (e.shiftKey && e.ctrlKey) {
+                    e.preventDefault();
                     sheetStore.addWidth(1)
-                }
-                else if (target && target.value !== undefined && target.selectionEnd === target.value.length) {
-                    event.preventDefault();
+                } else if (target && target.value !== undefined && target.selectionEnd === target.value.length) {
+                    e.preventDefault();
                     sheetStore.move(0, 1, shiftKey);
                 } else if ((!target || !isTextArea)) {
                     sheetStore.move(0, 1, shiftKey);
@@ -173,14 +181,14 @@ class App extends React.Component {
                 sheetStore.move(0, -1, false);
             } else if (keyCode === BACKSPACE_KEY) {
                 if (target && target.value !== undefined && target.value.length === 0) {
-                    event.preventDefault();
+                    e.preventDefault();
                     sheetStore.move(0, -1, false);
                 } else if (sheetStore.selectionStartCoords) {
-                    event.preventDefault();
+                    e.preventDefault();
                     sheetStore.clearSelected();
                 }
             } else if (keyCode === DELETE_KEY && sheetStore.selectionStartCoords) {
-                event.preventDefault();
+                e.preventDefault();
                 sheetStore.clearSelected();
             }
         }

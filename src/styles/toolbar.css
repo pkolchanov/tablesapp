@@ -10,14 +10,15 @@
     -webkit-app-region: drag;
 }
 
-.toolbar__share, .toolbar__shared {
+.toolbar__share, .toolbar__shared, .toolbar__randomize {
     float: right;
     text-align: center;
     padding-right: 25px;
     padding-left: 10px;
     line-height: 50px;
+    cursor: pointer;
 }
 
-.toolbar__share:hover, .toolbar__shared:hover {
+.toolbar__share:hover, .toolbar__shared:hover, .toolbar__randomize:hover {
     background: #E9E9E9;
 }

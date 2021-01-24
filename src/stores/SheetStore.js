@@ -197,14 +197,20 @@ class SheetStore {
 
     @action
     selectColumn(cn) {
+        if (cn === undefined) {
+            cn = this.activeCoords[1]
+        }
         this.selectionStartCoords = [0, cn];
         this.selectionEndCoords = [this.nrows - 1, cn];
     }
 
     @action
-    selectRow(rn){
+    selectRow(rn) {
+        if (rn === undefined) {
+            rn = this.activeCoords[0]
+        }
         this.selectionStartCoords = [rn, 0];
-        this.selectionEndCoords = [rn, this.ncolums -1];
+        this.selectionEndCoords = [rn, this.ncolums - 1];
     }
 
     @action
@@ -257,13 +263,18 @@ class SheetStore {
 
     @action
     addWidth(step) {
-        this.columnWidths[this.activeCoords[1]] += step* 10;
+        this.columnWidths[this.activeCoords[1]] += step * 10;
     }
 
     @action
     cut() {
         this.copy();
         this.clearSelected();
+    }
+
+    @action
+    removeRow() {
+        this.data.splice(this.activeCoords[0], 1);
     }
 
     copy() {
