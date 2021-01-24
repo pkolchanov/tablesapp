@@ -13,6 +13,7 @@ class HeaderCell extends React.Component {
         this.onClick = this.onClick.bind(this);
         this.onDragStart = this.onDragStart.bind(this);
         this.onDragOver = this.onDragOver.bind(this);
+        this.onDragEnter = this.onDragEnter.bind(this);
         this.onDrop = this.onDrop.bind(this);
     }
 
@@ -28,6 +29,7 @@ class HeaderCell extends React.Component {
                      onClick={this.onClick}
                      onDragStart={this.onDragStart}
                      onDragOver={this.onDragOver}
+                     onDragEnter={this.onDragEnter}
                      onDrop={this.onDrop}>
                     {isSelected ? '∙∙∙' : ''}
                 </div>
@@ -45,23 +47,21 @@ class HeaderCell extends React.Component {
         sheetStore.selectColumn(this.props.c);
     }
 
-    onDragStart(ev) {
-        sheetStore.selectColumn(this.props.c);
-        dndStore.setStartCoords(ev.clientX, ev.clientY);
+    onDragStart() {
         dndStore.selectDraggedColumn(this.props.c);
     }
 
     onDragOver(e) {
         e.preventDefault();
         e.stopPropagation();
-        dndStore.selectTargetColumn(this.props.c);
+    }
+
+    onDragEnter(){
+        dndStore.dragEnter([-1, this.props.c]);
     }
 
     onDrop() {
-        if (this.props.c === dndStore.draggedColumn) {
-            return;
-        }
-        dndStore.drop();
+        dndStore.drop([-1, this.props.c]);
     }
 
     onDragEnd() {

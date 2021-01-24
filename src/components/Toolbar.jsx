@@ -6,6 +6,8 @@ import {firebaseConfig} from "../helpers/firebaseConfig";
 import LoginForm from "./LoginForm";
 import '../styles/toolbar.css';
 import {appStore, ModeEnum} from "../stores/AppStore";
+import {action} from "mobx";
+import * as randomWords from 'random-words';
 
 @observer
 class Toolbar extends React.Component {
@@ -18,6 +20,10 @@ class Toolbar extends React.Component {
     render() {
         return (
             <div className='toolbar'>
+                {
+                    !PRODUCTION &&
+                    <button onClick={this.randomizeSheet}>randomize</button>
+                }
                 {
                     authStore.loggedUser &&
                     <div className='toolbar__shared' onClick={this.copySheetUrlToClipboard}>Table shared ✓</div>
@@ -41,6 +47,16 @@ class Toolbar extends React.Component {
 
     copySheetUrlToClipboard() {
         navigator.clipboard.writeText(PRODUCTION ? `https://${firebaseConfig.authDomain}` : 'http://localhost:5000' + `/${fileBrowserStore.currentSheetId}`)
+    }
+
+
+    @action
+    randomizeSheet() {
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                fileBrowserStore.currentSheet.sheetData[i][j].value = randomWords({min: 2, max: 5, join: ' '})
+            }
+        }
     }
 }
 

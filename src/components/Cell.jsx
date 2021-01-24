@@ -106,12 +106,7 @@ class Cell extends React.Component {
         if (this.props.isReadOnly) {
             return;
         }
-        if (dndStore.draggedRow !== undefined) {
-            dndStore.selectTargetRow(this.props.coords[0]);
-        }
-        if (dndStore.draggedColumn !== undefined)  {
-            dndStore.selectTargetColumn(this.props.coords[1]);
-        }
+        dndStore.dragEnter(this.props.coords);
     }
 
     handleDragOver(e) {
@@ -124,13 +119,7 @@ class Cell extends React.Component {
         if (this.props.isReadOnly) {
             return;
         }
-        if (this.props.coords[0] === dndStore.draggedRow) {
-            return;
-        }
-        if (this.props.coords[1] === dndStore.draggedColumn) {
-            return;
-        }
-        dndStore.drop();
+        dndStore.drop(this.props.coords);
     }
 
 }

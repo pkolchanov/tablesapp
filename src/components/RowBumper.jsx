@@ -33,20 +33,18 @@ class RowBumper extends React.Component {
         sheetStore.selectRow(this.props.r)
     }
 
-    onDragStart(ev) {
-        sheetStore.selectRow(this.props.r);
-        dndStore.setStartCoords(ev.clientX, ev.clientY);
+    onDragStart() {
         dndStore.selectDraggedRow(this.props.r);
     }
 
     onDragEnter(e) {
         e.preventDefault();
         e.stopPropagation();
-        dndStore.selectTargetRow(this.props.r);
+        dndStore.dragEnter([this.props.r, -1]);
     }
 
     onDrop() {
-        dndStore.drop();
+        dndStore.drop([this.props.r, -1]);
     }
 
     onDragEnd() {
