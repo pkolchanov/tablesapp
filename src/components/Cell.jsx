@@ -27,9 +27,10 @@ class Cell extends React.Component {
         const [selectionStartC, selectionEndC] = sheetStore.selectionRectColums || [];
         const [selectionStartR, selectionEndR] = sheetStore.selectionRectRows || [];
 
-        const isActive = appStore.mode === ModeEnum.edit &&
+        const isActiveCoords = appStore.mode === ModeEnum.edit &&
             r === activeR &&
-            c === activeC &&
+            c === activeC
+        const isActive = isActiveCoords &&
             !sheetStore.selectionStartCoords &&
             !dndStore.draggedColumn;
 
@@ -43,15 +44,21 @@ class Cell extends React.Component {
         const isDragged = dndStore.draggedColumn === c || dndStore.draggedRow === r;
 
         let boxShadow = 'none';
-        if (isActive) {
-            boxShadow = '0 0 0 1px #009ADE inset'
+        if (isActiveCoords) {
+            boxShadow = `0 0 0 1px ${sheetStore.selectionStartCoords ? '#CCCCCC' : '#009ADE'} inset`
         }
         if (isTargetColumn) {
             boxShadow = `${c < dndStore.draggedColumn ? '' : '-'}2px 0 0 #009ADE inset`;
         } else if (isTargetRow) {
             boxShadow = `0px ${r < dndStore.draggedRow ? '' : '-'}2px 0 #009ADE inset`;
         } else if (isSelected) {
-            boxShadow = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 #009ADE inset, ${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 #009ADE inset`
+            const topLeft = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 #009ADE inset`
+            const bottomRight = `${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 #009ADE inset`
+            let bs = [topLeft, bottomRight]
+            if (isActiveCoords) {
+                bs.push(`0 0 0 1px #CCCCCC inset`)
+            }
+            boxShadow = bs.join(', ')
         }
         return (
             <div className={`cell${isDragged ? ' cell_isDragged' : ''} cell_is${dataDict.style}`}
