@@ -4,6 +4,7 @@
   },
   "hosting": {
     "public": "dist_webapp",
+    "cleanUrls": true,
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -11,8 +12,12 @@
     ],
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
+        "regex": "/[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}",
+        "destination": "/app.html"
+      },
+      {
+        "source": "/finishSignUp*",
+        "destination": "/signUp.html"
       }
     ]
   },

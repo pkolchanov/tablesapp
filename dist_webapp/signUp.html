@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Redirecting you to tablesapp...
+<script>
+    const link = document.createElement('a');
+    link.href = `tablesapp://response=${window.location.href}`;
+    document.body.appendChild(link);
+    link.click();
+</script>
+</body>
+</html>
