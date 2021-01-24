@@ -45,7 +45,7 @@ class Toolbar extends React.Component {
     }
 
     copySheetUrlToClipboard() {
-        navigator.clipboard.writeText(PRODUCTION ? `https://${firebaseConfig.authDomain}` : 'http://localhost:5000' + `/${fileBrowserStore.currentSheetId}`)
+        navigator.clipboard.writeText((PRODUCTION ? `https://${firebaseConfig.authDomain}` : 'http://localhost:5000') + `/${fileBrowserStore.currentSheetId}`)
     }
 
 
