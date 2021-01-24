@@ -48,7 +48,6 @@ class Toolbar extends React.Component {
         navigator.clipboard.writeText((PRODUCTION ? `https://${firebaseConfig.authDomain}` : 'http://localhost:5000') + `/${fileBrowserStore.currentSheetId}`)
     }
 
-
     @action
     randomizeSheet() {
         for (let i = 0; i < 5; i++) {

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "startDesktop": "webpack serve --config webpack-desktop.config.js",
-    "buildDesktop": "webpack --config webpack-desktop.production.config.js && electron-packager ./ --out=./builds --overwrite",
+    "buildDesktop": "webpack --config webpack-desktop.production.config.js && electron-packager ./ --out=./builds --icon=assets/tablesapp.icns --overwrite",
     "startWebapp": "webpack serve --config webpack-webapp.config.js",
     "buildWebapp": "webpack --config webpack-webapp.config.js",
     "firebaseEmu": "cd logs && firebase emulators:start"

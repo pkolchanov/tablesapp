@@ -39,7 +39,6 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true
         },
-        icon: path.join(__dirname, 'Icon', 'tablesapp.icons'),
         titleBarStyle: 'hidden'
     });
 
