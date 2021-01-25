@@ -1,11 +1,11 @@
 import React from "react";
 import {observer} from "mobx-react";
 import {sheetStore} from "../stores/SheetStore";
-import '../styles/cell.css';
 import {appStore, ModeEnum} from "../stores/AppStore";
 import {dndStore} from "../stores/DnDStore";
 import TextareaWrapper from "./TexareaWrapper";
-
+import color from '../styles/color.module.scss';
+import '../styles/cell.scss';
 
 @observer
 class Cell extends React.Component {
@@ -45,18 +45,18 @@ class Cell extends React.Component {
 
         let boxShadow = 'none';
         if (isActiveCoords) {
-            boxShadow = `0 0 0 1px ${sheetStore.selectionStartCoords ? '#CCCCCC' : '#009ADE'} inset`
+            boxShadow = `0 0 0 1px ${sheetStore.selectionStartCoords ? color.colorLightGray : color.colorBlue} inset`
         }
         if (isTargetColumn) {
-            boxShadow = `${c < dndStore.draggedColumn ? '' : '-'}2px 0 0 #009ADE inset`;
+            boxShadow = `${c < dndStore.draggedColumn ? '' : '-'}2px 0 0 ${color.colorBlue} inset`;
         } else if (isTargetRow) {
-            boxShadow = `0px ${r < dndStore.draggedRow ? '' : '-'}2px 0 #009ADE inset`;
+            boxShadow = `0px ${r < dndStore.draggedRow ? '' : '-'}2px 0 ${color.colorBlue} inset`;
         } else if (isSelected) {
-            const topLeft = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 #009ADE inset`
-            const bottomRight = `${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 #009ADE inset`
+            const topLeft = `${c === selectionStartC ? 1 : 0}px ${r === selectionStartR ? 1 : 0}px 0 0 ${color.colorBlue} inset`
+            const bottomRight = `${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 ${color.colorBlue} inset`
             let bs = [topLeft, bottomRight]
             if (isActiveCoords) {
-                bs.push(`0 0 0 1px #CCCCCC inset`)
+                bs.push(`0 0 0 1px ${color.colorLightGray} inset`)
             }
             boxShadow = bs.join(', ')
         }

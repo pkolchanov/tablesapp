@@ -7,7 +7,7 @@ import LoginForm from "./LoginForm";
 import {appStore, ModeEnum} from "../stores/AppStore";
 import {action} from "mobx";
 import * as randomWords from 'random-words';
-import '../styles/toolbar.css';
+import '../styles/toolbar.scss';
 
 @observer
 class Toolbar extends React.Component {

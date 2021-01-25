@@ -1,0 +1,20 @@
+$color-text: #2d2d2d;
+$color-dark-gray: #999999;
+$color-light-gray: #CCCCCC;
+$color-lightest-gray: #DCDCDC;
+$color-border: #E6E6E6;
+$color-another-gray: #F6F6F6;
+$color-blue: #009ADE;
+$color-blue-light: #C7E6F8;
+$color-red: #EC4B31;
+
+:export {
+  colorText: $color-text;
+  colorDarkGray: $color-dark-gray;
+  colorLightGray: $color-light-gray;
+  colorLightestGray: $color-lightest-gray;
+  colorBorder: $color-border;
+  colorBlue: $color-blue;
+  colorBlueLight: $color-blue-light;
+  colorRed: $color-red;
+}

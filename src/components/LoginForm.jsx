@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {authStore} from "../stores/AuthStore";
-import '../styles/loiginForm.css';
+import '../styles/loiginForm.scss';
 import arrowRightCircle from '../icons/arrowRightCircle.svg';
 import spinner from '../icons/spinner.svg';
 
@@ -27,7 +27,7 @@ class LoginForm extends React.Component {
                     !authStore.loggedUser &&
                     !authStore.emailForSignIn &&
                     <div className="loginForm__firstStep">
-                        <div className="loginForm__header">Log in to sync your content</div>
+                        <div className="loginForm__header">Log in to share your content</div>
                         <div className='loginForm__email'>
                             <input type="text"
                                    onChange={this.onChange}

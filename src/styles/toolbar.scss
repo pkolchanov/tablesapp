@@ -1,11 +1,13 @@
+@import "color.module.scss";
+
 .toolbar {
     height: 50px;
-    background: #F6F6F6;
+    background: $color-another-gray;
     top: 0;
     left: 252px;
     float: right;
     width: calc(100vw - 250px);
-    border-bottom: 1px solid #E6E6E6;
+    border-bottom: 1px solid $color-border;
     user-select: none;
     -webkit-app-region: drag;
 }
@@ -20,5 +22,5 @@
 }
 
 .toolbar__share:hover, .toolbar__shared:hover, .toolbar__randomize:hover {
-    background: #E9E9E9;
+    background: $color-border;
 }

@@ -2,7 +2,7 @@ import React from "react";
 import {observer} from "mobx-react";
 import {sheetStore} from "../stores/SheetStore";
 import {dndStore} from "../stores/DnDStore";
-import '../styles/rowBumper.css';
+import '../styles/rowBumper.scss';
 import {appStore, ModeEnum} from "../stores/AppStore";
 
 @observer

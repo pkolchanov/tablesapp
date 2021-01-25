@@ -1,9 +1,9 @@
 import {observer} from "mobx-react";
 import React from "react";
-import '../styles/fileBrowser.css';
 import {fileBrowserStore} from "../stores/FileBrowserStore";
 import {appStore, ModeEnum} from "../stores/AppStore";
 import {relativeDateTime} from "../helpers/date";
+import '../styles/fileBrowser.scss';
 
 @observer
 class FileBrowser extends React.Component {

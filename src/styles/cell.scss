@@ -1,3 +1,5 @@
+@import "color.module.scss";
+
 .cell {
     flex: 1 0 auto;
     min-height: 19px;
@@ -19,7 +21,7 @@
     resize: none;
     height: 19px;
     word-break: break-word;
-    color: #2d2d2d;
+    color: $color-text;
     font-size: 14px;
     font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -37,9 +39,9 @@
 }
 
 .cell_isSubtile {
-    color: #CCCCCC;
+    color: $color-light-gray;
 }
 
 .cell_isSubtile > .cell__input {
-    color: #CCCCCC;
+    color: $color-light-gray;
 }

@@ -1,6 +1,5 @@
 import {observer} from "mobx-react";
 import React from "react";
-import '../styles/app.css';
 import {
     BACKSPACE_KEY,
     DELETE_KEY,
@@ -20,6 +19,7 @@ import {appStore, ModeEnum} from "../stores/AppStore";
 import {firstRow, lastRow} from "../helpers/htmlExtentions"
 import Toolbar from "./Toolbar";
 import {authStore} from "../stores/AuthStore";
+import '../styles/app.scss';
 
 const {clipboard} = require('electron');
 

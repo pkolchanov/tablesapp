@@ -2,7 +2,7 @@ import {observer} from "mobx-react";
 import React from "react";
 import {sheetStore} from "../stores/SheetStore";
 import {dndStore} from "../stores/DnDStore";
-import '../styles/headerCell.css';
+import '../styles/headerCell.scss';
 import {appStore, ModeEnum} from "../stores/AppStore";
 
 @observer

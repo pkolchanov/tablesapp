@@ -1,5 +1,7 @@
+@import "color.module.scss";
+
 .fileBrowser {
-    border-right: 1px solid #E6E6E6;
+    border-right: 1px solid $color-border;
     flex: 0 0 230px;
     height: 100vh;
     overflow-y: scroll;
@@ -9,7 +11,7 @@
 }
 
 .fileBrowser_active > .fileBrowser__file_selected {
-    background: #C7E6F8;
+    background: $color-blue-light;
 }
 
 .fileBrowser__file {
@@ -19,7 +21,7 @@
 }
 
 .fileBrowser__file_selected {
-    background: #DCDCDC;
+    background: $color-lightest-gray;
     border-radius: 5px;
 }
 

@@ -1,3 +1,4 @@
+@import "color.module.scss";
 .rowBumper {
     flex: 1 0 auto;
     min-height: 19px;
@@ -8,7 +9,7 @@
 }
 
 .rowBumper_isSelected {
-    background: #009ADE;
+    background: $color-blue;
     /*position: relative;*/
     /* top-left | top-right | bottom-right | bottom-left */
     border-radius: 3px 0 0 3px;

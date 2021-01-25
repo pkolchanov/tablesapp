@@ -1,5 +1,7 @@
+@import "color.module.scss";
+
 body {
-    color: #2d2d2d;
+    color: $color-text;
     font-size: 14px;
     font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     margin: 0;

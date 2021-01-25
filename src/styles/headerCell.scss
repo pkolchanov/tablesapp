@@ -1,10 +1,11 @@
+@import "color.module.scss";
+
 .headerCell {
     width: 200px;
     flex: 1 0 auto;
     position: relative;
     padding: 2px 2px 2px 2px;
     user-select: none;
-    /*box-shadow: 0px 2px 4px #EAEAEA;*/
 }
 
 .headerCell__resizer {
@@ -15,7 +16,7 @@
     z-index: 1;
     margin-left: -3px;
     margin-top: -1px;
-    color: #CCCC;
+    color: $color-light-gray;
     cursor: col-resize;
     display: inline-block;
     text-align: center;
@@ -40,7 +41,7 @@
 }
 
 .headerCell_isSelected {
-    background: #009ADE;
+    background: $color-blue;
     height: 14px;
     position: relative;
     top: 5px;
