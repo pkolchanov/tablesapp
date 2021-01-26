@@ -26,6 +26,7 @@ class HeaderCell extends React.Component {
                  style={{width: sheetStore.columnWidths[this.props.c] + 'px'}}
                  onDragEnd={this.onDragEnd}>
                 <div draggable className="headerCell__filler"
+                     style={{width: sheetStore.columnWidths[this.props.c] - 5 + 'px'}} //5 px – half of resizer
                      onClick={this.onClick}
                      onDragStart={this.onDragStart}
                      onDragOver={this.onDragOver}
