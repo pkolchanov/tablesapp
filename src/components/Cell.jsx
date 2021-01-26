@@ -13,7 +13,6 @@ class Cell extends React.Component {
         super(props);
         this.handleClick = this.handleClick.bind(this);
         this.handleMouseDown = this.handleMouseDown.bind(this);
-        this.handleMouseUp = this.handleMouseUp.bind(this);
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
         this.handleDrop = this.handleDrop.bind(this);
         this.handleDragEnter = this.handleDragEnter.bind(this);
@@ -65,7 +64,6 @@ class Cell extends React.Component {
                  onClick={this.handleClick}
                  style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow}}
                  onMouseDown={this.handleMouseDown}
-                 onMouseUp={this.handleMouseUp}
                  onMouseEnter={this.handleMouseEnter}
                  onDrop={this.handleDrop}
                  onDragEnter={this.handleDragEnter}
@@ -96,13 +94,6 @@ class Cell extends React.Component {
             return;
         }
         sheetStore.startSelection(this.props.coords);
-    }
-
-    handleMouseUp() {
-        if (this.props.isReadOnly) {
-            return;
-        }
-        sheetStore.endSelection();
     }
 
     handleMouseEnter() {

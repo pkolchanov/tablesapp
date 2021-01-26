@@ -167,6 +167,7 @@ class SheetStore {
     updateSelection(endCoords) {
         if (this.tempSelectionStart) {
             this.selectionStartCoords = [...this.tempSelectionStart];
+            this.activeCoords = [...this.tempSelectionStart];
             this.tempSelectionStart = undefined;
         }
         this.selectionEndCoords = [...endCoords];
@@ -174,7 +175,9 @@ class SheetStore {
 
     @action
     endSelection() {
-        this.inSelectionMode = false;
+        if (this.inSelectionMode) {
+            this.inSelectionMode = false;
+        }
     }
 
     @action

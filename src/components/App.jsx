@@ -40,7 +40,7 @@ class App extends React.Component {
     render() {
         return (
             <div className="app">
-                <div className="app__wrapper">
+                <div className="app__wrapper" onMouseUp={this.handleMouseUp} onMouseLeave={this.handleMouseUp}>
                     <FileBrowser/>
                     <div className="app__left">
                         <Toolbar/>
@@ -49,6 +49,10 @@ class App extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    handleMouseUp() {
+        sheetStore.endSelection();
     }
 
     handleKeyDown(e) {
