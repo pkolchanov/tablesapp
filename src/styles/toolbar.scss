@@ -1,26 +1,47 @@
 @import "color.module.scss";
 
 .toolbar {
-    height: 50px;
-    background: $color-toolbar;
-    top: 0;
-    left: 252px;
-    float: right;
-    width: calc(100vw - 250px);
-    border-bottom: 1px solid $color-border;
-    user-select: none;
-    -webkit-app-region: drag;
+  height: 50px;
+  background: $color-toolbar;
+  top: 0;
+  left: 252px;
+  width: calc(100vw - 252px);
+  border-bottom: 1px solid $color-border;
+  user-select: none;
+  -webkit-app-region: drag;
+  display: flex;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
 }
 
-.toolbar__share, .toolbar__shared, .toolbar__randomize {
-    float: right;
-    text-align: center;
-    padding-right: 25px;
-    padding-left: 10px;
-    line-height: 50px;
-    cursor: pointer;
+.toolbar__left, .toolbar__middle, .toolbar__right{
+  align-items: center;
+  display: flex;
 }
 
-.toolbar__share:hover, .toolbar__shared:hover, .toolbar__randomize:hover {
-    background: $color-border;
+.toolbar__left{
+  flex-basis: 205px;
+}
+
+.toolbar__right{
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.toolbar__item {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.toolbar__item:hover {
+  background: $color-border;
+}
+
+.toolbar__plusIcon{
+  width: 14px;
+  height: 14px;
 }

@@ -3,10 +3,12 @@ import React from "react";
 import {authStore} from "../stores/AuthStore";
 import {fileBrowserStore} from "../stores/FileBrowserStore";
 import {firebaseConfig} from "../helpers/firebaseConfig";
+import StyleSelector from "./StyleSelector";
 import LoginForm from "./LoginForm";
 import {appStore, ModeEnum} from "../stores/AppStore";
 import {action} from "mobx";
 import * as randomWords from 'random-words';
+import plus from '../icons/plus.svg';
 import '../styles/toolbar.scss';
 
 @observer
@@ -20,22 +22,39 @@ class Toolbar extends React.Component {
     render() {
         return (
             <div className='toolbar'>
-                {
-                    authStore.loggedUser &&
-                    <div className='toolbar__shared' onClick={this.copySheetUrlToClipboard}>Table shared ✓</div>
-                }
-                {
-                    !authStore.loggedUser &&
-                    <a className='toolbar__share' onClick={this.onClick}>Share</a>
-                }
-                {
-                    appStore.mode === ModeEnum.login &&
-                    <LoginForm/>
-                }
-                {
-                    !PRODUCTION &&
-                    <a className='toolbar__randomize' onClick={this.randomizeSheet}>Randomize</a>
-                }
+                <div className="toolbar__left">
+                    <a className='toolbar__item' onClick={() => fileBrowserStore.newSheet()}>
+                        <svg
+                            className='toolbar__plusIcon'>
+                            <use xlinkHref="#plus"></use>
+                        </svg>
+                    </a>
+                </div>
+                <div className="toolbar__middle">
+                    <StyleSelector className='toolbar__item'/>
+                    <a className='toolbar__item' onClick={() => alert('nope')}>
+                        Underline
+                    </a>
+                    {
+                        !PRODUCTION &&
+                        <a className='toolbar__item' onClick={this.randomizeSheet}>Randomize</a>
+                    }
+                </div>
+                <div className="toolbar__right">
+                    {
+                        authStore.loggedUser &&
+                        <div className='toolbar__item' onClick={this.copySheetUrlToClipboard}>✓ Table shared</div>
+                    }
+                    {
+                        !authStore.loggedUser &&
+                        <a className='toolbar__item' onClick={this.onClick}>Share</a>
+                    }
+                    {
+                        appStore.mode === ModeEnum.login &&
+                        <LoginForm/>
+                    }
+                </div>
+
             </div>
         )
     }

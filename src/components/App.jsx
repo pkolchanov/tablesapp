@@ -11,7 +11,7 @@ import {
     TAB_KEY,
     UP_KEY
 } from "../helpers/keys";
-import {sheetStore} from "../stores/SheetStore";
+import {CellStyles, sheetStore} from "../stores/SheetStore";
 import {fileBrowserStore} from "../stores/FileBrowserStore";
 import FileBrowser from "./FileBrowser";
 import Sheet from "./Sheet";
@@ -120,7 +120,11 @@ class App extends React.Component {
             }
 
             if (e.metaKey && keyCode === 'B'.charCodeAt(0)) {
-                sheetStore.toggleBold();
+                sheetStore.toggleStyle(CellStyles.bold);
+            }
+
+            if (e.metaKey && keyCode === 'I'.charCodeAt(0)) {
+                sheetStore.toggleStyle(CellStyles.accent);
             }
 
             if (e.metaKey && keyCode === 'Y'.charCodeAt(0)) {

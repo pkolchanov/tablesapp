@@ -1,6 +1,6 @@
 import {action, computed, makeObservable, observable} from "mobx";
 
-export const CellStyles = Object.freeze({"bold": "bold", "normal": "normal"});
+export const CellStyles = Object.freeze({"bold": "bold", "normal": "normal", "accent": "accent", "subtle":"subtle"});
 export const CellModel = {'value': '', 'style': CellStyles.normal};
 
 class SheetStore {
@@ -322,11 +322,11 @@ class SheetStore {
     }
 
     @action
-    toggleBold() {
+    toggleStyle(toStyle) {
         let [fromR, toR] = this.selectionRectRows || [this.activeCoords[0], this.activeCoords[0]];
         let [fromC, toC] = this.selectionRectColums || [this.activeCoords[1], this.activeCoords[1]];
 
-        const to = this.data[fromR][fromC].style === CellStyles.normal ? CellStyles.bold : CellStyles.normal;
+        const to = this.data[fromR][fromC].style !== toStyle ? toStyle : CellStyles.normal;
 
         for (let i = fromR; i <= toR; i++) {
             for (let j = fromC; j <= toC; j++) {

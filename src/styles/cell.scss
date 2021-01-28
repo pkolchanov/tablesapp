@@ -38,10 +38,18 @@
     font-weight: 700;
 }
 
-.cell_isSubtile {
-    color: $color-light-gray;
+.cell_isSubtle {
+    color: $color-dark-gray;
 }
 
-.cell_isSubtile > .cell__input {
-    color: $color-light-gray;
+.cell_isSubtle > .cell__input {
+    color: $color-dark-gray;
+}
+
+.cell_isAccent {
+    color: $color-red;
+}
+
+.cell_isAccent > .cell__input {
+    color:  $color-red;
 }
