@@ -41,10 +41,18 @@ class Cell extends React.Component {
         const isTargetColumn = dndStore.targetColumn === c;
         const isTargetRow = dndStore.targetRow === r;
         const isDragged = dndStore.draggedColumn === c || dndStore.draggedRow === r;
+        const isUnderlined = dataDict.isUnderlined;
 
+        //todo refactor this shit
         let boxShadow = 'none';
+        if (isUnderlined) {
+            boxShadow = `0 -1px 0 0 ${color.colorDarkGray} inset`
+        }
         if (isActiveCoords) {
             boxShadow = `0 0 0 1px ${sheetStore.selectionStartCoords ? color.colorLightGray : color.colorBlue} inset`
+            if (isUnderlined){
+                boxShadow = boxShadow += `, 0 -2px 0 0 ${color.colorDarkGray} inset`
+            }
         }
         if (isTargetColumn) {
             boxShadow = `${c < dndStore.draggedColumn ? '' : '-'}2px 0 0 ${color.colorBlue} inset`;
@@ -55,7 +63,10 @@ class Cell extends React.Component {
             const bottomRight = `${c === selectionEndC ? -1 : 0}px ${r === selectionEndR ? -1 : 0}px 0 0 ${color.colorBlue} inset`
             let bs = [topLeft, bottomRight]
             if (isActiveCoords) {
-                bs.push(`0 0 0 1px ${color.colorLightGray} inset`)
+                bs.push(`0 0 0 1.5px ${color.colorBlue} inset`)
+            }
+            if (isUnderlined) {
+                bs.push(`0 ${r === selectionEndR ? -2 : -1}px 0 0 ${color.colorDarkGray} inset`)
             }
             boxShadow = bs.join(', ')
         }

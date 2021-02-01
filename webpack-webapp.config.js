@@ -16,15 +16,18 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin()
     ],
     module: {
-        rules: [{
-            test: /\.jsx?$/,
-            use: ['babel-loader'],
-            include: [path.join(__dirname, 'src_web'), path.join(__dirname, 'src')]
-        },
+        rules: [
             {
-                test: /\.css$/i,
-                use: ["style-loader", "css-loader"],
-            },]
+                test: /\.jsx?$/,
+                use: ['babel-loader'],
+                include: [path.join(__dirname, 'src_web'), path.join(__dirname, 'src')]
+            },
+            {
+                test: /\.(scss|css)$/,
+                use: ['style-loader', 'css-loader', 'sass-loader'],
+            },
+        ]
+
     },
     output: {
         filename: 'bundle.js',

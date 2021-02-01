@@ -1,7 +1,7 @@
 import {action, computed, makeObservable, observable} from "mobx";
 
-export const CellStyles = Object.freeze({"bold": "bold", "normal": "normal", "accent": "accent", "subtle":"subtle"});
-export const CellModel = {'value': '', 'style': CellStyles.normal};
+export const CellStyles = Object.freeze({"bold": "bold", "normal": "normal", "accent": "accent", "subtle": "subtle"});
+export const CellModel = {'value': '', 'style': CellStyles.normal, 'isUnderlined': false};
 
 class SheetStore {
     @observable data;
@@ -323,17 +323,28 @@ class SheetStore {
 
     @action
     toggleStyle(toStyle) {
+        this.changeSelectoin((firstCell) => firstCell.style !== toStyle ? toStyle : CellStyles.normal,
+            (i, j, to) => this.data[i][j].style = to)
+    }
+
+    @action
+    underline() {
+        this.changeSelectoin((firstCell) => !firstCell.isUnderlined,
+            (i, j, to) => this.data[i][j].isUnderlined = to);
+    }
+
+    changeSelectoin(firstCellGetter, updater) {
         let [fromR, toR] = this.selectionRectRows || [this.activeCoords[0], this.activeCoords[0]];
         let [fromC, toC] = this.selectionRectColums || [this.activeCoords[1], this.activeCoords[1]];
 
-        const to = this.data[fromR][fromC].style !== toStyle ? toStyle : CellStyles.normal;
-
+        const to = firstCellGetter(this.data[fromR][fromC]);
         for (let i = fromR; i <= toR; i++) {
             for (let j = fromC; j <= toC; j++) {
-                this.data[i][j].style = to;
+                updater(i, j, to);
             }
         }
     }
+
 }
 
 

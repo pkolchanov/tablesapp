@@ -10,6 +10,7 @@ import {action} from "mobx";
 import * as randomWords from 'random-words';
 import plus from '../icons/plus.svg';
 import '../styles/toolbar.scss';
+import {sheetStore} from "../stores/SheetStore";
 
 @observer
 class Toolbar extends React.Component {
@@ -32,7 +33,7 @@ class Toolbar extends React.Component {
                 </div>
                 <div className="toolbar__middle">
                     <StyleSelector className='toolbar__item'/>
-                    <a className='toolbar__item' onClick={() => alert('nope')}>
+                    <a className='toolbar__item' onClick={() => sheetStore.underline()}>
                         Underline
                     </a>
                     {
