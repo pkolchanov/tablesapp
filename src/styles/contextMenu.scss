@@ -1,0 +1,33 @@
+@import "color.module.scss";
+
+.contextMenu {
+  display: flex;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  flex-direction: column;
+  z-index: 4;
+  background: white;
+  //padding-top: 10px;
+  //padding-bottom: 10px;
+  border-radius: 5px;
+}
+
+.contextMenu__item {
+  cursor: pointer;
+  padding: 5px 15px;
+  display: flex;
+  flex-direction: row;
+}
+
+.contextMenu__item:hover {
+  background: $color-border;
+}
+
+.contextMenu__action {
+  flex-grow: 0;
+  width: 90px;
+}
+
+.contextMenu__shortcut {
+  color: $color-light-gray;
+}

@@ -94,8 +94,8 @@ class SheetStore {
     }
 
     @action
-    addRows(n = 1) {
-        this.data.push(...Array(n).fill(Array(this.ncolums).fill(Object.assign({}, CellModel))))
+    addRows(idx, n = 1) {
+        this.data.splice(idx, 0, ...Array(n).fill(Array(this.ncolums).fill(Object.assign({}, CellModel))))
     }
 
     @action
@@ -110,7 +110,7 @@ class SheetStore {
         const newActiveRow = this.activeCoords[0] + dr;
         if (newActiveRow >= 0) {
             if (newActiveRow >= this.nrows) {
-                this.addRows();
+                this.addRows(this.nrows);
             }
             this.activeCoords[0] = newActiveRow;
         }
@@ -310,7 +310,7 @@ class SheetStore {
             this.addColumns(Math.abs(diffCols));
         }
         if (diffRows < 0) {
-            this.addRows(Math.abs(diffRows));
+            this.addRows(this.nrows, Math.abs(diffRows));
         }
 
         for (let i = 0; i < matrix.length; i++) {

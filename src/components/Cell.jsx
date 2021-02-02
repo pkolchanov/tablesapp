@@ -4,6 +4,7 @@ import {sheetStore} from "../stores/SheetStore";
 import {appStore, ModeEnum} from "../stores/AppStore";
 import {dndStore} from "../stores/DnDStore";
 import TextareaWrapper from "./TexareaWrapper";
+import {contextMenuStore} from "../stores/ContextMenuStore";
 import color from '../styles/color.module.scss';
 import '../styles/cell.scss';
 
@@ -17,6 +18,7 @@ class Cell extends React.Component {
         this.handleDrop = this.handleDrop.bind(this);
         this.handleDragEnter = this.handleDragEnter.bind(this);
         this.handleDragOver = this.handleDragOver.bind(this);
+        this.handleContextMenu = this.handleContextMenu.bind(this);
     }
 
     render() {
@@ -50,7 +52,7 @@ class Cell extends React.Component {
         }
         if (isActiveCoords) {
             boxShadow = `0 0 0 1px ${sheetStore.selectionStartCoords ? color.colorBlueLight : color.colorBlue} inset`
-            if (isUnderlined){
+            if (isUnderlined) {
                 boxShadow = boxShadow += `, 0 -2px 0 0 ${color.colorLightGray} inset`
             }
         }
@@ -79,6 +81,7 @@ class Cell extends React.Component {
                  onDrop={this.handleDrop}
                  onDragEnter={this.handleDragEnter}
                  onDragOver={this.handleDragOver}
+                 onContextMenu={this.handleContextMenu}
             >
                 {(!isActive || this.props.isReadOnly) && dataDict.value}
                 {
@@ -134,6 +137,15 @@ class Cell extends React.Component {
             return;
         }
         dndStore.drop(this.props.coords);
+    }
+
+    handleContextMenu(e) {
+        if (this.props.isReadOnly) {
+            return;
+        }
+        e.preventDefault();
+        sheetStore.activateCell(this.props.coords);
+        contextMenuStore.toggle(e.pageX + 2, e.pageY + 2);
     }
 
 }

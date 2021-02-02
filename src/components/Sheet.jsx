@@ -6,6 +6,8 @@ import HeaderCell from "./HeaderCell";
 import RowBumper from "./RowBumper";
 import {appStore, ModeEnum} from "../stores/AppStore";
 import '../styles/sheet.css';
+import ContextMenu from "./ContextMenu";
+import {contextMenuStore} from "../stores/ContextMenuStore";
 
 @observer
 class Sheet extends React.Component {
@@ -33,6 +35,10 @@ class Sheet extends React.Component {
                                 <Cell key={`c${i}${j}`} coords={[i, j]} isReadOnly={this.props.isReadOnly}/>)
                         }
                     </div>)
+                }
+                {
+                    contextMenuStore.isOpen &&
+                    <ContextMenu/>
                 }
             </div>
         );
