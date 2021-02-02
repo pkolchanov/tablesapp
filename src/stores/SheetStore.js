@@ -49,7 +49,9 @@ class SheetStore {
         if ((this.selectionStartCoords &&
             this.selectionEndCoords &&
             this.selectionStartCoords[1] === this.selectionEndCoords[1] &&
-            this.selectionEndCoords[0] === this.nrows - 1)) {
+            this.selectionEndCoords[0] === this.nrows - 1) &&
+            this.selectionStartCoords[0] === 0
+        ) {
             return this.selectionStartCoords[1];
         }
         return false;
@@ -323,21 +325,21 @@ class SheetStore {
 
     @action
     toggleStyle(toStyle) {
-        this.changeSelectoin((firstCell) => firstCell.style !== toStyle ? toStyle : CellStyles.normal,
+        this.changeSelection((firstCell) => firstCell.style !== toStyle ? toStyle : CellStyles.normal,
             (i, j, to) => this.data[i][j].style = to)
     }
 
     @action
     underline() {
-        this.changeSelectoin((firstCell) => !firstCell.isUnderlined,
+        this.changeSelection((firstCell) => !firstCell.isUnderlined,
             (i, j, to) => this.data[i][j].isUnderlined = to);
     }
 
-    changeSelectoin(firstCellGetter, updater) {
+    changeSelection(toGetter, updater) {
         let [fromR, toR] = this.selectionRectRows || [this.activeCoords[0], this.activeCoords[0]];
         let [fromC, toC] = this.selectionRectColums || [this.activeCoords[1], this.activeCoords[1]];
 
-        const to = firstCellGetter(this.data[fromR][fromC]);
+        const to = toGetter(this.data[fromR][fromC]);
         for (let i = fromR; i <= toR; i++) {
             for (let j = fromC; j <= toC; j++) {
                 updater(i, j, to);

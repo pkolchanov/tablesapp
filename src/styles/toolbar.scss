@@ -15,16 +15,16 @@
   box-sizing: border-box;
 }
 
-.toolbar__left, .toolbar__middle, .toolbar__right{
+.toolbar__left, .toolbar__middle, .toolbar__right {
   align-items: center;
   display: flex;
 }
 
-.toolbar__left{
+.toolbar__left {
   flex-basis: 205px;
 }
 
-.toolbar__right{
+.toolbar__right {
   justify-content: flex-end;
   flex-grow: 1;
 }
@@ -34,13 +34,27 @@
   border-radius: 5px;
   margin-left: 5px;
   margin-right: 5px;
+
+  &:hover {
+    background: $color-border;
+  }
 }
 
-.toolbar__item:hover {
-  background: $color-border;
+.toolbar__item_isHighlighted {
+  animation: coolDown 2s normal cubic-bezier(0.230, 1.000, 0.320, 1.000);
 }
 
-.toolbar__plusIcon{
+@keyframes coolDown {
+  from {
+    background-color: $color-light-gray;
+  }
+  to {
+    background-color: $color-border
+  }
+}
+
+
+.toolbar__plusIcon {
   width: 14px;
   height: 14px;
 }

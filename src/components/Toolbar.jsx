@@ -24,31 +24,32 @@ class Toolbar extends React.Component {
         return (
             <div className='toolbar'>
                 <div className="toolbar__left">
-                    <a className='toolbar__item' onClick={() => fileBrowserStore.newSheet()}>
-                        <svg
-                            className='toolbar__plusIcon'>
-                            <use xlinkHref="#plus"></use>
-                        </svg>
-                    </a>
+                    <ToolbarItem
+                        onClick={() => fileBrowserStore.newSheet()}
+                        item={
+                            <svg
+                                className='toolbar__plusIcon'>
+                                <use xlinkHref="#plus"></use>
+                            </svg>
+                        }
+                    />
                 </div>
                 <div className="toolbar__middle">
                     <StyleSelector className='toolbar__item'/>
-                    <a className='toolbar__item' onClick={() => sheetStore.underline()}>
-                        Underline
-                    </a>
+                    <ToolbarItem item="Underline" onClick={() => sheetStore.underline()}/>
                     {
                         !PRODUCTION &&
-                        <a className='toolbar__item' onClick={this.randomizeSheet}>Randomize</a>
+                        <ToolbarItem item="Randomize" onClick={this.randomizeSheet}/>
                     }
                 </div>
                 <div className="toolbar__right">
                     {
                         authStore.loggedUser &&
-                        <div className='toolbar__item' onClick={this.copySheetUrlToClipboard}>✓ Table shared</div>
+                        <ToolbarItem item="✓ Table shared" onClick={this.copySheetUrlToClipboard}/>
                     }
                     {
                         !authStore.loggedUser &&
-                        <a className='toolbar__item' onClick={this.onClick}>Share</a>
+                        <ToolbarItem item="Share" onClick={this.onClick}/>
                     }
                     {
                         appStore.mode === ModeEnum.login &&
@@ -76,6 +77,29 @@ class Toolbar extends React.Component {
             }
         }
     }
+}
+
+function ToolbarItem(props) {
+    return (
+        <a className='toolbar__item'
+           onClick={(e) => {
+               addHighlight(e);
+               props.onClick()
+           }}>
+            {props.item}
+        </a>
+    );
+}
+
+function addHighlight(e) {
+    let target = e.target;
+    if (target.classList.value.indexOf("toolbar__item") === -1) {
+        target = target.parentElement;
+    }
+    target.classList.add("toolbar__item_isHighlighted");
+    setTimeout(() => {
+        target.classList.remove("toolbar__item_isHighlighted");
+    }, 100);
 }
 
 export default Toolbar;

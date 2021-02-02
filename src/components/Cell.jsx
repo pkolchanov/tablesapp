@@ -46,12 +46,12 @@ class Cell extends React.Component {
         //todo refactor this shit
         let boxShadow = 'none';
         if (isUnderlined) {
-            boxShadow = `0 -1px 0 0 ${color.colorDarkGray} inset`
+            boxShadow = `0 -1px 0 0 ${color.colorLightGray} inset`
         }
         if (isActiveCoords) {
-            boxShadow = `0 0 0 1px ${sheetStore.selectionStartCoords ? color.colorLightGray : color.colorBlue} inset`
+            boxShadow = `0 0 0 1px ${sheetStore.selectionStartCoords ? color.colorBlueLight : color.colorBlue} inset`
             if (isUnderlined){
-                boxShadow = boxShadow += `, 0 -2px 0 0 ${color.colorDarkGray} inset`
+                boxShadow = boxShadow += `, 0 -2px 0 0 ${color.colorLightGray} inset`
             }
         }
         if (isTargetColumn) {
@@ -66,7 +66,7 @@ class Cell extends React.Component {
                 bs.push(`0 0 0 1.5px ${color.colorBlue} inset`)
             }
             if (isUnderlined) {
-                bs.push(`0 ${r === selectionEndR ? -2 : -1}px 0 0 ${color.colorDarkGray} inset`)
+                bs.push(`0 ${r === selectionEndR ? -2 : -1}px 0 0 ${color.colorLightGray} inset`)
             }
             boxShadow = bs.join(', ')
         }
