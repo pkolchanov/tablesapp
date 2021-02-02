@@ -24,20 +24,21 @@ class HeaderCell extends React.Component {
         return (
             <div className={`headerCell ${isSelected ? ' headerCell_isSelected' : ''}`}
                  style={{width: sheetStore.columnWidths[this.props.c] + 'px'}}
-                 onDragEnd={this.onDragEnd}>
+                 onDragEnd={this.onDragEnd}
+                 onDragOver={this.onDragOver}
+                 onDragEnter={this.onDragEnter}
+                 onDrop={this.onDrop}
+            >
                 <div draggable className="headerCell__filler"
                      style={{width: sheetStore.columnWidths[this.props.c] - 5 + 'px'}} //5 px – half of resizer
                      onClick={this.onClick}
-                     onDragStart={this.onDragStart}
-                     onDragOver={this.onDragOver}
-                     onDragEnter={this.onDragEnter}
-                     onDrop={this.onDrop}>
+                     onDragStart={this.onDragStart}>
                 </div>
                 {
                     !isSelected &&
                     !nextSelected &&
                     <div className={`headerCell__resizer ${isSelected ? 'headerCell__resizer_isSelected' : ''}`}
-                         onMouseDown={this.onMouseDown}>|</div>
+                         onMouseDown={this.onMouseDown} >|</div>
                 }
 
             </div>
