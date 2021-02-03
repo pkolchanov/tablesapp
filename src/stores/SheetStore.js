@@ -68,6 +68,14 @@ class SheetStore {
         return false;
     }
 
+    isCellInsideSelection(coords) {
+        const [selectionStartC, selectionEndC] = this.selectionRectColums || [];
+        const [selectionStartR, selectionEndR] = this.selectionRectRows || [];
+        const [r, c] = coords;
+        return ((selectionStartR <= r && r <= selectionEndR)) &&
+            ((selectionStartC <= c && c <= selectionEndC));
+    }
+
     constructor() {
         makeObservable(this);
     }
@@ -86,11 +94,11 @@ class SheetStore {
     }
 
     @action
-    addColumns(n = 1) {
+    addColumns(idx, n = 1) {
         const emptyArr = Array(n).fill(Object.assign({}, CellModel));
-        const widthArr = Array(n).fill(this.columnWidths);
-        this.data.forEach(r => r.push(...emptyArr));
-        this.columnWidths = this.columnWidths.concat(widthArr);
+        const widthArr = Array(n).fill(this.defaultWidth);
+        this.data.forEach(r => r.splice(idx, 0, ...emptyArr));
+        this.columnWidths.splice(idx, 0, widthArr);
     }
 
     @action
@@ -118,7 +126,7 @@ class SheetStore {
         const newActiveRowCol = this.activeCoords[1] + dc;
         if (newActiveRowCol >= 0) {
             if (newActiveRowCol >= this.ncolums) {
-                this.addColumns();
+                this.addColumns(this.ncolums);
             }
             this.activeCoords[1] = newActiveRowCol;
         }
@@ -282,9 +290,14 @@ class SheetStore {
         this.data.splice(this.activeCoords[0], 1);
     }
 
+    @action
+    removeColumn() {
+        this.data.forEach(r => r.splice(this.activeCoords[1], 1));
+    }
+
     copy() {
-        const [fromR, toR] = this.selectionRectRows;
-        const [fromC, toC] = this.selectionRectColums;
+        let [fromR, toR] = this.selectionRectRows || [this.activeCoords[0], this.activeCoords[0]];
+        let [fromC, toC] = this.selectionRectColums || [this.activeCoords[1], this.activeCoords[1]];
 
         const selectionSlice = this.data.slice(fromR, toR + 1)
             .map(r => r.slice(fromC, toC + 1));
@@ -301,13 +314,14 @@ class SheetStore {
     paste(text) {
         const usePrevStyles = this.prevCSV === text;
         const [activeR, activeC] = this.activeCoords;
-        const matrix = text.split('\n')
-            .map(s => s.split('\t'));
+        const matrix = text.indexOf('\t') !== -1 ?
+            text.split('\n').map(s => s.split('\t')) :
+            [[text]];
 
         const diffRows = this.nrows - (activeR + matrix.length);
         const diffCols = this.ncolums - (activeC + matrix[0].length);
         if (diffCols < 0) {
-            this.addColumns(Math.abs(diffCols));
+            this.addColumns(this.ncolums, Math.abs(diffCols));
         }
         if (diffRows < 0) {
             this.addRows(this.nrows, Math.abs(diffRows));

@@ -37,8 +37,7 @@ class Cell extends React.Component {
 
         const isSelected = appStore.mode === ModeEnum.edit &&
             sheetStore.selectionEndCoords &&
-            ((selectionStartR <= r && r <= selectionEndR)) &&
-            ((selectionStartC <= c && c <= selectionEndC));
+            sheetStore.isCellInsideSelection(this.props.coords);
 
         const isTargetColumn = dndStore.targetColumn === c;
         const isTargetRow = dndStore.targetRow === r;
@@ -103,11 +102,13 @@ class Cell extends React.Component {
         }
     }
 
-    handleMouseDown() {
+    handleMouseDown(e) {
         if (this.props.isReadOnly) {
             return;
         }
-        sheetStore.startSelection(this.props.coords);
+        if (e.button === 0) {
+            sheetStore.startSelection(this.props.coords);
+        }
     }
 
     handleMouseEnter() {
@@ -144,7 +145,9 @@ class Cell extends React.Component {
             return;
         }
         e.preventDefault();
-        sheetStore.activateCell(this.props.coords);
+        if (!sheetStore.isCellInsideSelection(this.props.coords)) {
+            sheetStore.activateCell(this.props.coords);
+        }
         contextMenuStore.toggle(e.pageX + 2, e.pageY + 2);
     }
 

@@ -19,13 +19,17 @@
   flex-direction: row;
 }
 
+.contextMenu__group > .contextMenu__item:last-child{
+  border-bottom: 1px solid $color-border;
+}
+
 .contextMenu__item:hover {
   background: $color-border;
 }
 
 .contextMenu__action {
   flex-grow: 0;
-  width: 90px;
+  width: 110px;
 }
 
 .contextMenu__shortcut {

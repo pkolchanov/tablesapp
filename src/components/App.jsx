@@ -93,9 +93,6 @@ class App extends React.Component {
 
             if (e.metaKey && keyCode === 'V'.charCodeAt(0)) {
                 const text = clipboard.readText();
-                if (text.indexOf('\t') === -1) {
-                    return;
-                }
                 e.preventDefault();
                 if (target && isTextArea) {
                     document.activeElement.blur();
