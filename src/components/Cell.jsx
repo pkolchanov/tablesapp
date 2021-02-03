@@ -38,7 +38,6 @@ class Cell extends React.Component {
         const isSelected = appStore.mode === ModeEnum.edit &&
             sheetStore.selectionEndCoords &&
             sheetStore.isCellInsideSelection(this.props.coords);
-
         const isTargetColumn = dndStore.targetColumn === c;
         const isTargetRow = dndStore.targetRow === r;
         const isDragged = dndStore.draggedColumn === c || dndStore.draggedRow === r;
