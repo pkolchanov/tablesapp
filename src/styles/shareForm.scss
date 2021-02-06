@@ -1,0 +1,78 @@
+@import "color.module.scss";
+
+.shareForm {
+  position: fixed;
+  background: white;
+  top: 40px;
+  right: 25px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  z-index: 4;
+  box-sizing: border-box;
+}
+
+.shareForm__top {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $color-border;
+  padding-top: 14px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.shareForm__toggle {
+  margin-left: 10px;
+}
+
+.shareForm__bottom {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 14px;
+  padding-bottom: 24px;
+}
+
+.shareForm__link {
+  width: 100%;
+  background: white;
+  outline: none;
+  border: none;
+  padding: 0;
+  line-height: 19px;
+}
+
+.shareForm__linkLabel {
+  color: $color-dark-gray;
+  font-size: 10px;
+  margin-bottom: 2px;
+}
+
+.shareForm__copyToClipboard {
+  margin-top: 12px;
+  background: $color-green;
+  color: white;
+  font-weight: 500;
+  height: 30px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 30px;
+
+  &:hover {
+    background: $color-green-light;
+  }
+}
+
+.shareForm__copyToClipboard_isHighlighted {
+  animation: coolDownGreen 2s normal cubic-bezier(0.230, 1.000, 0.320, 1.000);
+}
+
+@keyframes coolDownGreen {
+  from {
+    background-color: $color-green;
+  }
+  to {
+    background-color: $color-green-light;
+  }
+}

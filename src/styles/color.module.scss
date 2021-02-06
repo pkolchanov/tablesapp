@@ -3,9 +3,12 @@ $color-dark-gray: #999999;
 $color-light-gray: #CCCCCC;
 $color-border: #E6E6E6;
 $color-toolbar: #F6F6F6;
+$color-toolbar-button: #595959;
 $color-blue: #009ADE;
 $color-blue-light: #C7E6F8;
 $color-red: #EC4B31;
+$color-green: #26B434;
+$color-green-light: #52CE5E;
 
 :export {
   colorText: $color-text;
@@ -16,4 +19,6 @@ $color-red: #EC4B31;
   colorBlue: $color-blue;
   colorBlueLight: $color-blue-light;
   colorRed: $color-red;
+  colorGreen: $color-green;
+  colorGreenLight: $color-green-light;
 }

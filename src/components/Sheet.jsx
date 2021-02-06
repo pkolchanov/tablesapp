@@ -29,7 +29,10 @@ class Sheet extends React.Component {
                 }
                 {Array(sheetStore.nrows).fill().map((_, i) =>
                     <div className="sheet__row" key={`r${i}`}>
-                        <RowBumper r={i}/>
+                        {
+                            !this.props.isReadOnly &&
+                            <RowBumper r={i}/>
+                        }
                         {
                             Array(sheetStore.ncolums).fill().map((_, j) =>
                                 <Cell key={`c${i}${j}`} coords={[i, j]} isReadOnly={this.props.isReadOnly}/>)

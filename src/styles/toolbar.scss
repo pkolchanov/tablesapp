@@ -34,6 +34,7 @@
   border-radius: 5px;
   margin-left: 5px;
   margin-right: 5px;
+  color: $color-toolbar-button;
 
   &:hover {
     background: $color-border;
@@ -57,4 +58,19 @@
 .toolbar__plusIcon {
   width: 14px;
   height: 14px;
+}
+
+.toolbar__diceIcon {
+  display: inline-flex;
+  align-self: center;
+  width: 17px;
+  height: 16px;
+  position: relative;
+  top: -1px;
+  margin-right: 2px;
+}
+
+.toolbar__iconWrapper {
+  display: inline-flex;
+  align-self: center;
 }
