@@ -1,156 +1,153 @@
 @import "color.module.scss";
 
 .loginForm {
-    position: fixed;
-    background: white;
-    top: 40px;
-    right: 25px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    width: 270px;
-    height: 170px;
-    z-index: 4;
-    padding-left: 20px;
-    padding-right: 20px;
-    box-sizing: border-box;
+  position: fixed;
+  background: white;
+  top: 40px;
+  right: 25px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  width: 270px;
+  height: 170px;
+  z-index: 4;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
 }
 
 .loginForm__email {
-    display: flex;
-    align-items: center;
-    border: 1px solid $color-border;
-    border-radius: 3px;
-    padding-left: 9px;
-    width: 230px;
-    box-sizing: border-box;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  border: 1px solid $color-border;
+  border-radius: 3px;
+  padding-left: 9px;
+  width: 230px;
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .loginForm__emailInput {
-    background: white;
-    display: block;
-    width: 100%;
-    line-height: 26px;
-    height: 26px;
-    padding: 0;
-    border: none;
-    overflow: auto;
-    outline: none;
-    box-shadow: none;
-    resize: none;
-    color: $color-text;
-    font-size: 14px;
-    font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background: white;
+  display: block;
+  width: 100%;
+  line-height: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  overflow: auto;
+  outline: none;
+  box-shadow: none;
+  resize: none;
 }
 
 .loginForm__emailInput::placeholder {
-    color: $color-light-gray;
+  color: $color-light-gray;
 }
 
 .loginForm__header {
-    //color: #2d2d2d;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 40px;
+  //color: #2d2d2d;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 40px;
 }
 
 .loginForm__caption {
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    color: $color-dark-gray;
-    text-align: center;
-    position: absolute;
-    bottom: 15px;
-    width: 260px;
-    padding-left: 10px;
-    padding-right: 10px;
-    box-sizing: border-box;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: $color-dark-gray;
+  text-align: center;
+  position: absolute;
+  bottom: 15px;
+  width: 260px;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
 }
 
 .loginForm__caption_extraPadding {
-    bottom: 20px;
+  bottom: 20px;
 }
 
 .loginForm__loginButton {
-    display: flex;
-    align-items: center;
-    height: 26px;
-    padding-right: 9px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 26px;
+  padding-right: 9px;
+  cursor: pointer;
 }
 
 .loginForm__loginIcon {
-    width: 18px;
-    height: 18px;
-    opacity: 0.7;
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
 }
 
 .loginForm__loginButton:hover > .loginForm__loginIcon {
-    opacity: 1;
+  opacity: 1;
 }
 
 .loginForm__loginIcon_inactive {
-    opacity: 0.5
+  opacity: 0.5
 }
 
 .loginForm__error {
-    font-size: 10px;
-    color: $color-red;
-    position: absolute;
-    top: 105px;
+  font-size: 10px;
+  color: $color-red;
+  position: absolute;
+  top: 105px;
 }
 
 .loginForm__spinnerWrapper {
-    padding-right: 9px;
+  padding-right: 9px;
 }
 
 .loginForm__checkMailbox {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    top: 50%;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
 }
 
 .loginForm__secondStep {
-    animation: fadein 0.3s;
+  animation: fadein 0.3s;
 }
 
 @keyframes fadein {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .loginForm__reset {
-    cursor: pointer;
-    border-bottom: 1px solid #CCCCCC;
+  cursor: pointer;
+  border-bottom: 1px solid #CCCCCC;
 }
 
 .loginForm__reset:hover {
-    color: $color-blue;
-    border-bottom: 1px solid $color-blue-light;
+  color: $color-blue;
+  border-bottom: 1px solid $color-blue-light;
 }
 
 .loginForm__thirdStep {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    margin-left: auto;
-    margin-right: auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .loginForm__centeredSpinner {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }

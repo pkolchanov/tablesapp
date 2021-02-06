@@ -1,17 +1,23 @@
 @import "color.module.scss";
 
 body {
-    color: $color-text;
-    font-size: 14px;
-    font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    margin: 0;
+  color: $color-text;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  margin: 0;
 }
 
 .app__wrapper {
-    display: flex;
+  display: flex;
 }
 
 .app__left {
-    height: 100vh;
-    overflow-y: scroll;
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+input {
+  color: $color-text;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }

@@ -5,6 +5,7 @@ import firebase from "firebase/app";
 import "firebase/database";
 import {v4 as uuidv4} from 'uuid';
 import {authStore} from "./AuthStore";
+import {firebaseConfig} from "../helpers/firebaseConfig";
 
 const {ipcRenderer: ipc} = require('electron');
 
@@ -13,6 +14,8 @@ class FileBrowserStore {
     currentSheetId;
     @observable
     sheets;
+    @observable
+    isPublishing;
 
     history = [];
     future = [];
@@ -31,6 +34,11 @@ class FileBrowserStore {
     get flatSheets() {
         return Object.entries(this.sheets)
             .sort(([, a], [, b]) => a.lastUpdate > b.lastUpdate ? -1 : 1);
+    }
+
+    @computed
+    get currentSheetUrl() {
+        return (PRODUCTION ? `https://${firebaseConfig.authDomain}` : 'http://localhost:5000') + `/${fileBrowserStore.currentSheetId}`
     }
 
     allowLastUpdate = true;
@@ -66,12 +74,29 @@ class FileBrowserStore {
         const serialized = JSON.stringify(this.sheets);
         this.history.push(serialized);
         ipc.send('writeContent', serialized);
+        if (this.currentSheet.isPublished) {
+            this.pushToFirebase();
+        }
+    }
+
+    @action
+    pushToFirebase() {
         if (authStore.loggedUser && authStore.loggedUser.uid) {
+            this.isPublishing = true;
             firebase.database().ref('tables/' + this.currentSheetId)
                 .set({
                     ...this.currentSheet,
                     "author": {"uid": authStore.loggedUser.uid}
-                });
+                }).then(action(() => this.isPublishing = false));
+        }
+    }
+
+    @action
+    removeFromFirebase() {
+        if (authStore.loggedUser && authStore.loggedUser.uid) {
+            this.isPublishing = true;
+            firebase.database().ref('tables/' + this.currentSheetId)
+                .remove().then(action(() => this.isPublishing = false));
         }
     }
 
@@ -137,7 +162,8 @@ class FileBrowserStore {
                 Array(10).fill().map((_) => Object.assign({}, CellModel))),
             'columnWidths': Array(10).fill().map((_) => sheetStore.defaultWidth),
             'lastUpdate': Date.now(),
-            'activeCoords': [0, 0]
+            'activeCoords': [0, 0],
+            'isPublished': true
         };
         this.currentSheetId = newId;
         this.preserve();
@@ -170,6 +196,18 @@ class FileBrowserStore {
             this.currentSheetId = this.flatSheets[newIdx][0];
             this.refActiveSheet();
         }
+    }
+
+    @action
+    togglePublishing() {
+        if (!this.currentSheet.isPublished) {
+            this.currentSheet.isPublished = true;
+            this.pushToFirebase();
+        } else {
+            this.currentSheet.isPublished = false;
+            this.removeFromFirebase();
+        }
+
     }
 }
 

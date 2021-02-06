@@ -2,22 +2,23 @@ import {observer} from "mobx-react";
 import React from "react";
 import {authStore} from "../stores/AuthStore";
 import {fileBrowserStore} from "../stores/FileBrowserStore";
-import {firebaseConfig} from "../helpers/firebaseConfig";
 import StyleSelector from "./StyleSelector";
 import LoginForm from "./LoginForm";
 import {appStore, ModeEnum} from "../stores/AppStore";
+import {sheetStore} from "../stores/SheetStore";
 import {action} from "mobx";
 import * as randomWords from 'random-words';
 import plus from '../icons/plus.svg';
+import dice from '../icons/dice.svg';
 import '../styles/toolbar.scss';
-import {sheetStore} from "../stores/SheetStore";
+import ShareForm from "./ShareForm";
 
 @observer
 class Toolbar extends React.Component {
 
     constructor(props) {
         super(props);
-        this.onClick = this.onClick.bind(this);
+        this.changeMode = this.changeMode.bind(this);
     }
 
     render() {
@@ -39,21 +40,33 @@ class Toolbar extends React.Component {
                     <ToolbarItem item="Underline" onClick={() => sheetStore.underline()}/>
                     {
                         !PRODUCTION &&
-                        <ToolbarItem item="Randomize" onClick={this.randomizeSheet}/>
+                        <ToolbarItem item={
+                            <span className='toolbar__iconWrapper'>
+                                <svg className='toolbar__diceIcon'>
+                                    <use xlinkHref="#dice"></use>
+                                </svg>
+                                Randomize
+                            </span>
+                        } onClick={this.randomizeSheet}/>
                     }
                 </div>
                 <div className="toolbar__right">
                     {
                         authStore.loggedUser &&
-                        <ToolbarItem item="✓ Table shared" onClick={this.copySheetUrlToClipboard}/>
+                        fileBrowserStore.currentSheet.isPublished &&
+                        <ToolbarItem item={`✓ Table shared`} onClick={() => this.changeMode(ModeEnum.share)}/>
                     }
                     {
-                        !authStore.loggedUser &&
-                        <ToolbarItem item="Share" onClick={this.onClick}/>
+                        (!authStore.loggedUser || !fileBrowserStore.currentSheet.isPublished) &&
+                        <ToolbarItem item="Share" onClick={() => this.onShareClick()}/>
                     }
                     {
                         appStore.mode === ModeEnum.login &&
                         <LoginForm/>
+                    }
+                    {
+                        appStore.mode === ModeEnum.share &&
+                        <ShareForm/>
                     }
                 </div>
 
@@ -61,12 +74,16 @@ class Toolbar extends React.Component {
         )
     }
 
-    onClick() {
-        appStore.changeMode(ModeEnum.login);
+    changeMode(mode) {
+        appStore.changeMode(mode);
     }
 
-    copySheetUrlToClipboard() {
-        navigator.clipboard.writeText((PRODUCTION ? `https://${firebaseConfig.authDomain}` : 'http://localhost:5000') + `/${fileBrowserStore.currentSheetId}`)
+    onShareClick() {
+        if (!authStore.loggedUser) {
+            this.changeMode(ModeEnum.login)
+        } else {
+            this.changeMode(ModeEnum.share);
+        }
     }
 
     @action

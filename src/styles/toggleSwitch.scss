@@ -1,0 +1,50 @@
+@import "color.module.scss";
+
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 25px;
+}
+
+.toggleSwitch__input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggleSwitch__slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $color-light-gray;
+  transition: .4s;
+  border-radius: 21px;
+}
+
+.toggleSwitch__slider:before {
+  position: absolute;
+  content: "";
+  height: 21px;
+  width: 21px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: .1s;
+}
+
+.toggleSwitch__input:checked + .toggleSwitch__slider {
+  background-color: $color-green;
+}
+
+.toggleSwitch__input:focus + .toggleSwitch__slider {
+  box-shadow: 0 0 1px $color-green;
+}
+
+.toggleSwitch__input:checked + .toggleSwitch__slider:before {
+  transform: translateX(17px);
+}

@@ -67,7 +67,7 @@ class AuthStore {
                 this.enteredEmail = "";
                 this.loggedUser = result;
                 this.isPending = false;
-                appStore.mode = ModeEnum.edit;
+                appStore.mode = ModeEnum.share;
             })
             .catch((error) => {
                 this.magicLink = "";
