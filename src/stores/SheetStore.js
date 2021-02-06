@@ -135,6 +135,7 @@ class SheetStore {
             this.resetSelection();
         } else {
             const newSelectionEndR = this.selectionEndCoords[0] + dr;
+            //todo могу увести за 0
             if (newSelectionEndR >= 0) {
                 this.selectionEndCoords[0] = newSelectionEndR;
             }

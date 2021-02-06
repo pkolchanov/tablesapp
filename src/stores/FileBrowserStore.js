@@ -55,7 +55,7 @@ class FileBrowserStore {
             this.newSheet();
         }
         this.history.push(JSON.stringify(this.sheets));
-        reaction(() => JSON.stringify([this.currentSheetId, this.currentSheet.sheetData, this.currentSheet.columnWidths, sheetStore.resizingColumnNum]),
+        reaction(() => JSON.stringify([this.currentSheetId, this.currentSheet.sheetData, this.currentSheet.columnWidths, sheetStore.resizingColumnNum, this.currentSheet.isPublished]),
             () => {
                 // todo find out way how to separate switch updates and actual data updates
                 if (!this.allowLastUpdate) {
@@ -163,7 +163,7 @@ class FileBrowserStore {
             'columnWidths': Array(10).fill().map((_) => sheetStore.defaultWidth),
             'lastUpdate': Date.now(),
             'activeCoords': [0, 0],
-            'isPublished': true
+            'isPublished': false
         };
         this.currentSheetId = newId;
         this.preserve();

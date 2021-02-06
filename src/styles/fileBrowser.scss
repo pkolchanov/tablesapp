@@ -1,44 +1,62 @@
 @import "color.module.scss";
 
 .fileBrowser {
-    border-right: 1px solid $color-border;
-    flex: 0 0 230px;
-    height: 100vh;
-    overflow-y: scroll;
-    padding-left: 10px;
-    padding-right: 10px;
-    user-select: none;
+  border-right: 1px solid $color-border;
+  flex: 0 0 230px;
+  height: 100vh;
+  overflow-y: scroll;
+  padding-left: 10px;
+  padding-right: 10px;
+  user-select: none;
 }
 
 .fileBrowser_active > .fileBrowser__file_selected {
-    background: $color-blue-light;
+  background: $color-blue-light;
 }
 
 .fileBrowser__file {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .fileBrowser__file_selected {
-    background: $color-border;
-    border-radius: 5px;
+  background: $color-border;
+  border-radius: 5px;
 }
 
 .fileBrowser__preview {
-    font-size: 12px;
-    font-weight: bold;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    height: 14px;
+  font-size: 12px;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 14px;
 }
 
 .fileBrowser__lastUpdate {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .fileBrowser__spacer {
-    height: 30px;
-    -webkit-app-region: drag;
+  height: 30px;
+  -webkit-app-region: drag;
+}
+
+.fileBrowser__itemWrapper {
+  display: flex;
+}
+
+.fileBrowser__itemLeft {
+  width: 20px;
+  justify-content: flex-end;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.fileBrowser__sharedIcon {
+  width: 12px;
+  height: 12px;
+  position: relative;
+  top: 2px;
+  right: 2px;
 }
