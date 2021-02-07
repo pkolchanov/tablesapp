@@ -45,6 +45,74 @@ class SheetStore {
     }
 
     @computed
+    get boundingBox() {
+        let startIndex = this.findFirstNonEmptyCorner();
+        let endIndex = this.findLastNonEmptyCorner();
+        return [[startIndex[0], endIndex[0]], [startIndex[1], endIndex[1]]]
+    }
+
+    findFirstNonEmptyCorner() {
+        //ᕕ( ᐛ )ᕗ
+        let a;
+        for (let i = 0; i < this.nrows; i++) {
+            for (let j = 0; j < this.ncolums; j++) {
+                if (this.data[i][j].value) {
+                    a = [i, j];
+                    break;
+                }
+            }
+            if (a) {
+                break;
+            }
+        }
+        a = a || [0, 0];
+        let b;
+        for (let j = 0; j < this.ncolums; j++) {
+            for (let i = 0; i < this.nrows; i++) {
+                if (this.data[i][j].value) {
+                    b = [i, j];
+                }
+            }
+            if (b) {
+                break;
+            }
+        }
+        b = b || [0, 0];
+        return [Math.min(a[0], b[0]), Math.min(a[1], b[1])]
+    }
+
+    findLastNonEmptyCorner() {
+        // ᕕ( ᐛ )ᕗ
+        let a;
+        for (let i = this.nrows - 1; i > 0; i--) {
+            for (let j = this.ncolums - 1; j >= 0; j--) {
+                if (this.data[i][j].value) {
+                    a = [i, j];
+                    break;
+                }
+            }
+            if (a) {
+                break;
+            }
+        }
+        a = a || [this.nrows - 1, this.ncolums - 1];
+        let b;
+        for (let j = this.ncolums - 1; j >= 0; j--) {
+            for (let i = this.nrows - 1; i > 0; i--) {
+                if (this.data[i][j].value) {
+                    b = [i, j];
+                    break;
+                }
+            }
+            if (b) {
+                break;
+            }
+        }
+        b = b || [this.nrows - 1, this.ncolums - 1];
+        return [Math.max(a[0], b[0]), Math.max(a[1], b[1])]
+    }
+
+    @computed
     get selectedColumn() {
         if ((this.selectionStartCoords &&
             this.selectionEndCoords &&
@@ -135,7 +203,6 @@ class SheetStore {
             this.resetSelection();
         } else {
             const newSelectionEndR = this.selectionEndCoords[0] + dr;
-            //todo могу увести за 0
             if (newSelectionEndR >= 0) {
                 this.selectionEndCoords[0] = newSelectionEndR;
             }
@@ -322,7 +389,7 @@ class SheetStore {
     paste(text) {
         const usePrevStyles = this.prevCSV === text;
         const [activeR, activeC] = this.activeCoords;
-        const matrix = text.indexOf('\t') !== -1 ?
+        const matrix = (text.indexOf('\t') !== -1 ||  text.indexOf('\n') !== -1) ?
             text.split('\n').map(s => s.split('\t')) :
             [[text]];
 

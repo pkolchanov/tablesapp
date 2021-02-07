@@ -30,7 +30,8 @@ class Cell extends React.Component {
 
         const isActiveCoords = appStore.mode === ModeEnum.edit &&
             r === activeR &&
-            c === activeC
+            c === activeC &&
+            !this.props.isReadOnly;
         const isActive = isActiveCoords &&
             !sheetStore.selectionStartCoords &&
             !dndStore.draggedColumn;

@@ -4,8 +4,13 @@
     overflow-y: auto;
 }
 
-.sheet_isReadonly {
-    height: 100vh;
+.sheet_isReadonly::-webkit-scrollbar {
+    display: none;
+}
+
+.sheet_isReadonly{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .sheet__row {

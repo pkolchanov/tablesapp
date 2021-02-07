@@ -5,7 +5,7 @@ import Sheet from "../src/components/Sheet";
 import {action} from "mobx";
 import firebase from "firebase/app";
 import "firebase/database";
-import './styles/app.css';
+import './styles/app.scss';
 import {firebaseConfig} from "../src/helpers/firebaseConfig";
 
 firebase.initializeApp(firebaseConfig);
@@ -29,6 +29,9 @@ table_ref.once('value').then((snapshot) => {
     render(
         <div className="app">
             <Sheet isReadOnly={true}/>
+            <a href="/" className="app__watermark" >
+                Created with <span className="app__watermarkLink">Tablesapp</span>
+            </a>
         </div>,
         document.getElementById("root")
     );

@@ -1,0 +1,32 @@
+@import "../../src/styles/color.module.scss";
+
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 100vh;
+}
+
+body {
+  color: $color-text;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  margin: 0;
+}
+
+.app__watermark {
+  position: fixed;
+  bottom: 8px;
+  right: 15px;
+  margin: 0 auto;
+  color: $color-dark-gray;
+}
+
+.app__watermarkLink {
+  border-bottom: 1px solid $color-light-gray;
+}
+
+.app__watermark {
+  text-decoration: none;
+}

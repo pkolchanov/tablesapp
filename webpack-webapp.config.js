@@ -6,7 +6,9 @@ module.exports = {
     mode: 'development',
     devServer: {
         contentBase: './dist_webapp',
-        historyApiFallback: true,
+        historyApiFallback: {
+            index: 'app.html'
+        },
         port: 3000
     },
     resolve: {

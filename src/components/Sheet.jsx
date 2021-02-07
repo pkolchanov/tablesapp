@@ -9,6 +9,8 @@ import '../styles/sheet.css';
 import ContextMenu from "./ContextMenu";
 import {contextMenuStore} from "../stores/ContextMenuStore";
 
+let range = (start, stop, step = 1) => Array(stop - start + 1).fill(start).map((x, y) => x + y * step)
+
 @observer
 class Sheet extends React.Component {
     constructor(props) {
@@ -16,6 +18,7 @@ class Sheet extends React.Component {
     }
 
     render() {
+        const [[fromR, toR], [fromC, toC]] = this.props.isReadOnly ? sheetStore.boundingBox : [[0, sheetStore.nrows - 1], [0, sheetStore.ncolums - 1]];
         return (
             <div className={`sheet ${this.props.isReadOnly ? 'sheet_isReadonly' : ''}`}
                  onClick={() => appStore.changeMode(ModeEnum.edit)}>
@@ -23,21 +26,24 @@ class Sheet extends React.Component {
                     !this.props.isReadOnly &&
                     <div className="sheet__headerRow">
                         <div className="rowBumper"/>
-                        {Array(sheetStore.ncolums).fill().map((_, i) =>
-                            <HeaderCell key={`hc${i}`} c={i}/>)}
+                        {
+                            range(fromC, toC).map((j) =>
+                                <HeaderCell key={`hc${j}`} c={j}/>)
+                        }
                     </div>
                 }
-                {Array(sheetStore.nrows).fill().map((_, i) =>
-                    <div className="sheet__row" key={`r${i}`}>
-                        {
-                            !this.props.isReadOnly &&
-                            <RowBumper r={i}/>
-                        }
-                        {
-                            Array(sheetStore.ncolums).fill().map((_, j) =>
-                                <Cell key={`c${i}${j}`} coords={[i, j]} isReadOnly={this.props.isReadOnly}/>)
-                        }
-                    </div>)
+                {
+                    range(fromR, toR).map((i) =>
+                        <div className="sheet__row" key={`r${i}`}>
+                            {
+                                !this.props.isReadOnly &&
+                                <RowBumper r={i}/>
+                            }
+                            {
+                                range(fromC, toC).map((j) =>
+                                    <Cell key={`c${i}${j}`} coords={[i, j]} isReadOnly={this.props.isReadOnly}/>)
+                            }
+                        </div>)
                 }
                 {
                     contextMenuStore.isOpen &&
