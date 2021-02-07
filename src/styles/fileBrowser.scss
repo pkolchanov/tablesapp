@@ -47,8 +47,8 @@
 }
 
 .fileBrowser__itemLeft {
-  width: 20px;
-  justify-content: flex-end;
+  width: 25px;
+  justify-content: center;
   display: flex;
   box-sizing: border-box;
 }
@@ -58,5 +58,5 @@
   height: 12px;
   position: relative;
   top: 2px;
-  right: 2px;
+  left: 1px;
 }

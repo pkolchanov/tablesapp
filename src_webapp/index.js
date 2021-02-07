@@ -27,7 +27,7 @@ table_ref.on('value', refSheet);
 table_ref.once('value').then((snapshot) => {
     refSheet(snapshot);
     render(
-        <div className={"app"}>
+        <div className="app">
             <Sheet isReadOnly={true}/>
         </div>,
         document.getElementById("root")

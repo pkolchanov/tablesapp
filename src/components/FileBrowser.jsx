@@ -25,7 +25,7 @@ class FileBrowser extends React.Component {
                         <div className='fileBrowser__itemWrapper'>
                             <div className='fileBrowser__itemLeft'>
                                 {
-                                    fileBrowserStore.currentSheet.isPublished &&
+                                    value.isPublished &&
                                     <svg className='fileBrowser__sharedIcon'>
                                         <use xlinkHref="#link"></use>
                                     </svg>
