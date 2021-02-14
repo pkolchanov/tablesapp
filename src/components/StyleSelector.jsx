@@ -3,7 +3,7 @@ import {CellStyles, sheetStore} from "../stores/SheetStore";
 import '../styles/styleSelector.scss';
 import {observer} from "mobx-react";
 import {action, makeObservable, observable} from "mobx";
-import {appStore, ModeEnum} from "../stores/AppStore";
+import {appStore, AppMode} from "../stores/AppStore";
 
 @observer
 class StyleSelector extends React.Component {
@@ -74,7 +74,7 @@ class StyleSelector extends React.Component {
 
     @action
     toggle() {
-        appStore.changeMode(ModeEnum.edit);
+        appStore.changeMode(AppMode.edit);
         if (this.isOpen) {
             this.isOpen = false;
         } else {

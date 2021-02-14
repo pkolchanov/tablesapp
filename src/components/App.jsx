@@ -11,12 +11,12 @@ import {
     TAB_KEY,
     UP_KEY
 } from "../helpers/keys";
-import {CellStyles, sheetStore} from "../stores/SheetStore";
+import {CellStyles, SheetMode, sheetStore} from "../stores/SheetStore";
 import {fileBrowserStore} from "../stores/FileBrowserStore";
 import FileBrowser from "./FileBrowser";
 import Sheet from "./Sheet";
-import {appStore, ModeEnum} from "../stores/AppStore";
-import {firstRow, lastRow} from "../helpers/htmlExtentions"
+import {appStore, AppMode} from "../stores/AppStore";
+import {isCharacterKeyPressed} from "../helpers/htmlExtentions"
 import Toolbar from "./Toolbar";
 import {authStore} from "../stores/AuthStore";
 import '../styles/app.scss';
@@ -75,14 +75,14 @@ class App extends React.Component {
             }
         }
 
-        if (appStore.mode === ModeEnum.login) {
+        if (appStore.mode === AppMode.login) {
             if (keyCode === ENTER_KEY && target) {
                 e.preventDefault();
                 authStore.login();
             }
         }
 
-        if (appStore.mode === ModeEnum.edit) {
+        if (appStore.mode === AppMode.edit) {
             if (e.metaKey && keyCode === 'C'.charCodeAt(0)) {
                 if (target && isTextArea) {
                     return;
@@ -129,55 +129,52 @@ class App extends React.Component {
             }
 
             if (keyCode === ESCAPE_KEY) {
+                sheetStore.setMode(SheetMode.Navigate);
                 sheetStore.resetSelection();
             }
 
-            if (keyCode === ENTER_KEY && e.metaKey && e.altKey){
+            if (keyCode === ENTER_KEY && e.metaKey && e.altKey) {
                 sheetStore.selectRow();
-            }else if (keyCode === ENTER_KEY && e.metaKey && e.ctrlKey){
+            } else if (keyCode === ENTER_KEY && e.metaKey && e.ctrlKey) {
                 sheetStore.selectColumn();
-            }
-            else if (keyCode === UP_KEY) {
+            } else if (keyCode === ENTER_KEY) {
+                e.preventDefault();
+                if (sheetStore.mode === SheetMode.Navigate) {
+                    sheetStore.setMode(SheetMode.Edit);
+                    sheetStore.resetSelection();
+                } else {
+                    sheetStore.move(shiftKey ? -1 : 1, 0, false);
+                }
+            } else if (keyCode === UP_KEY) {
                 if (e.shiftKey && e.altKey) {
                     e.preventDefault();
                     sheetStore.moveRow(-1);
-                } else if (isTextArea && firstRow(target)) {
-                    e.preventDefault();
-                    sheetStore.move(-1, 0, shiftKey);
                 } else if ((!target || !isTextArea)) {
+                    e.preventDefault();
                     sheetStore.move(-1, 0, shiftKey);
                 }
             } else if (keyCode === DOWN_KEY) {
                 if (e.shiftKey && e.altKey) {
                     e.preventDefault();
                     sheetStore.moveRow(1);
-                } else if (isTextArea && lastRow(target)) {
+                } else if ((!target || target.tagName !== "TEXTAREA")) {
                     e.preventDefault();
                     sheetStore.move(1, 0, shiftKey);
-                } else if ((!target || target.tagName !== "TEXTAREA")) {
-                    sheetStore.move(1, 0, shiftKey);
                 }
-            } else if (keyCode === ENTER_KEY) {
-                e.preventDefault();
-                sheetStore.move(shiftKey ? -1 : 1, 0, false);
             } else if (keyCode === LEFT_KEY) {
                 if (e.shiftKey && e.ctrlKey) {
                     e.preventDefault();
                     sheetStore.addWidth(-1)
-                } else if (target && target.selectionStart === 0) {
-                    e.preventDefault();
-                    sheetStore.move(0, -1, shiftKey);
                 } else if ((!target || !isTextArea)) {
+                    e.preventDefault();
                     sheetStore.move(0, -1, shiftKey);
                 }
             } else if (keyCode === RIGHT_KEY) {
                 if (e.shiftKey && e.ctrlKey) {
                     e.preventDefault();
                     sheetStore.addWidth(1)
-                } else if (target && target.value !== undefined && target.selectionEnd === target.value.length) {
-                    e.preventDefault();
-                    sheetStore.move(0, 1, shiftKey);
                 } else if ((!target || !isTextArea)) {
+                    e.preventDefault();
                     sheetStore.move(0, 1, shiftKey);
                 }
             } else if (keyCode === TAB_KEY && !shiftKey) {
@@ -185,22 +182,27 @@ class App extends React.Component {
             } else if (keyCode === TAB_KEY && shiftKey) {
                 sheetStore.move(0, -1, false);
             } else if (keyCode === BACKSPACE_KEY) {
-                if (target && target.value !== undefined && target.value.length === 0) {
-                    e.preventDefault();
-                    sheetStore.move(0, -1, false);
-                } else if (sheetStore.selectionStartCoords) {
+                if (sheetStore.selectionStartCoords) {
                     e.preventDefault();
                     sheetStore.clearSelected();
+                } else if (sheetStore.mode === SheetMode.Navigate) {
+                    e.preventDefault();
+                    sheetStore.clearActive();
                 }
             } else if (keyCode === DELETE_KEY && sheetStore.selectionStartCoords) {
                 e.preventDefault();
                 sheetStore.clearSelected();
+            } else if (isCharacterKeyPressed(e) &&
+                sheetStore.mode === SheetMode.Navigate &&
+                !(e.metaKey || e.ctrlKey || e.altKey || e.shiftKey)) {
+                sheetStore.clearActive();
+                sheetStore.setMode(SheetMode.Edit);
             }
         }
 
-        if (appStore.mode === ModeEnum.navigate) {
+        if (appStore.mode === AppMode.navigate) {
             if (keyCode === RIGHT_KEY) {
-                appStore.changeMode(ModeEnum.edit)
+                appStore.changeMode(AppMode.edit)
             }
             if (keyCode === BACKSPACE_KEY) {
                 fileBrowserStore.removeCurrentAndSelectNext();

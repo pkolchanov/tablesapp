@@ -1,10 +1,10 @@
 import {action, makeObservable, observable} from "mobx";
 
-export const ModeEnum = Object.freeze({"navigate": 1, "edit": 2, "login": 3, "share": 4});
+export const AppMode = Object.freeze({"navigate": 1, "edit": 2, "login": 3, "share": 4});
 
 class AppStore {
     @observable
-    mode = ModeEnum.edit;
+    mode = AppMode.edit;
 
     constructor() {
         makeObservable(this);
@@ -13,7 +13,7 @@ class AppStore {
     @action
     changeMode(mode) {
         if (this.mode === mode) {
-            this.mode = ModeEnum.edit;
+            this.mode = AppMode.edit;
         } else {
             this.mode = mode;
         }

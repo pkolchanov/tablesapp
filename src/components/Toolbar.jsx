@@ -4,7 +4,7 @@ import {authStore} from "../stores/AuthStore";
 import {fileBrowserStore} from "../stores/FileBrowserStore";
 import StyleSelector from "./StyleSelector";
 import LoginForm from "./LoginForm";
-import {appStore, ModeEnum} from "../stores/AppStore";
+import {appStore, AppMode} from "../stores/AppStore";
 import {sheetStore} from "../stores/SheetStore";
 import {action} from "mobx";
 import * as randomWords from 'random-words';
@@ -54,18 +54,18 @@ class Toolbar extends React.Component {
                     {
                         authStore.loggedUser &&
                         fileBrowserStore.currentSheet.isPublished &&
-                        <ToolbarItem item={`✓ Table shared`} onClick={() => this.changeMode(ModeEnum.share)}/>
+                        <ToolbarItem item={`✓ Table shared`} onClick={() => this.changeMode(AppMode.share)}/>
                     }
                     {
                         (!authStore.loggedUser || !fileBrowserStore.currentSheet.isPublished) &&
                         <ToolbarItem item="Share" onClick={() => this.onShareClick()}/>
                     }
                     {
-                        appStore.mode === ModeEnum.login &&
+                        appStore.mode === AppMode.login &&
                         <LoginForm/>
                     }
                     {
-                        appStore.mode === ModeEnum.share &&
+                        appStore.mode === AppMode.share &&
                         <ShareForm/>
                     }
                 </div>
@@ -80,9 +80,9 @@ class Toolbar extends React.Component {
 
     onShareClick() {
         if (!authStore.loggedUser) {
-            this.changeMode(ModeEnum.login)
+            this.changeMode(AppMode.login)
         } else {
-            this.changeMode(ModeEnum.share);
+            this.changeMode(AppMode.share);
         }
     }
 

@@ -1,55 +1,59 @@
 @import "color.module.scss";
 
 .cell {
-    flex: 1 0 auto;
-    min-height: 19px;
-    line-height: 19px;
-    padding: 3px 2px 3px 2px;
-    user-select: none;
-    background: white;
+  flex: 1 0 auto;
+  min-height: 19px;
+  line-height: 19px;
+  padding: 3px 2px 3px 2px;
+  user-select: none;
+  background: white;
+}
+
+.cell_isActive {
+  z-index: 1;
 }
 
 .cell__input {
-    background: white;
-    box-sizing: border-box;
-    line-height: 19px;
-    padding: 0;
-    border: none;
-    overflow: auto;
-    outline: none;
-    box-shadow: none;
-    resize: none;
-    height: 19px;
-    word-break: break-word;
-    color: $color-text;
-    font-size: 14px;
-    font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background: white;
+  box-sizing: border-box;
+  line-height: 19px;
+  padding: 0;
+  border: none;
+  overflow: auto;
+  outline: none;
+  box-shadow: none;
+  resize: none;
+  height: 19px;
+  word-break: break-word;
+  color: $color-text;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .cell_isDragged {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 .cell_isBold {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .cell_isBold > .cell__input {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .cell_isSubtle {
-    color: $color-dark-gray;
+  color: $color-dark-gray;
 }
 
 .cell_isSubtle > .cell__input {
-    color: $color-dark-gray;
+  color: $color-dark-gray;
 }
 
 .cell_isAccent {
-    color: $color-red;
+  color: $color-red;
 }
 
 .cell_isAccent > .cell__input {
-    color:  $color-red;
+  color: $color-red;
 }

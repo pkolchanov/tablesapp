@@ -4,7 +4,7 @@ import {sheetStore} from "../stores/SheetStore";
 import Cell from "./Cell";
 import HeaderCell from "./HeaderCell";
 import RowBumper from "./RowBumper";
-import {appStore, ModeEnum} from "../stores/AppStore";
+import {appStore, AppMode} from "../stores/AppStore";
 import '../styles/sheet.css';
 import ContextMenu from "./ContextMenu";
 import {contextMenuStore} from "../stores/ContextMenuStore";
@@ -21,7 +21,7 @@ class Sheet extends React.Component {
         const [[fromR, toR], [fromC, toC]] = this.props.isReadOnly ? sheetStore.boundingBox : [[0, sheetStore.nrows - 1], [0, sheetStore.ncolums - 1]];
         return (
             <div className={`sheet ${this.props.isReadOnly ? 'sheet_isReadonly' : ''}`}
-                 onClick={() => appStore.changeMode(ModeEnum.edit)}>
+                 onClick={() => appStore.changeMode(AppMode.edit)}>
                 {
                     !this.props.isReadOnly &&
                     <div className="sheet__headerRow">

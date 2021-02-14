@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import React from "react";
 import {fileBrowserStore} from "../stores/FileBrowserStore";
-import {appStore, ModeEnum} from "../stores/AppStore";
+import {appStore, AppMode} from "../stores/AppStore";
 import {relativeDateTime} from "../helpers/date";
 import '../styles/fileBrowser.scss';
 import link from '../icons/link.svg';
@@ -14,8 +14,8 @@ class FileBrowser extends React.Component {
 
     render() {
         return (
-            <div className={`fileBrowser${appStore.mode === ModeEnum.navigate ? ' fileBrowser_active' : ''} `}
-                 onClick={() => appStore.changeMode(ModeEnum.navigate)}>
+            <div className={`fileBrowser${appStore.mode === AppMode.navigate ? ' fileBrowser_active' : ''} `}
+                 onClick={() => appStore.changeMode(AppMode.navigate)}>
                 <div className='fileBrowser__spacer'/>
                 {fileBrowserStore.flatSheets.map(([key, value]) =>
                     <div

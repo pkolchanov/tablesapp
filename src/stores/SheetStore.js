@@ -2,10 +2,12 @@ import {action, computed, makeObservable, observable} from "mobx";
 
 export const CellStyles = Object.freeze({"bold": "bold", "normal": "normal", "accent": "accent", "subtle": "subtle"});
 export const CellModel = {'value': '', 'style': CellStyles.normal, 'isUnderlined': false};
+export const SheetMode = Object.freeze({"Navigate": 1, "Edit": 2})
 
 class SheetStore {
     @observable data;
     @observable activeCoords;
+    @observable mode = SheetMode.Navigate;
 
     @observable selectionEndCoords;
     @observable selectionStartCoords;
@@ -148,6 +150,10 @@ class SheetStore {
         makeObservable(this);
     }
 
+    @action
+    setMode(mode) {
+        this.mode = mode;
+    }
 
     @action
     activateCell(coords) {
@@ -301,6 +307,13 @@ class SheetStore {
     }
 
     @action
+    clearActive() {
+        const [r, c] = this.activeCoords;
+        this.data[r][c].value = "";
+        this.setMode(SheetMode.Edit);
+    }
+
+    @action
     fillSelection(st) {
         const [fromR, toR] = this.selectionRectRows;
         const [fromC, toC] = this.selectionRectColums;
@@ -389,7 +402,7 @@ class SheetStore {
     paste(text) {
         const usePrevStyles = this.prevCSV === text;
         const [activeR, activeC] = this.activeCoords;
-        const matrix = (text.indexOf('\t') !== -1 ||  text.indexOf('\n') !== -1) ?
+        const matrix = (text.indexOf('\t') !== -1 || text.indexOf('\n') !== -1) ?
             text.split('\n').map(s => s.split('\t')) :
             [[text]];
 

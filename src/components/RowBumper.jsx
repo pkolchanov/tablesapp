@@ -3,7 +3,7 @@ import {observer} from "mobx-react";
 import {sheetStore} from "../stores/SheetStore";
 import {dndStore} from "../stores/DnDStore";
 import '../styles/rowBumper.scss';
-import {appStore, ModeEnum} from "../stores/AppStore";
+import {appStore, AppMode} from "../stores/AppStore";
 
 @observer
 class RowBumper extends React.Component {
@@ -16,7 +16,7 @@ class RowBumper extends React.Component {
     }
 
     render() {
-        const isSelected = sheetStore.selectedRow === this.props.r && appStore.mode === ModeEnum.edit;
+        const isSelected = sheetStore.selectedRow === this.props.r && appStore.mode === AppMode.edit;
         return (
             <div draggable
                  className={`rowBumper ${isSelected ? " rowBumper_isSelected" : ""}`}

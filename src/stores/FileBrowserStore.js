@@ -1,6 +1,6 @@
 import {action, computed, makeObservable, observable, reaction, remove, set} from "mobx";
 import {CellModel, sheetStore} from "./SheetStore";
-import {appStore, ModeEnum} from "./AppStore";
+import {appStore, AppMode} from "./AppStore";
 import firebase from "firebase/app";
 import "firebase/database";
 import {v4 as uuidv4} from 'uuid';
@@ -172,7 +172,7 @@ class FileBrowserStore {
         this.currentSheetId = newId;
         this.preserve();
         this.refActiveSheet();
-        appStore.changeMode(ModeEnum.edit);
+        appStore.changeMode(AppMode.edit);
     }
 
     @action

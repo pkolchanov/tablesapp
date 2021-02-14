@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from "mobx-react";
-import {sheetStore} from "../stores/SheetStore";
-import {appStore, ModeEnum} from "../stores/AppStore";
+import {SheetMode, sheetStore} from "../stores/SheetStore";
+import {appStore, AppMode} from "../stores/AppStore";
 import {dndStore} from "../stores/DnDStore";
 import TextareaWrapper from "./TexareaWrapper";
 import {contextMenuStore} from "../stores/ContextMenuStore";
@@ -28,7 +28,7 @@ class Cell extends React.Component {
         const [selectionStartC, selectionEndC] = sheetStore.selectionRectColums || [];
         const [selectionStartR, selectionEndR] = sheetStore.selectionRectRows || [];
 
-        const isActiveCoords = appStore.mode === ModeEnum.edit &&
+        const isActiveCoords = appStore.mode === AppMode.edit &&
             r === activeR &&
             c === activeC &&
             !this.props.isReadOnly;
@@ -36,7 +36,7 @@ class Cell extends React.Component {
             !sheetStore.selectionStartCoords &&
             !dndStore.draggedColumn;
 
-        const isSelected = appStore.mode === ModeEnum.edit &&
+        const isSelected = appStore.mode === AppMode.edit &&
             sheetStore.selectionEndCoords &&
             sheetStore.isCellInsideSelection(this.props.coords);
         const isTargetColumn = dndStore.targetColumn === c;
@@ -47,10 +47,13 @@ class Cell extends React.Component {
         //todo refactor this shit
         let boxShadow = 'none';
         if (isUnderlined) {
-            boxShadow = `0 -1px 0 0 ${color.colorLightGray} inset`
+            boxShadow = `0 -1px 0 0 ${color.colorDarkGray} inset`
         }
         if (isActiveCoords) {
             boxShadow = `0 0 0 1px ${sheetStore.selectionStartCoords ? color.colorBlueLight : color.colorBlue} inset`
+            if (sheetStore.mode === SheetMode.Edit) {
+                boxShadow += `,  0px 2px 10px rgba(199, 230, 248, 1)`
+            }
             if (isUnderlined) {
                 boxShadow = boxShadow += `, 0 -2px 0 0 ${color.colorLightGray} inset`
             }
@@ -72,7 +75,7 @@ class Cell extends React.Component {
             boxShadow = bs.join(', ')
         }
         return (
-            <div className={`cell${isDragged ? ' cell_isDragged' : ''} cell_is${dataDict.style}`}
+            <div className={`cell${isDragged ? ' cell_isDragged' : ''} cell_is${dataDict.style} ${isActive ? ' cell_isActive': ''}`}
                  onClick={this.handleClick}
                  style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow}}
                  onMouseDown={this.handleMouseDown}
@@ -82,9 +85,9 @@ class Cell extends React.Component {
                  onDragOver={this.handleDragOver}
                  onContextMenu={this.handleContextMenu}
             >
-                {(!isActive || this.props.isReadOnly) && dataDict.value}
+                {(!isActive || this.props.isReadOnly || sheetStore.mode === AppMode.navigate) && dataDict.value}
                 {
-                    isActive && !this.props.isReadOnly &&
+                    isActive && !this.props.isReadOnly && sheetStore.mode === AppMode.edit &&
                     <TextareaWrapper width={sheetStore.columnWidths[c]} coords={this.props.coords}/>
                 }
             </div>
@@ -92,13 +95,19 @@ class Cell extends React.Component {
     }
 
     handleClick(event) {
+        const [r, c] = this.props.coords;
+        const [activeR, activeC] = sheetStore.activeCoords;
+
         if (this.props.isReadOnly) {
             return;
         }
         if (event.shiftKey) {
             sheetStore.select(sheetStore.activeCoords, this.props.coords)
-        } else {
+        } else if (r !== activeR || c!== activeC) {
             sheetStore.activateCell(this.props.coords);
+            sheetStore.setMode(SheetMode.Navigate);
+        } else if (sheetStore.mode === SheetMode.Navigate) {
+            sheetStore.setMode(SheetMode.Edit);
         }
     }
 

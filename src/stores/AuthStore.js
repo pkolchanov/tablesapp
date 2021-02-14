@@ -2,7 +2,7 @@ import {action, makeObservable, observable} from "mobx";
 import firebase from "firebase/app";
 import "firebase/auth";
 import {firebaseConfig} from "../helpers/firebaseConfig";
-import {appStore, ModeEnum} from "./AppStore";
+import {appStore, AppMode} from "./AppStore";
 
 const {ipcRenderer: ipc} = require('electron');
 
@@ -67,7 +67,7 @@ class AuthStore {
                 this.enteredEmail = "";
                 this.loggedUser = result;
                 this.isPending = false;
-                appStore.mode = ModeEnum.share;
+                appStore.mode = AppMode.share;
             })
             .catch((error) => {
                 this.magicLink = "";

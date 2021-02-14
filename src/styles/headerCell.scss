@@ -10,11 +10,11 @@
 
 .headerCell__resizer {
     position: absolute;
-    top: 0;
+    top: -7;
     right: 0;
     flex-grow: 0;
     z-index: 1;
-    color: $color-light-gray;
+    color: $color-border;
     cursor: col-resize;
     display: inline-block;
     text-align: center;

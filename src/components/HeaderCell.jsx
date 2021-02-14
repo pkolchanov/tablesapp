@@ -3,7 +3,7 @@ import React from "react";
 import {sheetStore} from "../stores/SheetStore";
 import {dndStore} from "../stores/DnDStore";
 import '../styles/headerCell.scss';
-import {appStore, ModeEnum} from "../stores/AppStore";
+import {appStore, AppMode} from "../stores/AppStore";
 
 @observer
 class HeaderCell extends React.Component {
@@ -19,8 +19,8 @@ class HeaderCell extends React.Component {
 
     render() {
         const selectedColumn = sheetStore.selectedColumn
-        const isSelected = this.props.c === selectedColumn && appStore.mode === ModeEnum.edit;
-        const nextSelected = (this.props.c + 1) === selectedColumn && appStore.mode === ModeEnum.edit;
+        const isSelected = this.props.c === selectedColumn && appStore.mode === AppMode.edit;
+        const nextSelected = (this.props.c + 1) === selectedColumn && appStore.mode === AppMode.edit;
         return (
             <div className={`headerCell ${isSelected ? ' headerCell_isSelected' : ''}`}
                  style={{width: sheetStore.columnWidths[this.props.c] + 'px'}}
