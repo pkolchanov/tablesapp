@@ -75,15 +75,16 @@ class Cell extends React.Component {
             boxShadow = bs.join(', ')
         }
         return (
-            <div className={`cell${isDragged ? ' cell_isDragged' : ''} cell_is${dataDict.style} ${isActive ? ' cell_isActive': ''}`}
-                 onClick={this.handleClick}
-                 style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow}}
-                 onMouseDown={this.handleMouseDown}
-                 onMouseEnter={this.handleMouseEnter}
-                 onDrop={this.handleDrop}
-                 onDragEnter={this.handleDragEnter}
-                 onDragOver={this.handleDragOver}
-                 onContextMenu={this.handleContextMenu}
+            <div
+                className={`cell${isDragged ? ' cell_isDragged' : ''} cell_is${dataDict.style} ${isActive ? ' cell_isActive' : ''}`}
+                onClick={this.handleClick}
+                style={{width: sheetStore.columnWidths[c] + 'px', boxShadow: boxShadow}}
+                onMouseDown={this.handleMouseDown}
+                onMouseEnter={this.handleMouseEnter}
+                onDrop={this.handleDrop}
+                onDragEnter={this.handleDragEnter}
+                onDragOver={this.handleDragOver}
+                onContextMenu={this.handleContextMenu}
             >
                 {(!isActive || this.props.isReadOnly || sheetStore.mode === AppMode.navigate) && dataDict.value}
                 {
@@ -103,11 +104,13 @@ class Cell extends React.Component {
         }
         if (event.shiftKey) {
             sheetStore.select(sheetStore.activeCoords, this.props.coords)
-        } else if (r !== activeR || c!== activeC) {
+        } else if (r !== activeR || c !== activeC) {
             sheetStore.activateCell(this.props.coords);
             sheetStore.setMode(SheetMode.Navigate);
-        } else if (sheetStore.mode === SheetMode.Navigate) {
+        } else if (sheetStore.mode === SheetMode.Navigate && !sheetStore.selectionStartCoords ) {
             sheetStore.setMode(SheetMode.Edit);
+        } else if ( sheetStore.selectionStartCoords ) {
+            sheetStore.resetSelection();
         }
     }
 
@@ -115,7 +118,7 @@ class Cell extends React.Component {
         if (this.props.isReadOnly) {
             return;
         }
-        if (e.button === 0) {
+        if (e.button === 0 && sheetStore.mode === SheetMode.Navigate) {
             sheetStore.startSelection(this.props.coords);
         }
     }

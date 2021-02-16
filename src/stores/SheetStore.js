@@ -315,8 +315,8 @@ class SheetStore {
 
     @action
     fillSelection(st) {
-        const [fromR, toR] = this.selectionRectRows;
-        const [fromC, toC] = this.selectionRectColums;
+        let [fromR, toR] = this.fromRtoR;
+        let [fromC, toC] = this.fromCtoC;
 
         for (let i = fromR; i <= toR; i++) {
             for (let j = fromC; j <= toC; j++) {
@@ -381,11 +381,12 @@ class SheetStore {
     @action
     removeColumn() {
         this.data.forEach(r => r.splice(this.activeCoords[1], 1));
+        this.columnWidths.splice(this.activeCoords[1], 1);
     }
 
     copy() {
-        let [fromR, toR] = this.selectionRectRows || [this.activeCoords[0], this.activeCoords[0]];
-        let [fromC, toC] = this.selectionRectColums || [this.activeCoords[1], this.activeCoords[1]];
+        let [fromR, toR] = this.fromRtoR;
+        let [fromC, toC] = this.fromCtoC;
 
         const selectionSlice = this.data.slice(fromR, toR + 1)
             .map(r => r.slice(fromC, toC + 1));
@@ -438,8 +439,8 @@ class SheetStore {
     }
 
     changeSelection(toGetter, updater) {
-        let [fromR, toR] = this.selectionRectRows || [this.activeCoords[0], this.activeCoords[0]];
-        let [fromC, toC] = this.selectionRectColums || [this.activeCoords[1], this.activeCoords[1]];
+        let [fromR, toR] = this.fromRtoR;
+        let [fromC, toC] = this.fromCtoC;
 
         const to = toGetter(this.data[fromR][fromC]);
         for (let i = fromR; i <= toR; i++) {
@@ -447,6 +448,16 @@ class SheetStore {
                 updater(i, j, to);
             }
         }
+    }
+
+    @computed
+    get fromRtoR() {
+        return this.selectionRectRows || [this.activeCoords[0], this.activeCoords[0]];
+    }
+
+    @computed
+    get fromCtoC() {
+        return this.selectionRectColums || [this.activeCoords[1], this.activeCoords[1]];
     }
 
 }
