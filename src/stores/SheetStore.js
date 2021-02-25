@@ -357,7 +357,7 @@ class SheetStore {
 
     @action
     addWidth(step) {
-        let [fromC, toC] = this.selectionRectColums || [this.activeCoords[1], this.activeCoords[1]];
+        let [fromC, toC] =  this.fromCtoC;
         const to = this.columnWidths[this.activeCoords[1]] + step * 10;
         if (to < 10) {
             return;

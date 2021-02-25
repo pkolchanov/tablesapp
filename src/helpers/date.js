@@ -1,5 +1,4 @@
 import moment from 'moment';
-import 'moment/locale/ru';
 
 export function relativeDateTime(originalDate) {
     if (!originalDate) {
