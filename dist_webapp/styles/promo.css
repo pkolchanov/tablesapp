@@ -1,0 +1,113 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, Verdana, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    margin: 0;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 43px;
+    color: #FFFFFF;
+    background: #2d2d2d;
+}
+
+a {
+    color: #FFFFFF;
+    border-bottom: 4px solid white;
+}
+
+a:hover {
+    color: #1DBBFF;
+    border-bottom: 4px solid #1DBBFF;
+}
+
+a:hover, a:visited, a:link, a:active {
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 72px;
+    margin-block-end: 36px;
+}
+
+ol {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 36px;
+    flex-basis: 650px;
+}
+
+li {
+    margin-top: 25px;
+}
+
+video {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.block {
+    max-width: 1050px;
+    margin: 50px auto 0;
+}
+
+.mt350 {
+    margin-top: 350px;
+}
+
+.descriptionAndDownload {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.descriptionAndDownload__description {
+    margin-right: 20px;
+}
+
+.descriptionAndDownload__download {
+    background: #009ADE;
+    border-radius: 60px;
+    padding: 15px 30px;
+    flex-shrink: 0;
+    display: block;
+    border-bottom: none;
+}
+
+.descriptionAndDownload__download:hover {
+    background:  #28B1EE;
+    border-bottom: none;
+    color: #FFFFFF;
+}
+
+.img100 {
+    width: 100%;
+}
+
+.listWithImage {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.soonElem {
+    margin-right: 15px;
+}
+
+.footer {
+    font-size: 18px;
+    font-weight: normal;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #FFFFFF;
+}
+
+.shaded{
+    border-bottom: none;
+}
+
+.shaded:hover{
+    border-bottom: none;
+}
