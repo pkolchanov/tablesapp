@@ -1,5 +1,5 @@
 # tablesapp.cloud
-![MainSreenshot](dist_webapp/img/activeCell@2x.png)
+![MainSreenshot](dist_webapp/img/activeCellShadow.png)
 [Tablesapp](https://tablesapp.cloud)  is an experimental table design tool. 
 
 ## Local files first
@@ -15,6 +15,4 @@ All tables are ready for one-click cloud sharing. Hosted on Google Firebase.
 Tablesapp interface is built around keyboard-only interactions. All actions are available through modeless shortcuts: editing, styling, rearranging. 
  
 ## Content centered
-Tablesapp is free of [chartjunk](https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=00040Z) by default. 
-
-
+Tablesapp is free of [chartjunk](https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=00040Z) by default.
