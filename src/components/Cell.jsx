@@ -98,13 +98,13 @@ class Cell extends React.Component {
     handleClick(event) {
         const [r, c] = this.props.coords;
         const [activeR, activeC] = sheetStore.activeCoords;
-
         if (this.props.isReadOnly) {
             return;
         }
-        if (event.shiftKey) {
+        const notActive = r !== activeR || c !== activeC;
+        if (event.shiftKey && notActive) {
             sheetStore.select(sheetStore.activeCoords, this.props.coords)
-        } else if (r !== activeR || c !== activeC) {
+        } else if (notActive) {
             sheetStore.activateCell(this.props.coords);
             sheetStore.setMode(SheetMode.Navigate);
         } else if (sheetStore.mode === SheetMode.Navigate && !sheetStore.selectionStartCoords ) {

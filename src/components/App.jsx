@@ -91,7 +91,7 @@ class App extends React.Component {
                 sheetStore.copy();
             }
 
-            if (e.metaKey && keyCode === 'V'.charCodeAt(0)) {
+            if (e.metaKey && keyCode === 'V'.charCodeAt(0) && sheetStore.mode === SheetMode.Navigate) {
                 const text = clipboard.readText();
                 e.preventDefault();
                 if (target && isTextArea) {
@@ -109,8 +109,8 @@ class App extends React.Component {
             }
 
             if (e.metaKey && keyCode === 'A'.charCodeAt(0)) {
-                if (isTextArea && target.selectionEnd === target.value.length &&
-                    target.selectionStart === 0) {
+                if ((isTextArea && target.selectionEnd === target.value.length &&
+                    target.selectionStart === 0) || sheetStore.mode === SheetMode.Navigate) {
                     e.preventDefault();
                     sheetStore.selectAll();
                 }
@@ -192,9 +192,7 @@ class App extends React.Component {
             } else if (keyCode === DELETE_KEY && sheetStore.selectionStartCoords) {
                 e.preventDefault();
                 sheetStore.clearSelected();
-            } else if (isCharacterKeyPressed(e) &&
-                sheetStore.mode === SheetMode.Navigate &&
-                !(e.metaKey || e.ctrlKey || e.altKey || e.shiftKey)) {
+            } else if (isCharacterKeyPressed(e) && sheetStore.mode === SheetMode.Navigate && !(e.metaKey || e.ctrlKey || e.altKey)) {
                 sheetStore.clearActive();
                 sheetStore.setMode(SheetMode.Edit);
             }
