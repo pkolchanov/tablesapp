@@ -77,7 +77,7 @@ video {
 }
 
 .descriptionAndDownload__download:hover {
-    background:  #28B1EE;
+    background: #28B1EE;
     border-bottom: none;
     color: #FFFFFF;
 }
@@ -101,13 +101,13 @@ video {
     font-weight: normal;
     display: flex;
     justify-content: space-between;
-    border-top: 1px solid #FFFFFF;
+    border-top: 1px solid #969696;
 }
 
-.shaded{
+.shaded {
     border-bottom: none;
 }
 
-.shaded:hover{
+.shaded:hover {
     border-bottom: none;
 }

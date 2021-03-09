@@ -9,7 +9,9 @@
     "buildDesktop": "webpack --config webpack-desktop.production.config.js && electron-packager ./ --out=./builds --icon=assets/tablesapp.icns --overwrite",
     "startWebapp": "webpack serve --config webpack-webapp.config.js",
     "buildWebapp": "webpack --config webpack-webapp.config.js",
-    "firebaseEmu": "cd logs && firebase emulators:start"
+    "firebaseEmu": "cd logs && firebase emulators:start",
+    "startPromo": "webpack serve --config webpack-promo.config.js",
+    "buildPromo": "webpack --config webpack-promo.config.js"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +43,7 @@
     "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "styled-components": "^5.2.1",
     "uuid": "latest"
   }
 }

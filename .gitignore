@@ -3,6 +3,7 @@ npm-debug.log
 .DS_Store
 dist
 dist_webapp/bundle.js
+dist_webapp/bundle_promo.js
 .idea
 .vscode
 builds
