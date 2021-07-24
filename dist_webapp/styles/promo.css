@@ -24,8 +24,7 @@ a:hover, a:visited, a:link, a:active {
 }
 
 h1 {
-    font-size: 72px;
-    margin-block-end: 36px;
+    font-size: 100px;
 }
 
 ol {
@@ -33,12 +32,18 @@ ol {
     margin-block-end: 0;
     margin-inline-start: 0;
     margin-inline-end: 0;
-    padding-inline-start: 36px;
     flex-basis: 650px;
+    padding-inline-start: 36px;
+    padding-left:0;
+    list-style-position:inside;
 }
 
-li {
+li:not(:first-child) {
     margin-top: 25px;
+}
+
+li:first-child {
+    margin-top: 8px;
 }
 
 video {
@@ -84,6 +89,7 @@ video {
 
 .img100 {
     width: 100%;
+    height: auto;
 }
 
 .listWithImage {
