@@ -2,7 +2,7 @@
 ![MainSreenshot](dist_webapp/img/activeCellShadow.png)
 [Tablesapp](https://tablesapp.cloud)  is an experimental table design tool. 
 
-## Local files first
+## Local first
 
 1. Tablesapp feels snappy, no matter of internet connection quality.
 1. You get control over your data and decide what goes to the cloud.
