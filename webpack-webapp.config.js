@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: './src_webapp/index.js',
-    mode: 'development',
+    mode: 'production',
     devServer: {
         contentBase: './dist_webapp',
         historyApiFallback: {
@@ -14,9 +14,9 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.jsx']
     },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin()
-    ],
+    // plugins: [
+    //     new webpack.HotModuleReplacementPlugin()
+    // ],
     module: {
         rules: [
             {

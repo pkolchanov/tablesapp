@@ -3,20 +3,20 @@ var webpack = require('webpack');
 
 module.exports = {
     entry: './src_promo/index.js',
-    mode: 'production',
-    // devServer: {
-    //     contentBase: './dist_webapp',
-    //     historyApiFallback: {
-    //         index: 'index.html'
-    //     },
-    //     port: 3000
-    // },
+    mode: 'development',
+    devServer: {
+        contentBase: './dist_webapp',
+        historyApiFallback: {
+            index: 'index.html'
+        },
+        port: 3000
+    },
     resolve: {
         extensions: ['.js', '.jsx']
     },
-    // plugins: [
-    //     new webpack.HotModuleReplacementPlugin()
-    // ],
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ],
     module: {
         rules: [
             {

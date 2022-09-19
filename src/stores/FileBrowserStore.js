@@ -38,7 +38,7 @@ class FileBrowserStore {
 
     @computed
     get currentSheetUrl() {
-        return (PRODUCTION ? `https://tablesapp.cloud` : 'http://localhost:5000') + `/${fileBrowserStore.currentSheetId}`
+        return (PRODUCTION ? firebaseConfig.authDomain : 'http://localhost:5000') + `/${fileBrowserStore.currentSheetId}`
     }
 
     allowLastUpdate = true;

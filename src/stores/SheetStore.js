@@ -5,20 +5,32 @@ export const CellModel = {'value': '', 'style': CellStyles.normal, 'isUnderlined
 export const SheetMode = Object.freeze({"Navigate": 1, "Edit": 2})
 
 class SheetStore {
-    @observable data;
-    @observable activeCoords;
-    @observable mode = SheetMode.Navigate;
+    @observable 
+    data;
 
-    @observable selectionEndCoords;
-    @observable selectionStartCoords;
+    @observable
+    activeCoords;
+
+    @observable 
+    mode = SheetMode.Navigate;
+
+    @observable 
+    selectionEndCoords;
+
+    @observable 
+    selectionStartCoords;
+
     inSelectionMode;
     prevStyles;
     prevCSV;
 
-    @observable columnWidths;
+    @observable
+    columnWidths;
+
     defaultWidth = 200;
     startX;
     startWidth;
+    
     @observable
     resizingColumnNum;
 

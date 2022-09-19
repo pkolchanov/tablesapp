@@ -22,13 +22,12 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 auth.onAuthStateChanged((user) => {
     if (user) {
         authStore.setLoggedUser(user)
-    } else {
     }
 });
 
 const connectedRef = database.ref(".info/connected");
 connectedRef.on("value", function(snap) {
-    if (snap.val() === true) {
+    if (snap.val()) {
         fileBrowserStore.preserve();
     }
 });

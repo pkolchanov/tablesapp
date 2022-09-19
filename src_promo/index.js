@@ -64,9 +64,9 @@ const App = () => (
         <HorizontalSection>
             <HorizontalScroll>
                 <CardsContainer>
-                    <Card src='/img/GPL.png' description='Comparison table' width='60vw' href='https://tablesapp.cloud/efb34f6b-6d23-461b-b342-cf8e95cd8299'></Card>
-                    <Card src='/img/movieList.png' description='Rating list' width='32vw' href='https://tablesapp.cloud/2ad7d178-e7aa-49b1-a835-05d05b122e9a'></Card>
-                    <Card src='/img/timeline.png' description='Timeline' width='35vw' href='https://tablesapp.cloud/035cdf26-544e-4c4f-88a8-0464fc54c905'></Card>
+                    <Card src='/img/GPL.png' description='Comparison table' width='60vw' href='https://tables-c30c4.firebaseapp.com/efb34f6b-6d23-461b-b342-cf8e95cd8299'></Card>
+                    <Card src='/img/movieList.png' description='Rating list' width='32vw' href='https://tables-c30c4.firebaseapp.com/2ad7d178-e7aa-49b1-a835-05d05b122e9a'></Card>
+                    <Card src='/img/timeline.png' description='Timeline' width='35vw' href='https://tables-c30c4.firebaseapp.com/035cdf26-544e-4c4f-88a8-0464fc54c905'></Card>
                 </CardsContainer>
             </HorizontalScroll>
         </HorizontalSection>
