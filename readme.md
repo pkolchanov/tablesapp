@@ -1,6 +1,6 @@
 # tablesapp.cloud
 ![MainSreenshot](dist_webapp/img/activeCellShadow.png)
-[Tablesapp](https://tablesapp.cloud)  is an experimental table design tool. 
+[Tablesapp](tables-c30c4.firebaseapp.com)  is an experimental table design tool. 
 
 ## Local first
 
